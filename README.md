@@ -8,7 +8,6 @@ A single-page tracker for GTA VI story mode:
 - **Money Fast** — money-making guide.
 - **Live Map** — the real Leonida map with pins for supercars, hide spots, secrets and chapter guide items. Search, filter by category, click a pin in the list to fly to it. Optional layer with ~1,200 gtadb.org landmarks.
 - **Fastest Cars** — top 30 by in-game Speed stat with locations, how-to, map pins and a collected checklist (sources: G2A, Insider Gaming, GTABase).
-- **Leonida** — the 5 counties and 11 cities/towns: summaries, real-world inspirations, highlights, "show on map".
 - **Vehicles** and **Weapons** — searchable galleries by class, linking to gta.wiki (supercars with a known spawn jump to the map).
 - **Legendary weapons** (under Weapons) and **Challenges** (under Cheats) — checklists with locations / cheat unlocks (source: Insider Gaming).
 - **Cheats** — all 61 cheats with sources cross-checked, plus an unlock checklist with progress counter and a field to note codes yourself.
@@ -42,7 +41,7 @@ npx wrangler deploy
 
 - Map tiles and landmark coordinates: [gtadb.org](https://gtadb.org) and its contributors — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) ([source](https://github.com/rolux/gtadb.org)).
 - Cheat and trophy data: [leonidaverse.com](https://leonidaverse.com/en/codex) (unofficial fan wiki), cross-checked with [gta.wiki](https://gta.wiki/w/Cheats_in_GTA_VI).
-- Leonida place info (summarised) and vehicle/weapon names/classes: [gta.wiki](https://gta.wiki) (CC BY-SA). Thumbnails are Rockstar images and are not included in this repo.
+- Vehicle/weapon names and classes: [gta.wiki](https://gta.wiki) (CC BY-SA). Thumbnails are Rockstar images and are not included in this repo.
 - Guide tips compiled from community sources (Reddit, X, Skycoach, G2A, Insider Gaming, VICE, Space4Games, Rock Paper Shotgun).
 
 ## License

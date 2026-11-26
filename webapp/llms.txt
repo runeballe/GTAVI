@@ -11,7 +11,6 @@ Source code (MIT): https://github.com/runeballe/GTAVI
 - [100% Completion](https://runeball.no/GTAVI/#hundred) (sub-tab of Checklist): all 35 in-game 100% requirements (gta.wiki) with counters; story and challenges rows fill in from the tracker.
 - [Money Guide](https://runeball.no/GTAVI/#money): money-making methods by chapter (e.g. Moses' garage car loop in chapter 2).
 - [Live Map](https://runeball.no/GTAVI/#map): Leaflet map on real in-game coordinates. Pin categories: supercars (13, e.g. Truffade Thrax — fastest car, garage code 8554013), chapter guide items, hide & money spots, secrets (UFO, tower egg), and ~1,200 gtadb.org landmarks.
-- [Leonida](https://runeball.no/GTAVI/#leonida): guide to the State of Leonida — 5 counties (Vice-Dale, Kelly, Leonard, Mariana, Lummox) and 11 cities/towns (Vice City, Vice Beach, Hamlet, Port Gellhorn, Ambrosia, Waning Sands, Vinewood Beach, Capri, Key Lento, Southwind, Millport) with real-world inspirations, highlights and map links.
 - [Vehicles](https://runeball.no/GTAVI/#vehicles): gallery of ~300 GTA VI vehicles by class (new vs returning, model year), with links to gta.wiki and to known spawns on the map.
 - [Fastest Cars](https://runeball.no/GTAVI/#fastest) (sub-tab of Vehicles): the 30 fastest cars ranked by the in-game Speed stat (no official mph/km/h exists), with location cues, how to get each one, security/tracker notes, map pins and a collected checklist. #1: Andrew Node's Thrax (9.2).
 - [Weapons](https://runeball.no/GTAVI/#weapons): gallery of 74 GTA VI weapons by class, from melee to launchers.
@@ -25,7 +24,7 @@ Source code (MIT): https://github.com/runeballe/GTAVI
 
 - Map tiles and landmark coordinates: gtadb.org contributors (CC BY 4.0) — https://gtadb.org
 - Cheats and trophies: leonidaverse.com codex (unofficial fan wiki), cross-checked with gta.wiki and launch-week cheat guides
-- Leonida places, vehicles and weapons: gta.wiki (Vehicles_in_GTA_VI, Weapons_in_GTA_VI)
+- Vehicles and weapons: gta.wiki (Vehicles_in_GTA_VI, Weapons_in_GTA_VI)
 - Guide tips: community sources (Reddit, X, Skycoach, G2A, Insider Gaming, VICE, Space4Games, Rock Paper Shotgun)
 
 ## Notes
