@@ -12,3 +12,6 @@ webapp/favicon.ico
 webapp/apple-touch-icon.png
 webapp/vi-no-txt.png
 webapp/vi-logo.png
+# Vehicle/weapon thumbnails (Rockstar images via gta.wiki) and source PDFs
+webapp/media/
+/*.pdf

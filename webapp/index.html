@@ -67,6 +67,7 @@
   header { background: linear-gradient(135deg, #0f1117 0%, #161822 100%); border-bottom: 1px solid var(--border); padding: 0.9rem 2rem 0; position: sticky; top: 0; z-index: 100; }
   .header-inner { max-width: 1400px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
   .brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 800; font-size: 1.15rem; }
+  .brand-link { display: flex; align-items: center; gap: 0.6rem; text-decoration: none !important; }
   .brand-logo { height: 44px; width: auto; display: block; filter: drop-shadow(0 2px 8px rgba(255, 60, 172, 0.35)); }
   .brand-text { font-size: 1.6rem; font-weight: 800; letter-spacing: 0.01em; background: linear-gradient(180deg, #ffd27a 0%, #ff5fa2 55%, #b44cff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .brand .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
@@ -79,6 +80,7 @@
     color: var(--muted); background: transparent; border: none; border-bottom: 3px solid transparent; border-radius: 6px 6px 0 0;
   }
   .tab:hover { color: var(--text); background: #1a1d28; }
+  @media (max-width: 950px) { .tabs { overflow-x: auto; scrollbar-width: none; } .tabs::-webkit-scrollbar { display: none; } .tab { flex: none; padding: 0.55rem 0.8rem; } }
   .tab.active { color: var(--accent); border-bottom-color: var(--accent); background: #14161e; }
 
   /* Toolbar */
@@ -180,6 +182,34 @@
   td b { color: var(--gold); }
   tr:hover td { background: #14161e; }
 
+
+  /* ============ VEHICLES / WEAPONS GALLERY ============ */
+  .gal-wrap { max-width: 1400px; }
+  .gal-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1.2rem; }
+  .gal-search { flex: 1 1 240px; min-width: 0; background: #1f222d; border: 1px solid var(--border); color: var(--text); padding: 0.55rem 0.9rem; border-radius: 8px; font-size: 0.85rem; font-family: inherit; }
+  .gal-search:focus, .gal-select:focus { outline: none; border-color: var(--accent); }
+  .gal-select { background: #1f222d; border: 1px solid var(--border); color: var(--text); padding: 0.5rem 0.7rem; border-radius: 8px; font-size: 0.82rem; font-family: inherit; max-width: 100%; }
+  .gal-count { color: var(--muted); font-size: 0.78rem; margin-left: auto; font-variant-numeric: tabular-nums; }
+  .gal-group { grid-column: 1 / -1; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 0.8rem; padding-bottom: 0.2rem; border-bottom: 1px solid var(--border); }
+  .gal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.9rem; }
+  @media (max-width: 500px) { .gal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; } }
+  .gcard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.15s, transform 0.15s; }
+  .gcard:hover { border-color: #3a3e50; transform: translateY(-2px); }
+  .gimg { position: relative; aspect-ratio: 16 / 9; background: #0f1117; display: grid; place-items: center; overflow: hidden; }
+  .gimg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gimg.cut { background: radial-gradient(circle at 50% 45%, #252a3a, #0f1117 75%); }
+  .gimg.cut img { object-fit: contain; padding: 0.6rem; }
+  .gimg .noimg { font-size: 2rem; opacity: 0.35; }
+  .gbody { padding: 0.6rem 0.75rem 0.7rem; display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
+  .gname { font-weight: 700; font-size: 0.9rem; line-height: 1.25; }
+  .gname .yr { color: var(--muted); font-weight: 400; font-size: 0.78rem; }
+  .gmeta { display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center; font-size: 0.68rem; color: var(--muted); }
+  .gtag { border: 1px solid var(--border); border-radius: 999px; padding: 0.05rem 0.45rem; }
+  .gtag.new { color: var(--gold); border-color: rgba(255,214,10,0.5); }
+  .glinks { margin-top: auto; display: flex; gap: 0.6rem; font-size: 0.72rem; padding-top: 0.2rem; }
+  .glinks button { background: none; border: none; color: var(--done); cursor: pointer; padding: 0; font: inherit; }
+  .glinks button:hover { text-decoration: underline; }
+
   /* ============ MAP TAB ============ */
   .map-wrap { max-width: 1600px; margin: 0 auto; padding: 1rem 2rem 2rem; }
   @media (max-width: 950px) { .map-wrap { padding: 0.75rem 1rem 2rem; } }
@@ -253,6 +283,18 @@
   .cheat { background:#0f1117; border:1px solid var(--border); border-radius:8px; padding:0.7rem 0.85rem; }
   .cheat-name { font-size:0.85rem; font-weight:700; margin-bottom:0.4rem; }
   .cheat-in { margin-bottom:0.45rem; }
+  .cheat-filters { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.9rem 0 0.8rem; }
+  .cheat { position: relative; }
+  .cheat.unlocked { border-color: rgba(46, 204, 113, 0.55); background: var(--done-bg); }
+  .cheat-head { display: flex; align-items: flex-start; gap: 0.55rem; margin-bottom: 0.4rem; }
+  .cheat-head input { margin-top: 0.2rem; width: 16px; height: 16px; accent-color: var(--done); cursor: pointer; flex: none; }
+  .cheat-head .cheat-name { margin-bottom: 0; cursor: pointer; }
+  .src-ok { color: var(--done); font-weight: 700; }
+  .src-1 { display:inline-block; margin-left:0.4rem; font-size:0.65rem; color:var(--gold); border:1px solid rgba(255,214,10,0.5); border-radius:999px; padding:0.05rem 0.45rem; vertical-align:middle; }
+  .mycode { margin-top: 0.45rem; width: 100%; background: #0b0c10; border: 1px dashed var(--border); color: var(--text); border-radius: 6px; padding: 0.35rem 0.55rem; font-size: 0.75rem; font-family: inherit; }
+  .mycode:focus { outline: none; border-color: var(--accent); border-style: solid; }
+  .wiki-ok { display:inline-block; margin-left:0.4rem; font-size:0.65rem; font-weight:700; color:var(--done); border:1px solid var(--done); border-radius:999px; padding:0.05rem 0.45rem; vertical-align:middle; }
+  .wiki-x { color:var(--gold); margin-top:0.3rem; }
 
   footer { max-width: 1400px; margin: 0 auto; padding: 1rem 2rem 3rem; color: var(--muted); font-size: 0.75rem; border-top: 1px solid var(--border); }
 
@@ -262,13 +304,15 @@
 
 <header>
   <div class="header-inner">
-    <h1 class="brand"><img class="brand-logo" src="vi-logo.png" alt="VI" width="62" height="44"><span class="brand-text">Tracker</span></h1>
+    <h1 class="brand"><a class="brand-link" href="https://runeball.no/GTAVI/" title="VI Tracker — home"><img class="brand-logo" src="vi-logo.png" alt="VI" width="62" height="44"><span class="brand-text">Tracker</span></a></h1>
     <div class="subtitle">102 missions · money guide · big map: supercars, hide spots, secrets</div>
   </div>
   <nav class="tabs" aria-label="Sections" role="tablist">
     <button class="tab active" id="tabbtn-checklist" role="tab" aria-controls="tab-checklist" aria-selected="true" onclick="showTab('checklist')">📋 Checklist</button>
     <button class="tab" id="tabbtn-money" role="tab" aria-controls="tab-money" aria-selected="false" onclick="showTab('money')">💰 Money Fast</button>
     <button class="tab" id="tabbtn-map" role="tab" aria-controls="tab-map" aria-selected="false" onclick="showTab('map')">🗺️ Live Map</button>
+    <button class="tab" id="tabbtn-vehicles" role="tab" aria-controls="tab-vehicles" aria-selected="false" onclick="showTab('vehicles')">🚗 Vehicles</button>
+    <button class="tab" id="tabbtn-weapons" role="tab" aria-controls="tab-weapons" aria-selected="false" onclick="showTab('weapons')">🔫 Weapons</button>
     <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Cheats</button>
     <button class="tab" id="tabbtn-trophies" role="tab" aria-controls="tab-trophies" aria-selected="false" onclick="showTab('trophies')">🏆 Trophies</button>
   </nav>
@@ -477,11 +521,50 @@
   </div>
 </section>
 
+<!-- ==================== TAB: VEHICLES ==================== -->
+<section id="tab-vehicles" role="tabpanel" aria-labelledby="tabbtn-vehicles" style="display:none">
+  <div class="money-wrap gal-wrap">
+    <div class="money-hero">🚗 Vehicles</div>
+    <div class="money-sub">Every vehicle seen in GTA VI so far — supercars to airboats. Cars with a 📍 have a known spawn on the Live Map. Names, classes &amp; images: <a href="https://gta.wiki/w/Vehicles_in_GTA_VI" target="_blank" rel="noopener">gta.wiki</a>.</div>
+    <div class="gal-bar">
+      <input type="search" id="vehiclesSearch" class="gal-search" placeholder="Search vehicles — Thrax, Banshee, airboat…" autocomplete="off" />
+      <select id="vehiclesCat" class="gal-select" aria-label="Category"></select>
+      <select id="vehiclesStatus" class="gal-select" aria-label="New or returning"><option value="">New + returning</option><option value="N">New in GTA VI</option><option value="R">Returning</option></select>
+      <span class="gal-count" id="vehiclesCount"></span>
+    </div>
+    <div class="gal-grid" id="vehiclesGrid"></div>
+  </div>
+</section>
+
+<!-- ==================== TAB: WEAPONS ==================== -->
+<section id="tab-weapons" role="tabpanel" aria-labelledby="tabbtn-weapons" style="display:none">
+  <div class="money-wrap gal-wrap">
+    <div class="money-hero">🔫 Weapons</div>
+    <div class="money-sub">Every weapon in GTA VI by class — melee to launchers. Names &amp; images: <a href="https://gta.wiki/w/Weapons_in_GTA_VI" target="_blank" rel="noopener">gta.wiki</a>.</div>
+    <div class="gal-bar">
+      <input type="search" id="weaponsSearch" class="gal-search" placeholder="Search weapons — knife, ES9, shotgun…" autocomplete="off" />
+      <select id="weaponsCat" class="gal-select" aria-label="Category"></select>
+      
+      <span class="gal-count" id="weaponsCount"></span>
+    </div>
+    <div class="gal-grid" id="weaponsGrid"></div>
+  </div>
+</section>
+
 <!-- ==================== TAB 4: CHEATS ==================== -->
 <section id="tab-cheats" role="tabpanel" aria-labelledby="tabbtn-cheats" style="display:none">
   <div class="money-wrap">
     <div class="money-hero">🔑 Cheat Codes</div>
-    <div class="money-sub">61 story-mode cheats · unlock after the story credits, then hold <b>L1 + R1</b> on the phone and tap the d-pad sequence. A used cheat disables trophies &amp; saving until the session ends. Data: leonidaverse.com — 40 inputs not community-verified yet.</div>
+    <div class="money-sub">61 story-mode cheats · unlock after the story credits. <b>Enter:</b> open the phone, then hold <b>LB</b> + press <b>RB</b> (Xbox) or hold <b>L1</b> + press <b>R1</b> (PS5), and tap the d-pad sequence — same code on both. A used cheat disables achievements/trophies &amp; saving until the session ends, so keep a clean save.
+      Sources: leonidaverse.com, gta.wiki, and the Xbox cheat sheet (launch-week guides) — <span class="src-ok">✓✓</span> = confirmed by 2+ sources.</div>
+    <div class="progress-bar"><div class="progress-fill" id="cheatFill"></div></div>
+    <div class="progress-text"><span id="cheatText">0 unlocked</span><span id="cheatCount"></span></div>
+    <div class="cheat-filters">
+      <button type="button" class="chip active" data-cf="all">All</button>
+      <button type="button" class="chip" data-cf="unlocked">✅ Unlocked</button>
+      <button type="button" class="chip" data-cf="locked">🔒 Locked</button>
+      <button type="button" class="chip" data-cf="nocode">⏳ Code unknown</button>
+    </div>
     <input type="search" id="cheatSearch" placeholder="Search cheats…" style="background:#1f222d; border:1px solid var(--border); color:var(--text); padding:0.5rem 0.9rem; border-radius:6px; font-size:0.85rem; width:100%; max-width:420px; margin-bottom:1.2rem;" />
     <div id="cheatList"></div>
   </div>
@@ -506,6 +589,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="landmarks.js"></script>
 <script src="codex.js"></script>
+<script src="gallery.js"></script>
 <script>
 // ============================================================================
 // CHECKLIST DATA (same as before — missions + finds/sides)
@@ -540,6 +624,7 @@ const chapters = [
       { text: "Reach $5,000 Family Savings before chapter ends", tag: "Money", web: true, note: "Pocket/house/checking/BuckMe cash is WIPED at Ch 2; only Family Savings carries" },
       { text: "Call Joey — free repair + delivery of Jason's car (lost at Tourist Trap)", tag: "Tip" },
       { text: "Manual save before Recalibration — keep in its own slot", tag: "Save", web: true, note: "Tourist Trap = point of no return, last 3 missions back-to-back" },
+      { text: "If the Clothes Fit (optional mission) — pick up clothes for Lucia from her friend Andy before her release", tag: "Side job", web: true, note: "Listed on gta.wiki; not in the guide images" },
     ],
   },
   {
@@ -582,6 +667,7 @@ const chapters = [
       { text: "Credit Check — unlocks bank jobs + dye pack jammer", tag: "Key tip" },
       { text: "Wanted ring — keep moving on a tracked car or it fills: instant 2-star", tag: "Tip" },
       { text: "Jet-ski dog — open-water rescue", tag: "Tip" },
+      { text: "Tyrone — Boobie's contact; Jason asks for more work and gets into Kitty Litter", tag: "Mission?", web: true, note: "Listed as a Ch 3 mission on gta.wiki; not in the guide images — may be part of Here, Kitty Kitty" },
     ],
   },
   {
@@ -728,7 +814,7 @@ function updateProgress() {
 // TABS
 // ============================================================================
 function showTab(name) {
-  ["checklist", "money", "map", "cheats", "trophies"].forEach(t => {
+  ["checklist", "money", "map", "vehicles", "weapons", "cheats", "trophies"].forEach(t => {
     document.getElementById("tab-" + t).style.display = t === name ? "" : "none";
     document.getElementById("tabbtn-" + t).classList.toggle("active", t === name);
     document.getElementById("tabbtn-" + t).setAttribute("aria-selected", t === name);
@@ -905,30 +991,128 @@ function initSideMap() {
   fitVisiblePins(sideMap, sideLayers);
 }
 
+
+// ============================================================================
+// VEHICLES & WEAPONS GALLERY (data: gallery.js, from gta.wiki)
+// ============================================================================
+const GAL_ICON = { vehicles: "🚗", weapons: "🔫" };
+const WEP_ICON = { "Melee": "🔪", "Thrown": "💣", "Launchers": "🚀", "Canisters": "⛽" };
+function vehiclePin(name) {
+  const n = name.toLowerCase();
+  return bigMarkers.findIndex(b => b.cat === "super" && b.p.name.toLowerCase().split(/[\s—-]+/).includes(n));
+}
+function renderGallery(kind) {
+  const data = kind === "vehicles" ? VEHICLES : WEAPONS;
+  const q = document.getElementById(kind + "Search").value.trim().toLowerCase();
+  const cat = document.getElementById(kind + "Cat").value;
+  const st = kind === "vehicles" ? document.getElementById("vehiclesStatus").value : "";
+  const rows = data.filter(d => (!cat || d.c === cat) && (!st || d.s === st) && (!q || (d.n + " " + d.c + " " + (d.y || "")).toLowerCase().includes(q)));
+  let html = "", lastCat = null;
+  rows.forEach(d => {
+    if (d.c !== lastCat) { html += `<div class="gal-group">${escapeHtml(d.c)}</div>`; lastCat = d.c; }
+    const img = d.f
+      ? `<img src="media/${kind === "vehicles" ? "veh" : "wep"}/${d.f}.webp" alt="${escapeHtml(d.n)}" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'noimg',textContent:'${GAL_ICON[kind]}'}))">`
+      : `<span class="noimg" aria-hidden="true">${(kind === "weapons" && WEP_ICON[d.c]) || GAL_ICON[kind]}</span>`;
+    const pin = kind === "vehicles" ? vehiclePin(d.n) : -1;
+    html += `<article class="gcard"><div class="gimg${d.t ? " cut" : ""}">${img}</div><div class="gbody">
+      <div class="gname">${escapeHtml(d.n)}${d.y ? ` <span class="yr">(${d.y})</span>` : ""}</div>
+      <div class="gmeta">${d.s ? `<span class="gtag ${d.s === "N" ? "new" : ""}">${d.s === "N" ? "New" : "Returning"}</span>` : ""}<span>${escapeHtml(d.c)}</span></div>
+      <div class="glinks">${d.u ? `<a href="https://gta.wiki/w/${d.u}" target="_blank" rel="noopener">gta.wiki ↗</a>` : ""}${pin >= 0 ? `<button type="button" data-pin="${pin}">📍 on map</button>` : ""}</div>
+    </div></article>`;
+  });
+  const grid = document.getElementById(kind + "Grid");
+  grid.innerHTML = html || `<div class="empty-filter">Nothing matches 🎉</div>`;
+  document.getElementById(kind + "Count").textContent = `${rows.length} / ${data.length}`;
+}
+function initGallery(kind) {
+  const data = kind === "vehicles" ? VEHICLES : WEAPONS;
+  const sel = document.getElementById(kind + "Cat");
+  sel.innerHTML = `<option value="">All categories</option>` + [...new Set(data.map(d => d.c))].map(c => `<option>${escapeHtml(c)}</option>`).join("");
+  [kind + "Search", kind + "Cat"].concat(kind === "vehicles" ? ["vehiclesStatus"] : [])
+    .forEach(id => document.getElementById(id).addEventListener("input", () => renderGallery(kind)));
+  document.getElementById(kind + "Grid").addEventListener("click", e => {
+    const b = e.target.closest("[data-pin]");
+    if (!b) return;
+    showTab("map");
+    setTimeout(() => focusPin(+b.dataset.pin), 150);
+  });
+  renderGallery(kind);
+}
+
 // ============================================================================
 // CHEATS TAB
 // ============================================================================
 const DIRS = { up: "↑", down: "↓", left: "←", right: "→" };
-let cheatQuery = "";
+const CHEAT_STORE = "gta6_cheats_v1";
+let cheatState = {};
+try { cheatState = JSON.parse(localStorage.getItem(CHEAT_STORE) || "{}"); } catch (e) {}
+// cheatState: { u: { [name]: true }, code: { [name]: "↑↓…" } }
+cheatState.u = cheatState.u || {}; cheatState.code = cheatState.code || {};
+function saveCheats() { try { localStorage.setItem(CHEAT_STORE, JSON.stringify(cheatState)); } catch (e) {} }
+let cheatQuery = "", cheatFilter = "all";
+function cheatSources(c) { return (c.in ? 1 : 0) + (c.w ? 1 : 0) + (c.p ? 1 : 0); }
 function renderCheats() {
   const q = cheatQuery.toLowerCase();
   const cats = [...new Set(CHEATS.map(c => c.c))];
+  const pass = c => {
+    if (cheatFilter === "unlocked" && !cheatState.u[c.n]) return false;
+    if (cheatFilter === "locked" && cheatState.u[c.n]) return false;
+    if (cheatFilter === "nocode" && c.in) return false;
+    return !q || (c.n + " " + c.u + " " + (cheatState.code[c.n] || "")).toLowerCase().includes(q);
+  };
   let html = "";
   cats.forEach(cat => {
-    const items = CHEATS.filter(c => c.c === cat && (!q || (c.n + " " + c.u).toLowerCase().includes(q)));
+    const all = CHEATS.filter(c => c.c === cat);
+    const items = all.filter(pass);
     if (!items.length) return;
-    html += `<div class="chapter"><div class="chapter-header"><div class="chapter-title">${cat} cheats</div><div class="chapter-chip">${items.length}</div></div><div class="chapter-body"><div class="grid">`;
+    const got = all.filter(c => cheatState.u[c.n]).length;
+    html += `<div class="chapter"><div class="chapter-header"><div class="chapter-title">${cat} cheats</div><div class="chapter-chip">${got} / ${all.length} unlocked</div></div><div class="chapter-body"><div class="grid">`;
     html += items.map(c => {
+      const id = "ch-" + CHEATS.indexOf(c);
+      const n = cheatSources(c);
       const input = c.in
         ? c.in.split(" ").map(d => `<span class="dpad">${DIRS[d] || "?"}</span>`).join("")
-        : `<span class="todo-note">⏳ input not verified yet</span>`;
-      return `<div class="cheat"><div class="cheat-name">${escapeHtml(c.n)}</div><div class="cheat-in">${input}</div><div class="todo-note">🔓 ${escapeHtml(c.u)}</div></div>`;
+        : `<span class="todo-note">⏳ code not public yet — the game shows it once unlocked</span>`;
+      const badges = c.in
+        ? (n >= 2
+            ? `<span class="wiki-ok" title="${[c.w && "gta.wiki", c.p && "Xbox cheat sheet", "leonidaverse"].filter(Boolean).join(" + ")}">✓✓ ${n} sources</span>`
+            : `<span class="src-1" title="Only leonidaverse.com lists this code">1 source</span>`)
+        : "";
+      const note = c.x ? `<div class="todo-note wiki-x">⚠ ${escapeHtml(c.x)}</div>` : "";
+      const mine = c.in ? "" : `<input class="mycode" data-code="${escapeHtml(c.n)}" placeholder="✍ your code, e.g. ↑↓←→" value="${escapeHtml(cheatState.code[c.n] || "")}" />`;
+      return `<div class="cheat${cheatState.u[c.n] ? " unlocked" : ""}">
+        <div class="cheat-head"><input type="checkbox" id="${id}" data-unlock="${escapeHtml(c.n)}" ${cheatState.u[c.n] ? "checked" : ""}><label class="cheat-name" for="${id}">${escapeHtml(c.n)}</label></div>
+        <div class="cheat-in">${input}${badges}</div>${note}
+        <div class="todo-note">🔓 ${escapeHtml(c.u)}</div>${mine}</div>`;
     }).join("");
     html += `</div></div></div>`;
   });
   document.getElementById("cheatList").innerHTML = html || `<div class="empty-filter">Nothing matches 🎉</div>`;
+  const done = CHEATS.filter(c => cheatState.u[c.n]).length;
+  const pct = Math.round(done / CHEATS.length * 100);
+  document.getElementById("cheatFill").style.width = pct + "%";
+  document.getElementById("cheatText").textContent = `${done} unlocked (${pct}%)` + (done === CHEATS.length ? " — every cheat! 🎉" : "");
+  document.getElementById("cheatCount").textContent = `${done} / ${CHEATS.length} cheats · ${CHEATS.filter(c => c.in).length} codes known`;
 }
 document.getElementById("cheatSearch").addEventListener("input", e => { cheatQuery = e.target.value.trim().toLowerCase(); renderCheats(); });
+document.getElementById("cheatList").addEventListener("change", e => {
+  const n = e.target.dataset.unlock;
+  if (n === undefined) return;
+  if (e.target.checked) cheatState.u[n] = true; else delete cheatState.u[n];
+  saveCheats(); renderCheats();
+});
+document.getElementById("cheatList").addEventListener("input", e => {
+  const n = e.target.dataset.code;
+  if (n === undefined) return;
+  const v = e.target.value.trim();
+  if (v) cheatState.code[n] = v; else delete cheatState.code[n];
+  saveCheats(); // no re-render: keeps focus while typing
+});
+document.querySelectorAll(".cheat-filters .chip").forEach(b => b.addEventListener("click", () => {
+  cheatFilter = b.dataset.cf;
+  document.querySelectorAll(".cheat-filters .chip").forEach(x => x.classList.toggle("active", x === b));
+  renderCheats();
+}));
 
 // ============================================================================
 // TROPHIES TAB
@@ -959,7 +1143,9 @@ renderCheats();
 renderTrophies();
 initBigMap();
 initSideMap();
-{ const h = location.hash.slice(1); if (["checklist", "money", "map", "cheats", "trophies"].includes(h)) showTab(h); }
+initGallery("vehicles");
+initGallery("weapons");
+{ const h = location.hash.slice(1); if (["checklist", "money", "map", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
 </script>
 </body>
 </html>

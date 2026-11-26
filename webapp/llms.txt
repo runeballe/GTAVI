@@ -10,13 +10,16 @@ Source code (MIT): https://github.com/runeballe/GTAVI
 - [Checklist](https://runeball.no/GTAVI/#checklist): 5 chapters, 102 required missions, finds, side jobs, missables flagged; filter by open/done/missable; search.
 - [Money Fast](https://runeball.no/GTAVI/#money): money-making methods by chapter (e.g. Moses' garage car loop in chapter 2).
 - [Live Map](https://runeball.no/GTAVI/#map): Leaflet map on real in-game coordinates. Pin categories: supercars (13, e.g. Truffade Thrax — fastest car, garage code 8554013), chapter guide items, hide & money spots, secrets (UFO, tower egg), and ~1,200 gtadb.org landmarks.
-- [Cheats](https://runeball.no/GTAVI/#cheats): 61 story-mode cheats with d-pad inputs and unlock conditions (enter with L1 + R1 on the phone after the credits).
+- [Vehicles](https://runeball.no/GTAVI/#vehicles): gallery of ~300 GTA VI vehicles by class (new vs returning, model year), with links to gta.wiki and to known spawns on the map.
+- [Weapons](https://runeball.no/GTAVI/#weapons): gallery of 74 GTA VI weapons by class, from melee to launchers.
+- [Cheats](https://runeball.no/GTAVI/#cheats): all 61 story-mode cheats with unlock conditions; 21 known d-pad codes, cross-checked across sources. Unlock checklist with progress counter. Enter on the phone: hold LB + press RB (Xbox) or L1 + R1 (PS5).
 - [Trophies](https://runeball.no/GTAVI/#trophies): 55 trophies / 1,000 Gamerscore with descriptions; tick off as earned.
 
 ## Data sources
 
 - Map tiles and landmark coordinates: gtadb.org contributors (CC BY 4.0) — https://gtadb.org
-- Cheats and trophies: leonidaverse.com codex (unofficial fan wiki)
+- Cheats and trophies: leonidaverse.com codex (unofficial fan wiki), cross-checked with gta.wiki and launch-week cheat guides
+- Vehicles and weapons: gta.wiki (Vehicles_in_GTA_VI, Weapons_in_GTA_VI)
 - Guide tips: community sources (Reddit, X, Skycoach, G2A, Insider Gaming, VICE, Space4Games, Rock Paper Shotgun)
 
 ## Notes
