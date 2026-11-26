@@ -522,6 +522,10 @@
   footer { max-width: 1400px; margin: 0 auto; padding: 1rem 2rem 3rem; color: var(--muted); font-size: 0.75rem; border-top: 1px solid var(--border); }
 
 
+  /* Hidden scrollbars (scrolling still works: wheel, touch, keyboard) */
+  html, body, * { scrollbar-width: none; -ms-overflow-style: none; }
+  html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
   /* ============ THEME: navy + orange, Oswald headings (inspired by gta6bible's tracker) ============ */
   :root { --bg: #0f1626; --card: #1b2536; --border: #2c3749; --text: #e5e7eb; --muted: #9aa4b5; --accent: #f5a623; --accent2: #ffb84d; --panel: #172033; }
   body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--bg); -webkit-font-smoothing: antialiased; }
