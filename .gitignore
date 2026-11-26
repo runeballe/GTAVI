@@ -1,5 +1,8 @@
 # Third-party guide screenshots (source material, not ours to redistribute)
 /*.jpg
+/*.jpeg
+/*.png
+/*.webp
 # Build output / tooling
 deploy/public/
 deploy/.wrangler/
