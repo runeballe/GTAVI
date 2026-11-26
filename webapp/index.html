@@ -244,6 +244,11 @@
   .bon-k.pre { color: var(--accent); border-color: rgba(245, 166, 35, 0.5); }
   .bon-loc { font-size: 0.8rem; color: #cfd5df; }
 
+  .know-g { margin-bottom: 1.4rem; }
+  .know-g h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1.2rem; margin-bottom: 0.6rem; }
+  .know-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1rem; }
+  @media (max-width: 500px) { .know-grid { grid-template-columns: 1fr; } }
+
   /* ============ EASTER EGGS ============ */
   .egg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 1rem; }
   @media (max-width: 500px) { .egg-grid { grid-template-columns: 1fr; } }
@@ -574,6 +579,7 @@
     <button class="tab" id="tabbtn-vehicles" role="tab" aria-controls="tab-vehicles" aria-selected="false" onclick="showTab('vehicles')">🚗 Vehicles</button>
     <button class="tab" id="tabbtn-weapons" role="tab" aria-controls="tab-weapons" aria-selected="false" onclick="showTab('weapons')">🔫 Weapons</button>
     <button class="tab" id="tabbtn-eggs" role="tab" aria-controls="tab-eggs" aria-selected="false" onclick="showTab('eggs')">🥚 Easter Eggs</button>
+    <button class="tab" id="tabbtn-knowledge" role="tab" aria-controls="tab-knowledge" aria-selected="false" onclick="showTab('knowledge')">💡 MasterOfKnowledge</button>
     <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Codes</button>
     <button class="tab" id="tabbtn-trophies" role="tab" aria-controls="tab-trophies" aria-selected="false" onclick="showTab('trophies')">🏆 Trophies</button>
   </nav>
@@ -1035,6 +1041,16 @@
   </div>
 </section>
 
+<!-- ==================== TAB: MASTER OF KNOWLEDGE ==================== -->
+<section id="tab-knowledge" role="tabpanel" aria-labelledby="tabbtn-knowledge" style="display:none">
+  <div class="money-wrap gal-wrap">
+    <div class="money-hero">💡 MasterOfKnowledge</div>
+    <div class="money-sub">Lore, mysteries and little-known mechanics the game barely mentions.</div>
+    <div id="knowList"></div>
+    <p class="leo-credit">Sources: leonidaverse.com (Secrets &amp; Tips), Nov 2026.</p>
+  </div>
+</section>
+
 <!-- ==================== TAB 4: CHEATS ==================== -->
 <section id="tab-cheats" role="tabpanel" aria-labelledby="tabbtn-cheats" style="display:none">
   <div class="money-wrap">
@@ -1100,6 +1116,7 @@
 <script src="cars.js"></script>
 <script src="hundred.js"></script>
 <script src="eggs.js"></script>
+<script src="knowledge.js"></script>
 <script src="guides.js"></script>
 <script>
 // ============================================================================
@@ -1110,25 +1127,25 @@ const chapters = [
     id: 1, name: "Chapter 1 — Just Like Paradise", color: "c1", colorHex: "#00d9ff",
     missions: ["Prologue","Gone Fishing","Gear Up","Just a Scratch","Lab Fees","Pipework","Unwanted Attention","Hey Arnold!","Island Dreams","Feng Shui","Coming Home","Clean Up After Donnie","Buck Me","Down to Earth","Clear Skies","Building a Life","Day Release","Swamped","Don Gone","Recalibration","Tourist Trap","Home Sweet Home","Discharge Time"],
     items: [
-      { text: "Tomas's necklace — buy $475 at The Siren's Chest after Feng Shui", tag: "Missable" },
+      { text: "Tomas's necklace — buy $475 at The Siren's Chest after Feng Shui", tag: "Missable", note: "SW Key Lento · map marker \"Buy Lucia a Necklace\"" },
       { text: "Photo of Tomas — small shelf during Home Sweet Home escape", tag: "Missable", web: true, note: "Skycoach" },
-      { text: "Lucia's yacht sunglasses — Day Release", tag: "Missable" },
-      { text: "Donnie's aviators — inside Donnie's trailer before burning it (Don Gone)", tag: "Missable" },
-      { text: "Andy's Jacket — Home Sweet Home: call Andy, escape with her", tag: "Missable" },
-      { text: "Rusty Anchor shirt and cap — Ring the Bell!, only as Swamped starts", tag: "Clothes" },
-      { text: "Macizo Cigars — box Mandy throws out after Pipework sink fixed", tag: "Item" },
+      { text: "Lucia's yacht sunglasses — Day Release", tag: "Missable", note: "While looking for Mattia: middle deck, talk to the couple by the railing to the stairs" },
+      { text: "Donnie's aviators — inside Donnie's trailer before burning it (Don Gone)", tag: "Missable", note: "In the trailer bathroom" },
+      { text: "Andy's Jacket — Home Sweet Home: call Andy, escape with her", tag: "Missable", note: "Make it to her car undetected" },
+      { text: "Rusty Anchor shirt and cap — Ring the Bell!, only as Swamped starts", tag: "Missable", note: "Ch 1-only mission: driving to Brian's Marina at the start of Swamped, visit the Rusty Anchor after Cal's text" },
+      { text: "Macizo Cigars — box Mandy throws out after Pipework sink fixed", tag: "Missable", note: "3 cigars, thrown on the floor by Mandy" },
       { text: "Cash in white-and-red trailer — Gone Fishing, left when Donnie mentions it", tag: "Loot", web: true, note: "Skycoach" },
       { text: "Maibatsu '97 Penumbra FF — Villa garage, middle of Vespucci Island", tag: "Vehicle", map: [25.78, -80.22] },
       { text: "Kingfishers W-22 — Fishing Shacks, Wetman Bay dock house", tag: "Weapon", map: [25.74, -80.16] },
       { text: "Fishing Shacks loot — search camp carefully: ~$2,000 + unique gun", tag: "Loot", map: [25.74, -80.16] },
       { text: "Duval Signature ES9 — Ultimate Edition: Ammu-Nation locker after Gear Up", tag: "Weapon" },
-      { text: "Donnie's H&L .38 — Don Gone: trunk before destroying the car", tag: "Weapon" },
+      { text: "Donnie's H&L .38 — Don Gone: trunk before destroying the car", tag: "Missable", note: "Weapon variant — open Donnie's car trunk after the fight outside the trailer" },
       { text: "House eggs — Liberty City memoir / Fabien / Tenebrae Lux", tag: "Collectible" },
       { text: "Tony the parrot — behind Three Sheets after Shirley's rum errand → hidden cash stash", tag: "Find" },
       { text: "Search for the Skunk Ape — read flyer, call Kirk (starts Ch 1, ends later)", tag: "Side job" },
-      { text: "Find the Lost Drugs — call after Down to Earth; 4 areas", tag: "Side job", web: true, note: "Turn in ONE BY ONE — all-at-once reportedly pays $0" },
+      { text: "Find the Lost Drugs — call after Down to Earth; 4 areas", tag: "Missable", web: true, note: "Ch 1 only — opens from Buck Me (guides differ: Buck Me / Down to Earth). 4 packages across Mariana County; turn in ONE BY ONE — all-at-once reportedly pays $0" },
       { text: "Lucia's balcony meditation — accept after Down to Earth", tag: "Trophy", web: true, note: "Deadeye pts; likely needed for Positive Mental Attitude" },
-      { text: "Get Shirley's Rum, then steal the scooter a day later — before Tourist Trap", tag: "Missable" },
+      { text: "Get Shirley's Rum, then steal the scooter a day later — before Tourist Trap", tag: "Missable", note: "Ch 1 only — first available after Pipework" },
       { text: "Island Dreams — opens Kenton's treasure dives (pauses at end of Ch 1)", tag: "Side job" },
       { text: "Hey Arnold! — Kill = Hardened/Aggressive, Spare = Restrained", tag: "Choice" },
       { text: "Sell loot to Donnie before Clear Skies — pays more than Brian", tag: "Money", web: true, note: "Drop-off gone later in chapter" },
@@ -1412,7 +1429,7 @@ function updateProgress() {
 // TABS
 // ============================================================================
 function showTab(name) {
-  ["checklist", "money", "map", "vehicles", "weapons", "eggs", "cheats", "trophies"].forEach(t => {
+  ["checklist", "money", "map", "vehicles", "weapons", "eggs", "knowledge", "cheats", "trophies"].forEach(t => {
     document.getElementById("tab-" + t).style.display = t === name ? "" : "none";
     document.getElementById("tabbtn-" + t).classList.toggle("active", t === name);
     document.getElementById("tabbtn-" + t).setAttribute("aria-selected", t === name);
@@ -1935,6 +1952,20 @@ function initBonus() {
 }
 
 // ============================================================================
+// MASTER OF KNOWLEDGE (data: knowledge.js)
+// ============================================================================
+function initKnowledge() {
+  const groups = [...new Set(KNOWLEDGE.map(k => k.g))];
+  const el = document.getElementById("knowList");
+  el.innerHTML = groups.map(g => `<section class="know-g"><h3>${escapeHtml(g)}</h3><div class="know-grid">${KNOWLEDGE.filter(k => k.g === g).map(k => `<article class="egg">
+      <div class="egg-top"><div class="egg-ic" aria-hidden="true">${k.e}</div><div class="egg-n" style="align-self:center">${escapeHtml(k.n)}</div></div>
+      <div class="egg-what">${escapeHtml(k.t)}</div>
+      ${k.map ? `<div class="egg-act"><button type="button" data-fly="${k.map[0]},${k.map[1]},4" data-label="${k.e} ${escapeHtml(k.n)}">📍 Show on map${k.prec === "approx" ? " (approx.)" : " (area)"}</button></div>` : ""}
+    </article>`).join("")}</div></section>`).join("");
+  el.addEventListener("click", e => { const b = e.target.closest("[data-fly]"); if (b) { const [x, y, z] = b.dataset.fly.split(",").map(Number); flyToGame(x, y, z, b.dataset.label); } });
+}
+
+// ============================================================================
 // EASTER EGGS (data: eggs.js)
 // ============================================================================
 const EGG_STORE = "gta6_eggs_v1";
@@ -2170,9 +2201,10 @@ initHundred();
 initDoors();
 initEggs();
 initBonus();
+initKnowledge();
 updateHero();
 initGallery("weapons");
-{ const h = location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "eggs", "cheats", "trophies"].includes(h)) showTab(h); }
+{ const h = location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "eggs", "knowledge", "cheats", "trophies"].includes(h)) showTab(h); }
 </script>
 </body>
 </html>

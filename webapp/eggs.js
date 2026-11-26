@@ -35,8 +35,8 @@ const EGGS = [
   { e: "🐕", n: "Cool Dog, the jet ski rescue dog", where: "Anywhere at sea", map: null,
     what: "Stranded? Swim a bit and listen for barking — a dog in a life jacket rides up on a jet ski and takes you ashore. Stay on and he takes you to Dog Island, where he digs up a wallet with $1,200." },
   { e: "🕵️", n: "The conspiracy theorist's den", where: "A house garage in Belville (Leonard County)", map: [-787, 2831], prec: "area",
-    what: "Break into the garage to find the den of a man convinced he's living inside a video game.",
-    ref: "A house hidden in GTA San Andreas since 2021", src: "secrets" },
+    what: "The exact house from a mystery photo (with a UFO above it) hung in San Andreas DE's Lil' Probe'Inn bar in 2021. Break into its garage to find the den of a man convinced he's living inside a video game.",
+    ref: "GTA San Andreas – The Definitive Edition (2021) — likely a first look at GTA 6", src: "secrets" },
   { e: "📡", n: "The Manifest Canyon monument", where: "Monument near Manifest Canyon (Kelly County)", map: [-5861, 5542], prec: "approx",
-    what: "The statue beeps in what might be Morse code. Nobody has cracked it yet.", src: "secrets" },
+    what: "A monument to 'Leonidan Supremacy': four stallions with strange symbols around a pillar and globe. The plaque says 1982, and that the horses stand for wildlife, corruption, humanity and yeyo. It beeps in what might be Morse code — nobody has cracked it yet.", src: "secrets" },
 ];
