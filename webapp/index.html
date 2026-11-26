@@ -192,6 +192,22 @@
   .subtab:hover { color: var(--text); }
   .subtab.active { background: var(--accent); color: #0b0c10; }
 
+
+  /* ============ CHALLENGES ============ */
+  .chal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
+  @media (max-width: 500px) { .chal-grid { grid-template-columns: 1fr; } }
+  .chal-cat { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; }
+  .chal-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; margin-bottom: 0.4rem; }
+  .chal-head b { font-size: 1rem; }
+  .chal-head span { font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .chal-unl { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.74rem; color: var(--muted); margin: 0.3rem 0 0.6rem; }
+  .chal-unl .ok { color: var(--done); font-weight: 600; }
+  .chal-item { display: grid; grid-template-columns: 18px 1fr; gap: 0.5rem; padding: 0.35rem 0; border-top: 1px solid #1f222d; font-size: 0.8rem; cursor: pointer; }
+  .chal-item input { accent-color: var(--done); margin-top: 0.15rem; cursor: pointer; }
+  .chal-item.done .cn { color: var(--done); }
+  .chal-item .cn { font-weight: 600; }
+  .chal-item .cd { color: var(--muted); font-size: 0.74rem; }
+
   /* ============ FASTEST CARS ============ */
   .fast-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.6rem; margin-bottom: 1.1rem; }
   .fast-steps div { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.78rem; color: var(--muted); }
@@ -656,6 +672,11 @@
 <!-- ==================== TAB: WEAPONS ==================== -->
 <section id="tab-weapons" role="tabpanel" aria-labelledby="tabbtn-weapons" style="display:none">
   <div class="money-wrap gal-wrap">
+    <div class="subtabs" role="tablist" aria-label="Weapons">
+      <button type="button" class="subtab active" id="subbtn-allwep" role="tab" aria-selected="true" data-sub="allwep">🔫 All weapons</button>
+      <button type="button" class="subtab" id="subbtn-legendary" role="tab" aria-selected="false" data-sub="legendary">⭐ Legendary (15)</button>
+    </div>
+    <div id="sub-allwep" role="tabpanel" aria-labelledby="subbtn-allwep">
     <div class="money-hero">🔫 Weapons</div>
     <div class="money-sub">Every weapon in GTA VI by class — melee to launchers. Names &amp; images: <a href="https://gta.wiki/w/Weapons_in_GTA_VI" target="_blank" rel="noopener">gta.wiki</a>.</div>
     <div class="gal-bar">
@@ -666,11 +687,25 @@
     </div>
     <div class="gal-grid" id="weaponsGrid"></div>
   </div>
+    <div id="sub-legendary" role="tabpanel" aria-labelledby="subbtn-legendary" hidden>
+      <div class="money-hero">⭐ Legendary Weapons</div>
+      <div class="money-sub">15 one-of-a-kind weapon variants hidden around Leonida — they stay in your arsenal for good. Several sit inside Illegal Operations (🛡 = expect a fight). Pins are on the Live Map as the ⭐ layer; they mark the area, not the exact door.</div>
+      <div class="progress-bar"><div class="progress-fill" id="legFill"></div></div>
+      <div class="progress-text"><span id="legText">0 found</span><span id="legCount"></span></div>
+      <div class="fast-list" id="legList"></div>
+      <p class="leo-credit">Locations &amp; steps: <a href="https://insider-gaming.com/gta-6-legendary-weapons/" target="_blank" rel="noopener">Insider Gaming</a> (Nov 2026), condensed. Area pins from gtadb.org landmarks.</p>
+    </div>
+  </div>
 </section>
 
 <!-- ==================== TAB 4: CHEATS ==================== -->
 <section id="tab-cheats" role="tabpanel" aria-labelledby="tabbtn-cheats" style="display:none">
   <div class="money-wrap">
+    <div class="subtabs" role="tablist" aria-label="Cheats">
+      <button type="button" class="subtab active" id="subbtn-codes" role="tab" aria-selected="true" data-sub="codes">🔑 Cheat codes</button>
+      <button type="button" class="subtab" id="subbtn-challenges" role="tab" aria-selected="false" data-sub="challenges">🏅 Challenges (80)</button>
+    </div>
+    <div id="sub-codes" role="tabpanel" aria-labelledby="subbtn-codes">
     <div class="money-hero">🔑 Cheat Codes</div>
     <div class="money-sub">61 story-mode cheats · unlock after the story credits. <b>Enter:</b> open the phone, then hold <b>LB</b> + press <b>RB</b> (Xbox) or hold <b>L1</b> + press <b>R1</b> (PS5), and tap the d-pad sequence — same code on both. A used cheat disables achievements/trophies &amp; saving until the session ends, so keep a clean save.
       Sources: leonidaverse.com, gta.wiki, and the Xbox cheat sheet (launch-week guides) — <span class="src-ok">✓✓</span> = confirmed by 2+ sources.</div>
@@ -684,6 +719,15 @@
     </div>
     <input type="search" id="cheatSearch" placeholder="Search cheats…" style="background:#1f222d; border:1px solid var(--border); color:var(--text); padding:0.5rem 0.9rem; border-radius:6px; font-size:0.85rem; width:100%; max-width:420px; margin-bottom:1.2rem;" />
     <div id="cheatList"></div>
+  </div>
+    <div id="sub-challenges" role="tabpanel" aria-labelledby="subbtn-challenges" hidden>
+      <div class="money-hero">🏅 Challenges</div>
+      <div class="money-sub">80 challenges in 8 categories (Progress menu). Doing <b>5</b> in a category unlocks one vehicle cheat, all <b>10</b> unlock another — and all 80 unlocks the P-996 Lazer. The Platinum trophy needs <b>70 of 80</b>.</div>
+      <div class="progress-bar"><div class="progress-fill" id="chalFill"></div></div>
+      <div class="progress-text"><span id="chalText">0 / 80</span><span id="chalCount"></span></div>
+      <div id="chalList"></div>
+      <p class="leo-credit">Challenge list: <a href="https://insider-gaming.com/gta-6-challenges/" target="_blank" rel="noopener">Insider Gaming</a> (Nov 2026).</p>
+    </div>
   </div>
 </section>
 
@@ -709,6 +753,7 @@
 <script src="gallery.js"></script>
 <script src="leonida.js"></script>
 <script src="fastest.js"></script>
+<script src="guides.js"></script>
 <script>
 // ============================================================================
 // CHECKLIST DATA (same as before — missions + finds/sides)
@@ -925,6 +970,15 @@ const mapPins = [
 ];
 
 // Fastest-cars layer (data: fastest.js)
+// Legendary-weapons layer (data: guides.js)
+{
+  const seen = {};
+  LEGENDARY.filter(w => w.map).forEach(w => {
+    const k = w.map.join(","), i = seen[k] = (seen[k] || 0) + 1, a = (i - 1) * 2.1;
+    const off = i > 1 ? [Math.cos(a) * 90, Math.sin(a) * 90] : [0, 0];
+    mapPins.push({ cat: "legend", name: w.n, where: w.loc + " (area pin)", note: (w.op ? "Illegal Operation. " : "") + w.how, gx: w.map[0] + off[0], gy: w.map[1] + off[1] });
+  });
+}
 {
   const seen = {};
   FASTEST.filter(c => c.map).forEach(c => {
@@ -1024,8 +1078,7 @@ function showTab(name) {
     document.getElementById("tabbtn-" + t).setAttribute("aria-selected", t === name);
   });
   if (name === "map") setTimeout(() => { const first = !bigMap._fitOnShow; bigMap.invalidateSize(); if (first) { bigMap._fitOnShow = true; fitVisiblePins(bigMap, layers); } }, 60);
-  if (name === "vehicles" && !document.getElementById("sub-fastest").hidden) { if (location.hash !== "#fastest") history.replaceState(null, "", "#fastest"); }
-  else if (location.hash.slice(1) !== name) history.replaceState(null, "", "#" + name);
+  { const h = typeof SUBS !== "undefined" && SUBS[name] ? subHash(name) : "#" + name; if (location.hash !== h) history.replaceState(null, "", h); }
 }
 
 // ============================================================================
@@ -1056,6 +1109,7 @@ const CATS = {
   hide:   { label: "Hide & money", icon: "🙈", color: "#2ecc71", on: true },
   secret: { label: "Secrets",      icon: "👽", color: "#b388ff", on: true },
   fast:   { label: "Fastest cars", icon: "🏎️", color: "#ff3b30", on: true },
+  legend: { label: "Legendary weapons", icon: "⭐", color: "#ffb300", on: true },
   land:   { label: "Landmarks",    icon: "🏙️", color: "#c3cad8", on: false },
 };
 let bigMap, sideMap, layers = {}, sideLayers = {};
@@ -1110,7 +1164,7 @@ function pinMatches(p) {
 function renderPinList() {
   const el = document.getElementById("pinList");
   let html = "";
-  ["super", "fast", "guide", "hide", "secret"].forEach(cat => {
+  ["super", "fast", "legend", "guide", "hide", "secret"].forEach(cat => {
     if (!CATS[cat].on) return;
     const rows = bigMarkers.map((b, i) => [b, i]).filter(([b]) => b.cat === cat && pinMatches(b.p));
     if (!rows.length) return;
@@ -1139,7 +1193,7 @@ function focusPin(i) {
 }
 function fitVisiblePins(mapObj, store, animate = false) {
   const pts = [];
-  ["guide", "super", "fast", "hide", "secret"].forEach(cat => { if (CATS[cat].on) store[cat].eachLayer(l => pts.push(l.getLatLng())); });
+  ["guide", "super", "fast", "legend", "hide", "secret"].forEach(cat => { if (CATS[cat].on) store[cat].eachLayer(l => pts.push(l.getLatLng())); });
   if (pts.length) mapObj.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 5, animate: animate });
   else mapObj.fitBounds(WORLD_BOUNDS, { animate: animate });
 }
@@ -1301,14 +1355,18 @@ function renderFastest() {
   document.getElementById("fastText").textContent = `${n} collected` + (n === FASTEST.length ? " — full garage! 🏁" : "");
   document.getElementById("fastCount").textContent = `${n} / ${FASTEST.length} cars · ${FASTEST.filter(c => c.map).length} with map spots`;
 }
+const SUBS = { vehicles: ["allveh", "fastest"], weapons: ["allwep", "legendary"], cheats: ["codes", "challenges"] };
+const SUB_PARENT = Object.fromEntries(Object.entries(SUBS).flatMap(([t, l]) => l.slice(1).map(n => [n, t])));
+function currentSub(tab) { return (SUBS[tab] || []).find(n => !document.getElementById("sub-" + n).hidden); }
+function subHash(tab) { const c = currentSub(tab); return c && c !== SUBS[tab][0] ? "#" + c : "#" + tab; }
 function showSub(name) {
-  ["allveh", "fastest"].forEach(n => {
+  const tab = SUB_PARENT[name] || Object.keys(SUBS).find(t => SUBS[t][0] === name);
+  SUBS[tab].forEach(n => {
     document.getElementById("sub-" + n).hidden = n !== name;
     const b = document.getElementById("subbtn-" + n);
     b.classList.toggle("active", n === name); b.setAttribute("aria-selected", n === name);
   });
-  const h = name === "fastest" ? "#fastest" : "#vehicles";
-  if (location.hash !== h) history.replaceState(null, "", h);
+  if (location.hash !== subHash(tab)) history.replaceState(null, "", subHash(tab));
 }
 document.querySelectorAll(".subtab").forEach(b => b.addEventListener("click", () => showSub(b.dataset.sub)));
 function initFastest() {
@@ -1325,6 +1383,69 @@ function initFastest() {
     saveFast(); renderFastest();
   });
   renderFastest();
+}
+
+// ============================================================================
+// LEGENDARY WEAPONS + CHALLENGES (data: guides.js)
+// ============================================================================
+const GUIDE_STORE = "gta6_guides_v1";
+let guideState = {};
+try { guideState = JSON.parse(localStorage.getItem(GUIDE_STORE) || "{}"); } catch (e) {}
+guideState.leg = guideState.leg || {}; guideState.chal = guideState.chal || {};
+function saveGuides() { try { localStorage.setItem(GUIDE_STORE, JSON.stringify(guideState)); } catch (e) {} }
+function renderLegendary() {
+  document.getElementById("legList").innerHTML = LEGENDARY.map((w, i) => {
+    const v = WEAPONS.find(x => x.n === w.b && x.f);
+    const img = v ? `url('media/wep/${v.f}.webp')` : "none";
+    return `<article class="fcar${guideState.leg[w.n] ? " got" : ""}">
+      <div class="rk" style="font-size:1.1rem">${i + 1}</div>
+      <div class="fimg" style="background:radial-gradient(circle at 50% 45%, #252a3a, #0f1117 75%);"><div style="position:absolute;inset:8px;background:${img} center / contain no-repeat"></div>${v ? `<span class="bm">base: ${escapeHtml(w.b)}</span>` : "⭐"}</div>
+      <div class="fbody">
+        <div class="ftop"><span class="fname">${escapeHtml(w.n)}</span><span class="fmfr">${escapeHtml(w.t)}</span>${w.op ? `<span class="fbadge ch">🛡 Illegal Operation</span>` : ""}</div>
+        <div class="floc">📍 ${escapeHtml(w.loc)}</div>
+        <div class="fhow">${escapeHtml(w.how)}</div>
+        <div class="factions">
+          ${w.map ? `<button type="button" data-fly="${w.map[0]},${w.map[1]},4" data-label="⭐ ${escapeHtml(w.n)}">📍 Show on map (area)</button>` : `<span class="fnomap">No map spot — the guide only gives the county corner</span>`}
+          <label><input type="checkbox" data-leg="${escapeHtml(w.n)}" ${guideState.leg[w.n] ? "checked" : ""}> Got it</label>
+        </div></div></article>`;
+  }).join("");
+  const n = LEGENDARY.filter(w => guideState.leg[w.n]).length;
+  document.getElementById("legFill").style.width = Math.round(n / LEGENDARY.length * 100) + "%";
+  document.getElementById("legText").textContent = `${n} found` + (n === LEGENDARY.length ? " — full armory! ⭐" : "");
+  document.getElementById("legCount").textContent = `${n} / ${LEGENDARY.length} legendary weapons`;
+}
+function chalCheat(cat, kind) {
+  const re = kind === 5 ? new RegExp("\\b5 " + cat + " challenges", "i") : new RegExp("\\ball " + cat + " challenges", "i");
+  return CHEATS.find(c => re.test(c.u));
+}
+function renderChallenges() {
+  let total = 0, html = '<div class="chal-grid">';
+  Object.entries(CHALLENGES).forEach(([cat, list]) => {
+    const done = list.filter(([n]) => guideState.chal[cat + "/" + n]).length; total += done;
+    const c5 = chalCheat(cat, 5), c10 = chalCheat(cat, 10);
+    html += `<section class="chal-cat"><div class="chal-head"><b>${cat}</b><span>${done} / 10</span></div>
+      <div class="ch-progress" style="width:100%"><div class="ch-progress-fill" style="width:${done * 10}%;background:var(--done)"></div></div>
+      <div class="chal-unl">
+        ${c5 ? `<span class="${done >= 5 ? "ok" : ""}">${done >= 5 ? "✓" : "🔒"} 5 done → <b>${escapeHtml(c5.n)}</b> cheat</span>` : ""}
+        ${c10 ? `<span class="${done >= 10 ? "ok" : ""}">${done >= 10 ? "✓" : "🔒"} all 10 → <b>${escapeHtml(c10.n)}</b> cheat</span>` : ""}
+      </div>
+      ${list.map(([n, d]) => { const k = cat + "/" + n, on = !!guideState.chal[k]; return `<label class="chal-item${on ? " done" : ""}"><input type="checkbox" data-chal="${escapeHtml(k)}" ${on ? "checked" : ""}><span><div class="cn">${escapeHtml(n)}</div><div class="cd">${escapeHtml(d)}</div></span></label>`; }).join("")}
+    </section>`;
+  });
+  html += "</div>";
+  document.getElementById("chalList").innerHTML = html;
+  const all = Object.values(CHALLENGES).reduce((a, l) => a + l.length, 0);
+  document.getElementById("chalFill").style.width = Math.round(total / all * 100) + "%";
+  document.getElementById("chalText").textContent = `${total} / ${all} done` + (total >= 70 ? " — Platinum requirement met ✓" : ` · ${Math.max(0, 70 - total)} more for the Platinum`);
+  const lazer = CHEATS.find(c => /all 80 challenges|all challenges/i.test(c.u));
+  document.getElementById("chalCount").textContent = lazer ? `All 80 → ${lazer.n}` : "";
+}
+function initGuides() {
+  const leg = document.getElementById("legList");
+  leg.addEventListener("click", e => { const b = e.target.closest("[data-fly]"); if (b) { const [x, y, z] = b.dataset.fly.split(",").map(Number); flyToGame(x, y, z, b.dataset.label); } });
+  leg.addEventListener("change", e => { const k = e.target.dataset.leg; if (k === undefined) return; if (e.target.checked) guideState.leg[k] = true; else delete guideState.leg[k]; saveGuides(); renderLegendary(); });
+  document.getElementById("chalList").addEventListener("change", e => { const k = e.target.dataset.chal; if (k === undefined) return; if (e.target.checked) guideState.chal[k] = true; else delete guideState.chal[k]; saveGuides(); renderChallenges(); });
+  renderLegendary(); renderChallenges();
 }
 
 // ============================================================================
@@ -1480,8 +1601,9 @@ initSideMap();
 renderLeonida();
 initGallery("vehicles");
 initFastest();
+initGuides();
 initGallery("weapons");
-{ const h = location.hash.slice(1); if (h === "fastest") { showTab("vehicles"); showSub("fastest"); } else if (["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
+{ const h = location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
 </script>
 </body>
 </html>

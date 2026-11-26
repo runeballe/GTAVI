@@ -10,6 +10,7 @@ A single-page tracker for GTA VI story mode:
 - **Fastest Cars** — top 30 by in-game Speed stat with locations, how-to, map pins and a collected checklist (sources: G2A, Insider Gaming, GTABase).
 - **Leonida** — the 5 counties and 11 cities/towns: summaries, real-world inspirations, highlights, "show on map".
 - **Vehicles** and **Weapons** — searchable galleries by class, linking to gta.wiki (supercars with a known spawn jump to the map).
+- **Legendary weapons** (under Weapons) and **Challenges** (under Cheats) — checklists with locations / cheat unlocks (source: Insider Gaming).
 - **Cheats** — all 61 cheats with sources cross-checked, plus an unlock checklist with progress counter and a field to note codes yourself.
 - **Trophies** — tick off as you earn them.
 

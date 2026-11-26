@@ -14,7 +14,9 @@ Source code (MIT): https://github.com/runeballe/GTAVI
 - [Vehicles](https://runeball.no/GTAVI/#vehicles): gallery of ~300 GTA VI vehicles by class (new vs returning, model year), with links to gta.wiki and to known spawns on the map.
 - [Fastest Cars](https://runeball.no/GTAVI/#fastest) (sub-tab of Vehicles): the 30 fastest cars ranked by the in-game Speed stat (no official mph/km/h exists), with location cues, how to get each one, security/tracker notes, map pins and a collected checklist. #1: Andrew Node's Thrax (9.2).
 - [Weapons](https://runeball.no/GTAVI/#weapons): gallery of 74 GTA VI weapons by class, from melee to launchers.
+- [Legendary Weapons](https://runeball.no/GTAVI/#legendary) (sub-tab of Weapons): all 15 legendary weapon variants with locations, steps, map pins and a found checklist.
 - [Cheats](https://runeball.no/GTAVI/#cheats): all 61 story-mode cheats with unlock conditions; 21 known d-pad codes, cross-checked across sources. Unlock checklist with progress counter. Enter on the phone: hold LB + press RB (Xbox) or L1 + R1 (PS5).
+- [Challenges](https://runeball.no/GTAVI/#challenges) (sub-tab of Cheats): all 80 challenges in 8 categories with a checklist; shows which vehicle cheat unlocks at 5 and 10 per category, and Platinum progress (70/80).
 - [Trophies](https://runeball.no/GTAVI/#trophies): 55 trophies / 1,000 Gamerscore with descriptions; tick off as earned.
 
 ## Data sources
