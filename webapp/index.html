@@ -107,6 +107,7 @@
   .chapter-chip.c3 { color: #ff4d94; border-color: #ff4d94; }
   .chapter-chip.c4 { color: #8b5cf6; border-color: #8b5cf6; }
   .chapter-chip.c5 { color: #ff6b35; border-color: #ff6b35; }
+  .chapter-chip.c6 { color: #2ecc71; border-color: #2ecc71; }
   .chapter-body { padding: 1rem 1.25rem; }
   .group-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 0.4rem 0 0.6rem; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.6rem; }
@@ -743,6 +744,77 @@ const chapters = [
       { text: "100% checklist (forgiving): 50/91 stick-ups, 15/18 card sets, 300/397 stunts, WAiNK scans, binocular animals, Cocaine Flamingos", tag: "100%", web: true, note: "RPS — none of it missable" },
     ],
   },
+  {
+    id: 6, name: "Side Missions — Strangers & Freaks", chip: "Side", itemsLabel: "65 side missions · grouped by who gives them (gta.wiki, 2026-11-25)", color: "c6", colorHex: "#2ecc71",
+    missions: [],
+    items: [
+      { text: "Wyman's Car Collection — track down abandoned classic cars for Wyman", tag: "Collection" },
+      { text: "Gellhorn’s Missing Tourists — Alvan West", tag: "Alvan West" },
+      { text: "Missing Person — Alvan West", tag: "Alvan West" },
+      { text: "Climbing the Cellerichain — Andy Lee-Scott", tag: "Andy Lee-Scott" },
+      { text: "Pay the Cellerica Fee — Andy Lee-Scott", tag: "Andy Lee-Scott" },
+      { text: "Peach! — Andy Lee-Scott", tag: "Andy Lee-Scott" },
+      { text: "Read the Label — Andy Lee-Scott", tag: "Andy Lee-Scott" },
+      { text: "Puff Puff Pass — Andy Lee-Scott", tag: "Andy Lee-Scott" },
+      { text: "Thrillbillies — Billy", tag: "Billy" },
+      { text: "Twist Wrist, Smash, Grab — Billy", tag: "Billy" },
+      { text: "Mall Rats — Billy", tag: "Billy" },
+      { text: "The Impaler — Billy", tag: "Billy" },
+      { text: "Hometown Heroes — Billy", tag: "Billy" },
+      { text: "Veteran Hunted — Bret Vogel", tag: "Bret Vogel" },
+      { text: "Bret's Hunting Decks — Bret Vogel", tag: "Bret Vogel" },
+      { text: "Catch a Bigger Fish — Cal Hampton", tag: "Cal Hampton" },
+      { text: "Find the Lost Drugs — Cal Hampton", tag: "Cal Hampton" },
+      { text: "Ring the Bell! — Cal Hampton", tag: "Cal Hampton" },
+      { text: "Sisters of the Sea — Dodo Rising", tag: "Dodo Rising" },
+      { text: "Bring Out the Chimp — Dodo Rising", tag: "Dodo Rising" },
+      { text: "Twin Flames — Dodo Rising", tag: "Dodo Rising" },
+      { text: "Dodo, Rise! — Dodo Rising", tag: "Dodo Rising" },
+      { text: "The Final Flush — Dr. Merle", tag: "Dr. Merle" },
+      { text: "Dunk's Robbery Tips — Dunk Porter", tag: "Dunk Porter" },
+      { text: "Attend Eddie Acosta’s Party — Eddie Acosta", tag: "Eddie Acosta" },
+      { text: "Retest Freddie’s Defenses — Freddie", tag: "Freddie" },
+      { text: "Search the Dive Sites — Kenton Rees", tag: "Kenton Rees" },
+      { text: "Maritime Disputes — Kenton Rees", tag: "Kenton Rees" },
+      { text: "Skunk Apeology 101 — Kirk", tag: "Kirk" },
+      { text: "Search for Tree Effigies — Kirk", tag: "Kirk" },
+      { text: "Advanced Skunk Apeonomics — Kirk", tag: "Kirk" },
+      { text: "Aerial Application — Kyle McKittrick", tag: "Kyle McKittrick" },
+      { text: "Hazardous Materials — Kyle McKittrick", tag: "Kyle McKittrick" },
+      { text: "Buddy? — Kyle McKittrick", tag: "Kyle McKittrick" },
+      { text: "Steal Vehicles for Moses — Moses Watkins", tag: "Moses Watkins" },
+      { text: "Collect Moses' Gift — Moses Watkins", tag: "Moses Watkins" },
+      { text: "The Unknown Stuntman — Papa AudaCity", tag: "Papa AudaCity" },
+      { text: "Trial by Tire — Papa AudaCity", tag: "Papa AudaCity" },
+      { text: "Quit Your Job, Sell Your House — Papa AudaCity", tag: "Papa AudaCity" },
+      { text: "AudaCity Stunts — Papa AudaCity", tag: "Papa AudaCity" },
+      { text: "Catching a Whale — Papa AudaCity", tag: "Papa AudaCity" },
+      { text: "The AudaCity — Papa AudaCity", tag: "Papa AudaCity" },
+      { text: "The Last Mile: Passing the Torch — Pilot Pete", tag: "Pilot Pete" },
+      { text: "The Last Mile: Backseat Pilot — Pilot Pete", tag: "Pilot Pete" },
+      { text: "Hostile Takeover — Pilot Pete", tag: "Pilot Pete" },
+      { text: "Stormy Weather — Pilot Pete", tag: "Pilot Pete" },
+      { text: "Over and Out — Pilot Pete", tag: "Pilot Pete" },
+      { text: "Randy's Wish List — Randy Kozlov", tag: "Randy Kozlov" },
+      { text: "¡Dale Mamba! — Randy Kozlov", tag: "Randy Kozlov" },
+      { text: "Delivery Day — Randy Kozlov", tag: "Randy Kozlov" },
+      { text: "Scarlet Sun — Scarlet", tag: "Scarlet" },
+      { text: "This is a Free Call From... — Shayna", tag: "Shayna" },
+      { text: "Get Shirley's Rum — Shirley Baker", tag: "Shirley Baker" },
+      { text: "Steal the Scooter — Shirley Baker", tag: "Shirley Baker" },
+      { text: "Take Out Kitty Litter — Tyrone Russo", tag: "Tyrone Russo" },
+      { text: "Spin On This — Tyrone Russo", tag: "Tyrone Russo" },
+      { text: "Tyrone's Robbery Tips — Tyrone Russo", tag: "Tyrone Russo" },
+      { text: "Join a Street Race — Yago Jiménez", tag: "Yago Jiménez" },
+      { text: "Bumper to Bumper — Yago Jiménez", tag: "Yago Jiménez" },
+      { text: "Race Against Yago — Yago Jiménez", tag: "Yago Jiménez" },
+      { text: "Brother to Brother — Yago Jiménez", tag: "Yago Jiménez" },
+      { text: "Yasmani's Jewelry Jobs — Yasmani", tag: "Yasmani" },
+      { text: "Yasmani's ATM Jobs — Yasmani", tag: "Yasmani" },
+      { text: "Yasmani's Payday Loans Jobs — Yasmani", tag: "Yasmani" },
+      { text: "Tail the Security Van — Yasmani", tag: "Yasmani" },
+    ],
+  },
 ];
 
 // ============================================================================
@@ -819,13 +891,13 @@ function render() {
     const el = document.createElement("div");
     el.className = "chapter";
     let html = `<div class="chapter-header">
-      <div class="chapter-title">${ch.name} <span class="chapter-chip ${ch.color}">Ch ${ch.id}</span></div>
+      <div class="chapter-title">${ch.name} <span class="chapter-chip ${ch.color}">${ch.chip || "Ch " + ch.id}</span></div>
       <div style="text-align:right">
         <div style="font-size:0.72rem;color:var(--muted)">${chDone} / ${chAll.length} done (${chPct}%)</div>
         <div class="ch-progress"><div class="ch-progress-fill" style="width:${chPct}%;background:${ch.colorHex}"></div></div>
       </div></div><div class="chapter-body">`;
     if (chMissions.length) { html += `<div class="group-label">Missions (${ch.missions.length} required)</div><div class="grid missions">` + chMissions.map(it => cardHtml(it)).join("") + `</div>`; }
-    if (chItems.length) { html += `<div class="group-label">Finds · Sides · Tips</div><div class="grid">` + chItems.map(it => cardHtml(it)).join("") + `</div>`; }
+    if (chItems.length) { html += `<div class="group-label">${ch.itemsLabel || "Finds · Sides · Tips"}</div><div class="grid">` + chItems.map(it => cardHtml(it)).join("") + `</div>`; }
     html += `</div>`;
     el.innerHTML = html;
     todoListEl.appendChild(el);
