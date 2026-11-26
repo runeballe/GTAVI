@@ -1,0 +1,145 @@
+// State of Leonida — places summarised from gta.wiki (State_of_Leonida + county/city articles, CC BY-SA), 2026-11-26.
+// map: [gameX, gameY] centre from gtadb.org landmarks (median), used by "Show on map". img: media/leo/<slug>.webp (not in git).
+const LEONIDA = {
+  intro: "Leonida is GTA VI's take on Florida — beach resorts, swampland, a sun-and-fun capital and \"Leonida Man\" headlines — with Georgia-style hills and canyons in the north and a touch of North Carolina in Mount Kalaga.",
+  img: "state-of-leonida",
+  facts: [
+    ["Based on", "Florida (+ Georgia & North Carolina up north)"],
+    ["Counties", "5"],
+    ["Biggest city", "Vice City"],
+    ["Wilderness", "Grassrivers · Mount Kalaga National Park · Lake Leonida · Catalan Bay · Gambit Bay · Straits of Leonida"],
+    ["Roads", "Interstates, U.S. & State Routes — plus new Historic U.S. Routes, County Routes and Forest Highways"],
+    ["Neighbour", "State of Gloriana, across Lummox County's northern border"],
+  ],
+  counties: [
+    {
+      id: "vice-dale", name: "Vice-Dale County", color: "#ff4d94", img: "vice-dale-county", map: [182, 1485], zoom: 3,
+      region: "South-east", inspired: "Miami-Dade County (the \"Dale\" likely from Fort Lauderdale)", law: "Vice-Dale Police Department",
+      blurb: "The southern tip of the state and its urban heart. The county seat is Vice City; some road signs still call it just \"Dale County\", a nod to Dade County's name before 1997.",
+      others: ["Bluegrass", "Peregrine Bay"],
+      places: [
+        {
+          name: "Vice City", type: "City · county seat", img: "vice-city", map: [-899, 79], wiki: "Vice_City",
+          inspired: "Miami — a modern 21st-century version",
+          blurb: "Leonida's biggest and densest city: the sun-and-fun capital of America, still trading on its 1980s glamour and its history as a cocaine and money-laundering hub. PortViceCity is the cruise-ship capital of the world.",
+          highlights: ["Downtown", "Little Cuba", "La Perle", "Stockyard (art scene)", "Rockridge", "Rialto Islands", "Waxman Island", "Tequesta Retreat", "PortViceCity"],
+          extra: [
+            ["Sports", "Flamingos (baseball) · Mambas (football, Fleeca Field) · Manatees (AFF) · Narcos (basketball, Sahara Arena)"],
+            ["Getting around", "Vice City Metro & Metro Mule rail · I-97, I-397, I-404 · US-1 · PortViceCity Tunnel"],
+            ["Police", "Vice City Police Department"],
+          ],
+        },
+        {
+          name: "Vice Beach", type: "City", img: "vice-beach", map: [1767, 1224], wiki: "Vice_Beach_(HD_Universe)",
+          inspired: "Miami Beach",
+          blurb: "The barrier-island city across Catalan Bay, part of greater Vice City. World-famous beaches, nightlife and pastel Art Deco hotels along Ocean Beach and Shore Drive, plus a big central park and the rich enclave of Starfish Island.",
+          highlights: ["Ocean Beach", "Shore Drive", "Washington Beach", "Starfish Island", "Penmarch Isle", "Leaf Links golf", "Firefly Plaza", "Y Vice City"],
+          extra: [["Police", "Vice Beach Police Department"]],
+          tip: "Starfish Island hides the Truffade Thrax garage — see the Supercars pins.",
+        },
+        {
+          name: "Hamlet", type: "City", img: "hamlet", map: [-2690, -2912], wiki: "Hamlet",
+          inspired: "Homestead, Florida",
+          blurb: "A small suburban city on the southern tip of the mainland, wedged between the Grassrivers, Bluegrass, Peregrine Bay and the Keys. Home of the Hamlet Correctional Facility, Boone Speedway — and the infamous Hammer Lady.",
+          highlights: ["Hamlet Correctional Facility", "Boone Speedway", "Historic downtown", "Hamlet Platinum Plaza", "State Route 61"],
+          extra: [["Police", "Hamlet Police Department"]],
+          tip: "The M7 compound (Gauntlet Hellfire) is here — call Randy first.",
+        },
+      ],
+    },
+    {
+      id: "kelly", name: "Kelly County", color: "#f5a623", img: "kelly-county", map: [-5101, 3553], zoom: 2,
+      region: "West", inspired: "Collier & Lee counties, south-west Florida", law: "Kelly County Sheriff",
+      blurb: "Leonida's western flank: the forgotten Gulf coast, sugar country around Lake Leonida, a state prison on the outskirts and Gellhorn International Raceway.",
+      others: ["Buckskin"],
+      places: [
+        {
+          name: "Port Gellhorn", type: "City", img: "port-gellhorn", map: [-6390, 3866], wiki: "Port_Gellhorn",
+          inspired: "Panama City & Bay County (beach/trailer park = Mexico Beach; Bocamar Bridge = Sunshine Skyway)",
+          blurb: "\"Leonida's forgotten coast\": a sprawling bayside city of industry, strip malls, forests and rolling hills. The Bocamar Bridge links the mainland to the Draper Island seaport. Named in part after journalist Martha Gellhorn.",
+          highlights: ["Draper Island", "Bocamar Bridge", "Gellhorn International Raceway", "Crossroad Park Minimall", "Delights strip club", "Train station", "Trailer park beach"],
+          extra: [["Roads", "I-404 · US-9"], ["Police", "Port Gellhorn Police Department"]],
+          tip: "Chapter 2 base — Moses' garage money loop, La Cascara Motel and the Arthur Morgan hat are all here.",
+        },
+        {
+          name: "Ambrosia", type: "Town", img: "ambrosia", map: [-2754, 3855], wiki: "Ambrosia",
+          inspired: "Clewiston (and Moore Haven) on Lake Okeechobee",
+          blurb: "A big sugar town on the south-west shore of Lake Leonida, run in all but name by Allied Crystal and its refinery — the company is even bankrolling the mayoral race. Biker gang Final Chapter MC holds sway, and mud racing is the local religion.",
+          highlights: ["Allied Crystal Sugar Refinery", "Thrillbilly Mud Club", "Ambrosia Raceway Park", "Crystal Field", "The Thirsty Wolf", "W. Blanco's Cuban Foods"],
+          extra: [["Police", "Ambrosia Police Department"]],
+          tip: "Thrillbilly Mud Club races count toward the Repair Vehicle cheat.",
+        },
+      ],
+    },
+    {
+      id: "leonard", name: "Leonard County", color: "#00d9ff", img: "leonard-county", map: [-1052, 3884], zoom: 3,
+      region: "North-east", inspired: "Broward County (sheriff liveries are near copies)", law: "Leonard County Sheriff",
+      blurb: "Suburbia north of Vice-Dale: malls, airfields and beach towns. The name riffs on Napoleon B. Broward, the governor Broward County is named after.",
+      others: ["Belville"],
+      places: [
+        {
+          name: "Waning Sands", type: "City", img: "waning-sands", map: [48, 4161], wiki: "Waning_Sands",
+          inspired: "Pembroke Pines, Fort Lauderdale & Cooper City",
+          blurb: "The county's largest city — a sprawl of malls and highways. The name is a joke about Broward's real beach-erosion problem: literally \"waning sands\". Still on the Vice City Metro line.",
+          highlights: ["Evergreen Mall", "Sundown Private Airfield", "Sundown district", "Flamingo Parkway", "Waning Sands Station"],
+          extra: [["Roads", "I-97 · US-3 · US-70 · SR-120"], ["Police", "Waning Sands Police Department"]],
+          tip: "The Pegassi Vitello spawns on Flamingo Pkwy — hop the mansion fence, right garage.",
+        },
+        {
+          name: "Vinewood Beach", type: "City", img: null, map: null, wiki: "Vinewood_Beach",
+          inspired: "Hollywood Beach (plus Golden Beach, Sunny Isles, Dania Beach)",
+          blurb: "A coastal suburb named the way Hollywood Beach is named after Hollywood — here a wink to Vinewood, San Andreas. Signposted off I-97 between Salton and Waning Sands.",
+          highlights: ["I-97 exit"],
+          extra: [],
+        },
+      ],
+    },
+    {
+      id: "mariana", name: "Mariana County", color: "#2ecc71", img: "mariana-county", map: [-4106, -4421], zoom: 2,
+      region: "South & south-west", inspired: "Monroe County — the Everglades (Grassrivers) and the Florida Keys (Leonida Keys)", law: "Mariana County Sheriff",
+      blurb: "Swamp and islands: the Grassrivers wetlands, the Leonida Keys island chain and the Gulf-side city of Capri. Also home to Mile Zero Air Station. The name may come from the Mariana Trench.",
+      others: ["Watson Bay", "Mile Zero Air Station"],
+      places: [
+        {
+          name: "Capri", type: "City", img: "capri", map: [-6676, 224], wiki: "Capri",
+          inspired: "Naples (and Marco Island), with Sebring's layout and Lakeland's high-rises",
+          blurb: "A Gulf-coast city of high-rises, a pier beach and a lakeside roundabout downtown — Capri being the island off Naples, Italy. Home of the Capri City Jackals and their stadium.",
+          highlights: ["City Center", "Waterfront", "Beach & pier", "Capri City Jackals stadium", "Still Waters hotel", "US-82"],
+          extra: [["Police", "Capri Police Department"]],
+          tip: "The Pegassi Infernus sits on the 7th floor of the Capri police garage.",
+        },
+        {
+          name: "Key Lento", type: "City", img: "key-lento", map: [-2293, -5526], wiki: "Key_Lento",
+          inspired: "Key Largo (\"lento\" and \"largo\" are both slow tempos), with Key West and Islamorada touches",
+          blurb: "The most populated island in the Leonida Keys: waterfront homes, marinas and shops strung along the Keys Causeway. Jason lives here in a stilt house owned by Brian Heder.",
+          highlights: ["Keys Causeway", "Jason's stilt house", "Brian's Boat Works & Marina", "Key Lento Marina Club"],
+          extra: [["Police", "Key Lento Police Department"]],
+          tip: "Chapter 1 home base.",
+        },
+        {
+          name: "Southwind", type: "Town", img: null, map: [-6956, -6403], mapApprox: true, wiki: "Southwind",
+          inspired: "A scaled-down Key West",
+          blurb: "A small coastal town on the east side of Goose Key, at the far end of the Keys — and Mile 0 of U.S. Route 1.",
+          highlights: ["Goose Key", "Start of US-1"],
+          extra: [],
+        },
+      ],
+    },
+    {
+      id: "lummox", name: "Lummox County", color: "#8b5cf6", img: "lummox-county", map: [-2860, 6845], zoom: 2,
+      region: "North", inspired: "North Florida and Georgia (name nods to Lumpkin County)", law: "Lummox County Sheriff",
+      blurb: "The wild north above Kelly and Leonard counties: Mount Kalaga National Park's canyons (think Providence Canyon), the Domed Hills and a scatter of islands, bordering the State of Gloriana.",
+      others: ["Grayson", "Bonanza", "Mount Kalaga National Park", "Domed Hills", "Featherstone Is.", "Frampton Is.", "Hyde Island", "Zephyr Is."],
+      places: [
+        {
+          name: "Millport", type: "Town", img: "millport", map: [-1094, 6481], wiki: "Millport",
+          inspired: "Fernandina Beach (paper mill + port); outskirts like Gay, Georgia",
+          blurb: "A coastal mill-and-port town in the north-east, reached via Interstate 297, with backwoods buildings along Forest Route 88.",
+          highlights: ["Port", "Train station", "Millport Basin", "The Old Mill Barber Shop", "Forest Route 88"],
+          extra: [],
+          tip: "Chapter 4: find Felipe here after Party Hard for BAD DRIVER! — gone once Power Play starts.",
+        },
+      ],
+    },
+  ],
+};

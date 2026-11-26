@@ -183,6 +183,44 @@
   tr:hover td { background: #14161e; }
 
 
+
+  /* ============ LEONIDA ============ */
+  .leo-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1.4rem; align-items: stretch; margin-bottom: 1.6rem; }
+  @media (max-width: 860px) { .leo-hero { grid-template-columns: 1fr; } }
+  .leo-hero-img { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); min-height: 240px; background: #0f1117 center / cover no-repeat; }
+  .leo-title { font-size: 2rem; font-weight: 800; line-height: 1.1; background: linear-gradient(180deg, #ffd27a 0%, #ff5fa2 55%, #b44cff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.5rem; }
+  .leo-intro { color: var(--text); font-size: 0.95rem; margin-bottom: 1rem; }
+  .leo-facts { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 0.9rem; font-size: 0.82rem; }
+  .leo-facts dt { color: var(--muted); font-weight: 600; }
+  .leo-jump { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 1.4rem; }
+  .leo-jump a { display: inline-flex; align-items: center; gap: 0.4rem; background: #1f222d; border: 1px solid var(--border); color: var(--text); padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.78rem; text-decoration: none; }
+  .leo-jump a:hover { border-color: #3a3e50; text-decoration: none; }
+  .county { background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 1.4rem; overflow: hidden; scroll-margin-top: 120px; }
+  .county-head { display: grid; grid-template-columns: 220px minmax(0, 1fr); border-bottom: 1px solid var(--border); }
+  @media (max-width: 700px) { .county-head { grid-template-columns: 1fr; } .county-head .cimg { height: 140px; } }
+  .county-head .cimg { background: #0f1117 center / cover no-repeat; min-height: 150px; }
+  .county-info { padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.45rem; }
+  .county-name { font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .county-name .rg { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.1rem 0.55rem; border-radius: 999px; border: 1px solid currentColor; }
+  .county-blurb { font-size: 0.88rem; color: var(--text); }
+  .kv { font-size: 0.78rem; color: var(--muted); }
+  .kv b { color: var(--text); font-weight: 600; }
+  .chips-sm { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .chips-sm span { font-size: 0.7rem; background: #1f222d; border: 1px solid var(--border); border-radius: 999px; padding: 0.1rem 0.55rem; color: var(--muted); }
+  .place-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; padding: 1rem 1.2rem 1.2rem; }
+  @media (max-width: 500px) { .place-grid { grid-template-columns: 1fr; padding: 0.8rem; } }
+  .place { background: #0f1117; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+  .place .pimg { aspect-ratio: 16 / 9; background: #15171f center / cover no-repeat; display: grid; place-items: center; font-size: 2.2rem; }
+  .place-body { padding: 0.8rem 0.95rem 0.95rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+  .place-name { font-size: 1.05rem; font-weight: 800; display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
+  .place-name .ty { font-size: 0.68rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+  .place-blurb { font-size: 0.83rem; line-height: 1.5; }
+  .place-tip { font-size: 0.76rem; background: rgba(0, 217, 255, 0.07); border: 1px solid rgba(0, 217, 255, 0.25); border-radius: 8px; padding: 0.4rem 0.6rem; }
+  .place-actions { margin-top: auto; display: flex; gap: 0.5rem; flex-wrap: wrap; padding-top: 0.2rem; }
+  .place-actions button, .place-actions a { font: inherit; font-size: 0.76rem; padding: 0.35rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: #1f222d; color: var(--text); cursor: pointer; text-decoration: none; }
+  .place-actions button:hover, .place-actions a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .leo-credit { color: var(--muted); font-size: 0.75rem; margin-top: 0.4rem; }
+
   /* ============ VEHICLES / WEAPONS GALLERY ============ */
   .gal-wrap { max-width: 1400px; }
   .gal-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1.2rem; }
@@ -311,6 +349,7 @@
     <button class="tab active" id="tabbtn-checklist" role="tab" aria-controls="tab-checklist" aria-selected="true" onclick="showTab('checklist')">📋 Checklist</button>
     <button class="tab" id="tabbtn-money" role="tab" aria-controls="tab-money" aria-selected="false" onclick="showTab('money')">💰 Money Fast</button>
     <button class="tab" id="tabbtn-map" role="tab" aria-controls="tab-map" aria-selected="false" onclick="showTab('map')">🗺️ Live Map</button>
+    <button class="tab" id="tabbtn-leonida" role="tab" aria-controls="tab-leonida" aria-selected="false" onclick="showTab('leonida')">🌴 Leonida</button>
     <button class="tab" id="tabbtn-vehicles" role="tab" aria-controls="tab-vehicles" aria-selected="false" onclick="showTab('vehicles')">🚗 Vehicles</button>
     <button class="tab" id="tabbtn-weapons" role="tab" aria-controls="tab-weapons" aria-selected="false" onclick="showTab('weapons')">🔫 Weapons</button>
     <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Cheats</button>
@@ -521,6 +560,11 @@
   </div>
 </section>
 
+<!-- ==================== TAB: LEONIDA ==================== -->
+<section id="tab-leonida" role="tabpanel" aria-labelledby="tabbtn-leonida" style="display:none">
+  <div class="money-wrap gal-wrap" id="leonidaRoot"></div>
+</section>
+
 <!-- ==================== TAB: VEHICLES ==================== -->
 <section id="tab-vehicles" role="tabpanel" aria-labelledby="tabbtn-vehicles" style="display:none">
   <div class="money-wrap gal-wrap">
@@ -590,6 +634,7 @@
 <script src="landmarks.js"></script>
 <script src="codex.js"></script>
 <script src="gallery.js"></script>
+<script src="leonida.js"></script>
 <script>
 // ============================================================================
 // CHECKLIST DATA (same as before — missions + finds/sides)
@@ -814,7 +859,7 @@ function updateProgress() {
 // TABS
 // ============================================================================
 function showTab(name) {
-  ["checklist", "money", "map", "vehicles", "weapons", "cheats", "trophies"].forEach(t => {
+  ["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].forEach(t => {
     document.getElementById("tab-" + t).style.display = t === name ? "" : "none";
     document.getElementById("tabbtn-" + t).classList.toggle("active", t === name);
     document.getElementById("tabbtn-" + t).setAttribute("aria-selected", t === name);
@@ -993,6 +1038,66 @@ function initSideMap() {
 
 
 // ============================================================================
+// LEONIDA (data: leonida.js, from gta.wiki)
+// ============================================================================
+function leoImg(slug) { return slug ? `url('media/leo/${slug}.webp')` : "none"; }
+function openMapAt(fn) {
+  // Skip showTab's first-open "fit all pins" so it can't override where we're flying to.
+  bigMap._fitOnShow = true;
+  showTab("map");
+  setTimeout(() => { bigMap.invalidateSize(); fn(); }, 120);
+}
+function flyToGame(x, y, zoom, label) {
+  openMapAt(() => {
+    bigMap.flyTo([y, x], zoom, { duration: 0.8 });
+    bigMap.once("moveend", () => L.popup({ maxWidth: 260 }).setLatLng([y, x]).setContent(`<div class="pp-name">${escapeHtml(label)}</div>`).openOn(bigMap));
+  });
+}
+function renderLeonida() {
+  const D = LEONIDA;
+  const mapBtn = (o, label, z) => o.map ? `<button type="button" data-fly="${o.map[0]},${o.map[1]},${z}" data-label="${escapeHtml(label)}">📍 Show on map${o.mapApprox ? " (approx.)" : ""}</button>` : "";
+  let h = `<div class="leo-hero">
+    <div><div class="leo-title">State of Leonida</div>
+      <p class="leo-intro">${escapeHtml(D.intro)}</p>
+      <dl class="leo-facts">${D.facts.map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`).join("")}</dl></div>
+    <div class="leo-hero-img" style="background-image:${leoImg(D.img)}" role="img" aria-label="Leonida montage"></div>
+  </div>
+  <nav class="leo-jump" aria-label="Counties">${D.counties.map(c => `<a href="#leo-${c.id}" data-jump="leo-${c.id}"><span class="mswatch" style="background:${c.color}"></span>${escapeHtml(c.name)} <span style="color:var(--muted)">${c.places.length}</span></a>`).join("")}</nav>`;
+  D.counties.forEach(c => {
+    h += `<section class="county" id="leo-${c.id}" style="border-top:3px solid ${c.color}">
+      <div class="county-head"><div class="cimg" style="background-image:${leoImg(c.img)}"></div>
+        <div class="county-info">
+          <div class="county-name">${escapeHtml(c.name)} <span class="rg" style="color:${c.color}">${escapeHtml(c.region)}</span></div>
+          <div class="county-blurb">${escapeHtml(c.blurb)}</div>
+          <div class="kv">Inspired by <b>${escapeHtml(c.inspired)}</b> · Law: <b>${escapeHtml(c.law)}</b></div>
+          ${c.others.length ? `<div class="chips-sm"><span style="color:var(--text)">Also here:</span>${c.others.map(o => `<span>${escapeHtml(o)}</span>`).join("")}</div>` : ""}
+          <div class="place-actions">${mapBtn(c, c.name, c.zoom)}</div>
+        </div></div>
+      <div class="place-grid">${c.places.map(p => `<article class="place">
+        <div class="pimg" style="background-image:${leoImg(p.img)}">${p.img ? "" : "🌴"}</div>
+        <div class="place-body">
+          <div class="place-name">${escapeHtml(p.name)} <span class="ty">${escapeHtml(p.type)}</span></div>
+          <div class="place-blurb">${escapeHtml(p.blurb)}</div>
+          <div class="kv">Real-world: <b>${escapeHtml(p.inspired)}</b></div>
+          ${p.extra.map(([k, v]) => `<div class="kv">${escapeHtml(k)}: <b>${escapeHtml(v)}</b></div>`).join("")}
+          ${p.highlights.length ? `<div class="chips-sm">${p.highlights.map(x => `<span>${escapeHtml(x)}</span>`).join("")}</div>` : ""}
+          ${p.tip ? `<div class="place-tip">🎯 ${escapeHtml(p.tip)}</div>` : ""}
+          <div class="place-actions">${mapBtn(p, p.name, 4)}<a href="https://gta.wiki/w/${p.wiki}" target="_blank" rel="noopener">gta.wiki ↗</a></div>
+        </div></article>`).join("")}</div>
+    </section>`;
+  });
+  h += `<p class="leo-credit">Place info summarised from <a href="https://gta.wiki/w/State_of_Leonida" target="_blank" rel="noopener">gta.wiki</a> (CC BY-SA). Map positions: gtadb.org landmarks.</p>`;
+  const root = document.getElementById("leonidaRoot");
+  root.innerHTML = h;
+  root.addEventListener("click", e => {
+    const f = e.target.closest("[data-fly]");
+    if (f) { const [x, y, z] = f.dataset.fly.split(",").map(Number); flyToGame(x, y, z, f.dataset.label); return; }
+    const j = e.target.closest("[data-jump]");
+    if (j) { e.preventDefault(); document.getElementById(j.dataset.jump).scrollIntoView({ behavior: "smooth", block: "start" }); }
+  });
+}
+
+// ============================================================================
 // VEHICLES & WEAPONS GALLERY (data: gallery.js, from gta.wiki)
 // ============================================================================
 const GAL_ICON = { vehicles: "🚗", weapons: "🔫" };
@@ -1033,8 +1138,7 @@ function initGallery(kind) {
   document.getElementById(kind + "Grid").addEventListener("click", e => {
     const b = e.target.closest("[data-pin]");
     if (!b) return;
-    showTab("map");
-    setTimeout(() => focusPin(+b.dataset.pin), 150);
+    openMapAt(() => focusPin(+b.dataset.pin));
   });
   renderGallery(kind);
 }
@@ -1143,9 +1247,10 @@ renderCheats();
 renderTrophies();
 initBigMap();
 initSideMap();
+renderLeonida();
 initGallery("vehicles");
 initGallery("weapons");
-{ const h = location.hash.slice(1); if (["checklist", "money", "map", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
+{ const h = location.hash.slice(1); if (["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
 </script>
 </body>
 </html>
