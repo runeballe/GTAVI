@@ -37,4 +37,8 @@ npx wrangler deploy
 - Cheat and trophy data: [leonidaverse.com](https://leonidaverse.com/en/codex) (unofficial fan wiki).
 - Guide tips compiled from community sources (Reddit, X, Skycoach, G2A, Insider Gaming, VICE, Space4Games, Rock Paper Shotgun).
 
+## License
+
+Code: [MIT](LICENSE). Third-party data keeps its own license — gtadb.org tiles and landmarks are CC BY 4.0 (attribution required); cheat/trophy data belongs to its sources.
+
 Fan project, not affiliated with Rockstar Games or Take-Two Interactive.
