@@ -186,6 +186,12 @@
 
 
 
+  /* ============ SUB-TABS ============ */
+  .subtabs { display: inline-flex; gap: 0.25rem; padding: 0.25rem; background: #0f1117; border: 1px solid var(--border); border-radius: 999px; margin-bottom: 1.2rem; max-width: 100%; overflow-x: auto; }
+  .subtab { font: inherit; font-size: 0.85rem; font-weight: 600; color: var(--muted); background: none; border: none; border-radius: 999px; padding: 0.45rem 1rem; cursor: pointer; white-space: nowrap; }
+  .subtab:hover { color: var(--text); }
+  .subtab.active { background: var(--accent); color: #0b0c10; }
+
   /* ============ FASTEST CARS ============ */
   .fast-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.6rem; margin-bottom: 1.1rem; }
   .fast-steps div { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.78rem; color: var(--muted); }
@@ -392,7 +398,6 @@
     <button class="tab" id="tabbtn-map" role="tab" aria-controls="tab-map" aria-selected="false" onclick="showTab('map')">🗺️ Live Map</button>
     <button class="tab" id="tabbtn-leonida" role="tab" aria-controls="tab-leonida" aria-selected="false" onclick="showTab('leonida')">🌴 Leonida</button>
     <button class="tab" id="tabbtn-vehicles" role="tab" aria-controls="tab-vehicles" aria-selected="false" onclick="showTab('vehicles')">🚗 Vehicles</button>
-    <button class="tab" id="tabbtn-fastest" role="tab" aria-controls="tab-fastest" aria-selected="false" onclick="showTab('fastest')">🏎️ Fastest Cars</button>
     <button class="tab" id="tabbtn-weapons" role="tab" aria-controls="tab-weapons" aria-selected="false" onclick="showTab('weapons')">🔫 Weapons</button>
     <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Cheats</button>
     <button class="tab" id="tabbtn-trophies" role="tab" aria-controls="tab-trophies" aria-selected="false" onclick="showTab('trophies')">🏆 Trophies</button>
@@ -610,6 +615,11 @@
 <!-- ==================== TAB: VEHICLES ==================== -->
 <section id="tab-vehicles" role="tabpanel" aria-labelledby="tabbtn-vehicles" style="display:none">
   <div class="money-wrap gal-wrap">
+    <div class="subtabs" role="tablist" aria-label="Vehicles">
+      <button type="button" class="subtab active" id="subbtn-allveh" role="tab" aria-selected="true" data-sub="allveh">🚗 All vehicles</button>
+      <button type="button" class="subtab" id="subbtn-fastest" role="tab" aria-selected="false" data-sub="fastest">🏎️ Fastest Cars</button>
+    </div>
+    <div id="sub-allveh" role="tabpanel" aria-labelledby="subbtn-allveh">
     <div class="money-hero">🚗 Vehicles</div>
     <div class="money-sub">Every vehicle seen in GTA VI so far — supercars to airboats. Cars with a 📍 have a known spawn on the Live Map. Names, classes &amp; images: <a href="https://gta.wiki/w/Vehicles_in_GTA_VI" target="_blank" rel="noopener">gta.wiki</a>.</div>
     <div class="gal-bar">
@@ -620,11 +630,7 @@
     </div>
     <div class="gal-grid" id="vehiclesGrid"></div>
   </div>
-</section>
-
-<!-- ==================== TAB: FASTEST CARS ==================== -->
-<section id="tab-fastest" role="tabpanel" aria-labelledby="tabbtn-fastest" style="display:none">
-  <div class="money-wrap gal-wrap">
+    <div id="sub-fastest" role="tabpanel" aria-labelledby="subbtn-fastest" hidden>
     <div class="money-hero">🏎️ Fastest Cars</div>
     <div class="money-sub">The 30 fastest cars ranked by the in-game <b>Speed</b> stat (0–10). GTA VI doesn't show real top speeds in mph/km/h yet — no site has measured them all, so this uses the game's own rating. Tap <b>📍 Show on map</b> to fly to the spot; the same cars are on the Live Map as the 🏎️ layer.</div>
     <div class="fast-steps">
@@ -643,6 +649,7 @@
     </div>
     <div class="fast-list" id="fastList"></div>
     <p class="leo-credit">Speed stats &amp; locations: <a href="https://www.g2a.com/news/gta-6-news/fastest-cars-in-gta-6/" target="_blank" rel="noopener">G2A News</a>, <a href="https://insider-gaming.com/top-20-fastest-cars-in-gta-6-all-locations-how-to-get-them/" target="_blank" rel="noopener">Insider Gaming</a>, <a href="https://www.gtabase.com/articles/gta-6/gta-6-fastest-cars-ranked-list-by-top-speed" target="_blank" rel="noopener">GTABase</a> (Nov 2026). Pins come from the written location cues matched to gtadb.org landmarks — "area" pins mark the district, not the exact garage. Photos show the base model.</p>
+  </div>
   </div>
 </section>
 
@@ -1011,13 +1018,14 @@ function updateProgress() {
 // TABS
 // ============================================================================
 function showTab(name) {
-  ["checklist", "money", "map", "leonida", "vehicles", "fastest", "weapons", "cheats", "trophies"].forEach(t => {
+  ["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].forEach(t => {
     document.getElementById("tab-" + t).style.display = t === name ? "" : "none";
     document.getElementById("tabbtn-" + t).classList.toggle("active", t === name);
     document.getElementById("tabbtn-" + t).setAttribute("aria-selected", t === name);
   });
   if (name === "map") setTimeout(() => { const first = !bigMap._fitOnShow; bigMap.invalidateSize(); if (first) { bigMap._fitOnShow = true; fitVisiblePins(bigMap, layers); } }, 60);
-  if (location.hash.slice(1) !== name) history.replaceState(null, "", "#" + name);
+  if (name === "vehicles" && !document.getElementById("sub-fastest").hidden) { if (location.hash !== "#fastest") history.replaceState(null, "", "#fastest"); }
+  else if (location.hash.slice(1) !== name) history.replaceState(null, "", "#" + name);
 }
 
 // ============================================================================
@@ -1293,6 +1301,16 @@ function renderFastest() {
   document.getElementById("fastText").textContent = `${n} collected` + (n === FASTEST.length ? " — full garage! 🏁" : "");
   document.getElementById("fastCount").textContent = `${n} / ${FASTEST.length} cars · ${FASTEST.filter(c => c.map).length} with map spots`;
 }
+function showSub(name) {
+  ["allveh", "fastest"].forEach(n => {
+    document.getElementById("sub-" + n).hidden = n !== name;
+    const b = document.getElementById("subbtn-" + n);
+    b.classList.toggle("active", n === name); b.setAttribute("aria-selected", n === name);
+  });
+  const h = name === "fastest" ? "#fastest" : "#vehicles";
+  if (location.hash !== h) history.replaceState(null, "", h);
+}
+document.querySelectorAll(".subtab").forEach(b => b.addEventListener("click", () => showSub(b.dataset.sub)));
 function initFastest() {
   ["fastSearch", "fastFilter"].forEach(id => document.getElementById(id).addEventListener("input", renderFastest));
   const list = document.getElementById("fastList");
@@ -1463,7 +1481,7 @@ renderLeonida();
 initGallery("vehicles");
 initFastest();
 initGallery("weapons");
-{ const h = location.hash.slice(1); if (["checklist", "money", "map", "leonida", "vehicles", "fastest", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
+{ const h = location.hash.slice(1); if (h === "fastest") { showTab("vehicles"); showSub("fastest"); } else if (["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
 </script>
 </body>
 </html>
