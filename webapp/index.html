@@ -424,6 +424,10 @@
   .mp-custom { position: relative; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 0.75rem; background: conic-gradient(#ff3b30, #ffd60a, #00e5a0, #f5a623, #b388ff, #ff4fd8, #ff3b30); box-shadow: 0 0 0 1px var(--border); cursor: pointer; overflow: hidden; }
   .mp-custom input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; border: 0; padding: 0; }
   .mp-custom span { pointer-events: none; filter: drop-shadow(0 0 2px #000); }
+  .mp-link { width: 100%; font: inherit; font-size: 0.78rem; background: #0f1626; color: var(--text); border: 1px dashed var(--border); border-radius: 6px; padding: 0.4rem 0.5rem; }
+  .mp-link:focus { outline: none; border-color: #00e5a0; border-style: solid; }
+  .mp-linkmsg { font-size: 0.7rem; min-height: 0.9em; color: var(--muted); }
+  .mp-linkmsg.ok { color: #00e5a0; } .mp-linkmsg.err { color: #ff6b6b; }
   .mp-xy { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
   .mp-xy label { display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; color: var(--muted); }
   .mp-xy input { width: 78px; font: inherit; font-size: 0.8rem; background: #0f1626; color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 0.3rem 0.4rem; }
@@ -947,7 +951,7 @@
           <div class="map-chips" id="mapChips"></div>
           <div class="cm-head">📚 More pins <span>from gta6map.io · off until you pick</span><b id="cmStatus"></b></div>
           <div class="map-chips" id="cmChips"></div>
-          <div class="mp-tools"><span>📌 My pins — tap <b>Add pin</b>, right-click the map, or type X/Y</span><span><button type="button" id="mpByXY" title="Place a pin by typing X and Y">＋ by X/Y</button><button type="button" id="mpExport">⬇ Export</button><button type="button" id="mpImport">⬆ Import</button></span><input type="file" id="mpFile" accept="application/json,.json" hidden></div>
+          <div class="mp-tools"><span>📌 My pins — <b>Add pin</b>, right-click the map, or paste a link/X,Y</span><span><button type="button" id="mpByXY" title="Place a pin from X/Y or a pasted link">＋ X/Y or link</button><button type="button" id="mpExport">⬇ Export</button><button type="button" id="mpImport">⬆ Import</button></span><input type="file" id="mpFile" accept="application/json,.json" hidden></div>
         </div>
         <div class="pin-list" id="pinList"></div>
       </aside>
@@ -1632,6 +1636,8 @@ function openPinForm(latlng, existing) {
     <div class="mp-emoji">${MY_EMOJI.map(e => `<button type="button" data-e="${e}" class="${e === p.emoji ? "sel" : ""}">${e}</button>`).join("")}</div>
     <div class="mp-colors">${MY_COLORS.map(c => `<button type="button" data-c="${c}" class="${c === cur ? "sel" : ""}" style="background:${c}" aria-label="Colour ${c}"></button>`).join("")}<label class="mp-custom" title="Custom colour"><input type="color" value="${cur}" aria-label="Custom colour"><span>🎨</span></label></div>
     <textarea name="note" maxlength="300" rows="3" placeholder="Note (optional)">${escapeHtml(p.note || "")}</textarea>
+    <input name="plink" class="mp-link" placeholder="📎 Paste link or X, Y — GTABase #spot= / gta6map.io #loc=" autocomplete="off">
+    <div class="mp-linkmsg" aria-live="polite"></div>
     <div class="mp-xy"><label>X <input name="px" type="number" step="1" value="${Math.round(latlng.lng)}"></label><label>Y <input name="py" type="number" step="1" value="${Math.round(latlng.lat)}"></label><button type="button" data-here title="Use the map centre">⌖ map centre</button></div>
     <div class="mp-btns"><button type="submit" class="pri">Save</button><button type="button" data-cancel>Cancel</button></div>
     <div class="pp-xy">Game coordinates — hover the map to read them in the bottom-left corner</div></form>`;
@@ -1644,6 +1650,15 @@ function openPinForm(latlng, existing) {
   markColor(cur);
   form.querySelectorAll("[data-e]").forEach(b => b.onclick = () => { emoji = b.dataset.e; form.querySelectorAll("[data-e]").forEach(x => x.classList.toggle("sel", x === b)); });
   form.querySelector("[data-cancel]").onclick = () => bigMap.closePopup(pop);
+  form.plink.addEventListener("input", async () => {
+    const msg = form.querySelector(".mp-linkmsg"), r = await parseSpotInput(form.plink.value);
+    if (!r) { msg.textContent = ""; return; }
+    if (r.error) { msg.textContent = "⚠ " + r.error; msg.className = "mp-linkmsg err"; return; }
+    form.px.value = r.x; form.py.value = r.y;
+    if (r.name && !form.name.value.trim()) form.name.value = r.name.slice(0, 60);
+    if (r.note && !form.note.value.trim()) form.note.value = r.note.slice(0, 300);
+    msg.textContent = `✓ ${r.from}: x ${r.x} · y ${r.y}`; msg.className = "mp-linkmsg ok";
+  });
   form.querySelector("[data-here]").onclick = () => { const c = bigMap.getCenter(); form.px.value = Math.round(c.lng); form.py.value = Math.round(c.lat); };
   form.onsubmit = e => {
     e.preventDefault();
@@ -1660,9 +1675,35 @@ function openPinForm(latlng, existing) {
   };
   setTimeout(() => form.name.focus(), 50);
 }
+// Read a spot from a pasted link or text: GTABase/our own "#spot=X,Y", gta6map.io "#loc=<id>", or plain "X, Y".
+async function parseSpotInput(text) {
+  const t = String(text || "").trim();
+  let m = /spot=(-?\d{1,6})\s*,\s*(-?\d{1,6})/i.exec(t);
+  if (m) return { x: +m[1], y: +m[2], from: /gtabase/i.test(t) ? "GTABase link" : "spot link" };
+  m = /[#&?]loc=([a-z0-9]{6,10})/i.exec(t);
+  if (m) {
+    try { await loadCommunity(); } catch (e) { return { error: "Couldn't load gta6map.io data" }; }
+    const p = window.COMMUNITY.pins.find(q => q[6] === m[1].toLowerCase());
+    return p ? { x: p[2], y: p[3], name: p[0], note: p[5], from: "gta6map.io link" } : { error: "That gta6map.io location isn't in our copy of their data" };
+  }
+  m = /^\s*x?\s*[:=]?\s*(-?\d{1,6}(?:\.\d+)?)\s*[,;\s]\s*y?\s*[:=]?\s*(-?\d{1,6}(?:\.\d+)?)\s*$/i.exec(t);
+  if (m) return { x: Math.round(+m[1]), y: Math.round(+m[2]), from: "coordinates" };
+  return t ? { error: "Couldn't read that — paste a GTABase #spot= link, a gta6map.io #loc= link, or X, Y" } : null;
+}
+function spotFromHash() { const m = /^#spot=(-?\d{1,6}),(-?\d{1,6})$/.exec(location.hash); return m ? { x: +m[1], y: +m[2] } : null; }
+function showSharedSpot(sp) {
+  openMapAt(() => {
+    bigMap.setView([sp.y, sp.x], Math.max(bigMap.getZoom(), 5));
+    const pop = L.popup({ maxWidth: 260 }).setLatLng([sp.y, sp.x])
+      .setContent(`<div class="pp-cat" style="color:${CATS.mine.color}">📍 Shared spot</div><div class="pp-xy">x ${sp.x} · y ${sp.y}</div><div class="pp-actions"><button type="button" data-save-spot>📌 Save as my pin</button></div>`).openOn(bigMap);
+    pop.getElement().querySelector("[data-save-spot]").onclick = () => openPinForm(L.latLng(sp.y, sp.x));
+  });
+}
 function initMyPins() {
   document.getElementById("mapAddPin").onclick = () => setAddPinMode(!addPinMode);
   document.getElementById("mpByXY").onclick = () => openPinForm(bigMap.getCenter());
+  const sp = spotFromHash(); if (sp) setTimeout(() => showSharedSpot(sp), 300);
+  window.addEventListener("hashchange", () => { const h = spotFromHash(); if (h) showSharedSpot(h); });
   bigMap.on("click", e => { if (addPinMode) openPinForm(e.latlng); });
   bigMap.on("contextmenu", e => openPinForm(e.latlng));
   document.addEventListener("keydown", e => { if (e.key === "Escape" && addPinMode) setAddPinMode(false); });
@@ -2303,7 +2344,7 @@ initKnowledge();
 initSettings();
 updateHero();
 initGallery("weapons");
-{ const h = ({ cheats: "codes" })[location.hash.slice(1)] || location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "knowledge", "trophies"].includes(h)) showTab(h); }
+{ const h = ({ cheats: "codes" })[location.hash.slice(1)] || location.hash.slice(1); if (/^spot=/.test(h)) {} else if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "knowledge", "trophies"].includes(h)) showTab(h); }
 </script>
 </body>
 </html>
