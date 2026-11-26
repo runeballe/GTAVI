@@ -229,6 +229,9 @@
 
 
   /* ============ 100% ============ */
+  .hun-hero { margin: 0 0 0.4rem; line-height: 0; }
+  .hun-hero img { width: 160px; height: 160px; display: block; filter: drop-shadow(0 6px 18px rgba(255, 196, 0, 0.25)); }
+  @media (max-width: 500px) { .hun-hero img { width: 120px; height: 120px; } }
   .hun-group { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; }
   .hun-group h3 { font-size: 0.95rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
   .hun-group h3 span { color: var(--muted); font-size: 0.78rem; font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -591,7 +594,7 @@
 </div>
   <div id="sub-hundred" role="tabpanel" aria-labelledby="subbtn-hundred" hidden>
     <div class="money-wrap gal-wrap">
-      <div class="money-hero">💯 100% Completion</div>
+      <h2 class="hun-hero"><img src="media/hundred.webp" alt="100% Completion" width="160" height="160" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'money-hero',textContent:'💯 100% Completion'}))"></h2>
       <div class="money-sub">What the in-game 100% list asks for (it unlocks after the story, in Progress → Stats → 100% Completion). Reaching it pops <b>A Long Road</b>. Missable content doesn't count. Type your counts from the game — rows marked 🔗 fill in from your other tracker tabs.</div>
       <div class="progress-bar"><div class="progress-fill" id="hunFill"></div></div>
       <div class="progress-text"><span id="hunText">0 / 35 met</span><span id="hunCount"></span></div>
