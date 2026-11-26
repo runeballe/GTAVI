@@ -6,3 +6,9 @@ deploy/.wrangler/
 node_modules/
 .env
 .dev.vars
+# Official GTA VI logo (Rockstar trademark) — deployed as favicon, not MIT-licensable
+webapp/fav.ico
+webapp/favicon.ico
+webapp/apple-touch-icon.png
+webapp/vi-no-txt.png
+webapp/vi-logo.png

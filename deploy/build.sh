@@ -10,6 +10,7 @@ OUT=public/GTAVI
 rm -rf public && mkdir -p "$OUT/tiles"
 cp "$SRC"/index.html "$SRC"/landmarks.js "$SRC"/codex.js "$OUT"/
 cp "$SRC"/llms.txt "$SRC"/og.jpg "$OUT"/
+for f in favicon.ico apple-touch-icon.png vi-logo.png; do [ -f "$SRC/$f" ] && cp "$SRC/$f" "$OUT"/; done   # optional, not in git (trademark logo)
 cp root/* "$SRC"/llms.txt public/   # domain-root crawler files: robots.txt, sitemap.xml, llms.txt
 [ -d "$SRC/assets" ] && [ -n "$(ls -A "$SRC/assets")" ] && cp -r "$SRC/assets" "$OUT/"
 TILES=$(cd -P "$SRC/tiles" && pwd)
