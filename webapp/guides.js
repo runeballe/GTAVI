@@ -149,3 +149,24 @@ const CHALLENGES = {
     ["Train Jump", "Jump a motorcycle 75 ft+ onto a moving train twice in 20 min"],
   ],
 };
+
+// Door & safe codes — list supplied by the site owner (matches The Tab's "door and safe codes" list, Nov 2026),
+// plus codes already in this tracker (src: "tracker"). map: area pin from gtadb.org landmarks; null = no reliable spot.
+const DOORCODES = [
+  { g: "door", n: "Moonstone Boutique — back room", c: "0420", note: "Found during the Lab Fees mission (Ch 1)", map: null },
+  { g: "door", n: "Brian's Lock Up", c: "7700", note: "SW Key Lento — also the Ch 1 fence", map: [-2539, -5858], prec: "approx" },
+  { g: "door", n: "Janjak's garage", c: "4444", map: null },
+  { g: "door", n: "Garage with the '74 Vamos", c: "2727", note: "The Vamos is on Randy's Wish List", map: null },
+  { g: "door", n: "Key Lento party house — garage door", c: "092319", map: [-2293, -5526], prec: "area" },
+  { g: "door", n: "Mount Kalaga National Park — shed", c: "69185", map: [-3430, 6371], prec: "area" },
+  { g: "door", n: "Pelican Valley swamp dock outpost", c: "0212", note: "Same keypad as the Crashback VF5 legendary SMG (Gullet Marsh)", map: [-3679, -3601], prec: "area" },
+  { g: "door", n: "South Point Airfield", c: "2341", map: null },
+  { g: "door", n: "Andrew Node's mansion garage", c: "8554013", note: "Truffade Thrax — fastest car. From the No Flusher activity", map: [906, 661], prec: "area", src: "tracker" },
+  { g: "door", n: "Vanessa's laptop (Ch 3 apartment)", c: "92665", note: "Ch 3 only — unlocks a free pink Pfister Growler + Del Rio Blvd garage. Clues: hallway photo (Muffins), bedroom notepad", map: null, src: "tracker" },
+  { g: "safe", n: "Brooks Boatworks, Port Gellhorn", c: "6823", map: [-6390, 3866], prec: "area" },
+  { g: "safe", n: "Kingpin Bowling Alley", c: "0330", map: null },
+  { g: "safe", n: "La Cascara Motel, Port Gellhorn", c: "6969", map: [-6860, 3970], prec: "spot" },
+  { g: "safe", n: "Trailer south of the Grassrivers", c: "44017", map: [-3057, -5089], prec: "approx" },
+  { g: "safe", n: "Nova Auto junkyard", c: "7777", map: null },
+  { g: "safe", n: "Gullet Marsh island building", c: "0072", note: "Crashback VF5 puzzle: computer password 'Cleaves' → safe 0072 → note gives keypad 0212", map: [-3679, -3601], prec: "area", src: "tracker" },
+];

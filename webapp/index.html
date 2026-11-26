@@ -247,6 +247,18 @@
   .hun-in .auto { color: var(--accent); font-weight: 700; }
   @media (max-width: 700px) { .hun-row { grid-template-columns: 22px minmax(0, 1fr) 110px; } .hun-row .bar { display: none; } }
 
+  .door-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.7rem; margin-bottom: 1.3rem; }
+  .door { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 0.9rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.3rem 0.8rem; align-items: center; }
+  .door .dn { font-weight: 700; font-size: 0.88rem; }
+  .door .dnote { grid-column: 1 / -1; font-size: 0.74rem; color: var(--muted); }
+  .door .dcode { font: 800 1.15rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.12em; color: var(--gold); background: #0f1117; border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem 0.6rem; cursor: pointer; }
+  .door .dcode:hover { border-color: var(--gold); }
+  .door .dcode.copied { color: var(--done); border-color: var(--done); }
+  .door .dact { grid-column: 1 / -1; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+  .door .dact button { font: inherit; font-size: 0.72rem; padding: 0.25rem 0.6rem; border-radius: 6px; border: 1px solid var(--border); background: #1f222d; color: var(--text); cursor: pointer; }
+  .door .dact button:hover { border-color: var(--accent); color: var(--accent); }
+  .door .src { font-size: 0.62rem; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 0.02rem 0.4rem; }
+
   /* ============ CHALLENGES ============ */
   .chal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
   @media (max-width: 500px) { .chal-grid { grid-template-columns: 1fr; } }
@@ -497,7 +509,7 @@
     <button class="tab" id="tabbtn-leonida" role="tab" aria-controls="tab-leonida" aria-selected="false" onclick="showTab('leonida')">🌴 Leonida</button>
     <button class="tab" id="tabbtn-vehicles" role="tab" aria-controls="tab-vehicles" aria-selected="false" onclick="showTab('vehicles')">🚗 Vehicles</button>
     <button class="tab" id="tabbtn-weapons" role="tab" aria-controls="tab-weapons" aria-selected="false" onclick="showTab('weapons')">🔫 Weapons</button>
-    <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Cheats</button>
+    <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Codes</button>
     <button class="tab" id="tabbtn-trophies" role="tab" aria-controls="tab-trophies" aria-selected="false" onclick="showTab('trophies')">🏆 Trophies</button>
   </nav>
 </header>
@@ -932,6 +944,7 @@
   <div class="money-wrap">
     <div class="subtabs" role="tablist" aria-label="Cheats">
       <button type="button" class="subtab active" id="subbtn-codes" role="tab" aria-selected="true" data-sub="codes">🔑 Cheat codes</button>
+      <button type="button" class="subtab" id="subbtn-doors" role="tab" aria-selected="false" data-sub="doors">🔐 Door &amp; safe codes</button>
       <button type="button" class="subtab" id="subbtn-challenges" role="tab" aria-selected="false" data-sub="challenges">🏅 Challenges (80)</button>
     </div>
     <div id="sub-codes" role="tabpanel" aria-labelledby="subbtn-codes">
@@ -949,6 +962,13 @@
     <input type="search" id="cheatSearch" placeholder="Search cheats…" style="background:#1f222d; border:1px solid var(--border); color:var(--text); padding:0.5rem 0.9rem; border-radius:6px; font-size:0.85rem; width:100%; max-width:420px; margin-bottom:1.2rem;" />
     <div id="cheatList"></div>
   </div>
+    <div id="sub-doors" role="tabpanel" aria-labelledby="subbtn-doors" hidden>
+      <div class="money-hero">🔐 Door &amp; Safe Codes</div>
+      <div class="money-sub">Keypad codes for doors, garages and safes around Leonida. Tap a code to copy it. 📍 = show the area on the Live Map (where the spot is known).</div>
+      <input type="search" id="doorSearch" class="gal-search" placeholder="Search codes — Brian, motel, 7700…" autocomplete="off" style="width:100%;max-width:420px;flex:none;display:block;margin-bottom:1rem" />
+      <div id="doorList"></div>
+      <p class="leo-credit">Codes from community guides (Nov 2026) — entries marked “tracker” come from this tracker's own guide data. Pins are area pins from gtadb.org landmarks.</p>
+    </div>
     <div id="sub-challenges" role="tabpanel" aria-labelledby="subbtn-challenges" hidden>
       <div class="money-hero">🏅 Challenges</div>
       <div class="money-sub">80 challenges in 8 categories (Progress menu). Doing <b>5</b> in a category unlocks one vehicle cheat, all <b>10</b> unlock another — and all 80 unlocks the P-996 Lazer. The Platinum trophy needs <b>70 of 80</b>.</div>
@@ -1679,7 +1699,7 @@ function renderFastest() {
   document.getElementById("fastText").textContent = `${n} collected` + (n === FASTEST.length ? " — full garage! 🏁" : "");
   document.getElementById("fastCount").textContent = `${n} / ${FASTEST.length} cars · ${FASTEST.filter(c => c.map).length} with map spots`;
 }
-const SUBS = { checklist: ["story", "hundred"], money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest"], weapons: ["allwep", "legendary"], cheats: ["codes", "challenges"] };
+const SUBS = { checklist: ["story", "hundred"], money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest"], weapons: ["allwep", "legendary"], cheats: ["codes", "doors", "challenges"] };
 const SUB_PARENT = Object.fromEntries(Object.entries(SUBS).flatMap(([t, l]) => l.slice(1).map(n => [n, t])));
 function currentSub(tab) { return (SUBS[tab] || []).find(n => !document.getElementById("sub-" + n).hidden); }
 function subHash(tab) { const c = currentSub(tab); return c && c !== SUBS[tab][0] ? "#" + c : "#" + tab; }
@@ -1774,6 +1794,38 @@ function initGuides() {
   leg.addEventListener("change", e => { const k = e.target.dataset.leg; if (k === undefined) return; if (e.target.checked) guideState.leg[k] = true; else delete guideState.leg[k]; saveGuides(); renderLegendary(); });
   document.getElementById("chalList").addEventListener("change", e => { const k = e.target.dataset.chal; if (k === undefined) return; if (e.target.checked) guideState.chal[k] = true; else delete guideState.chal[k]; saveGuides(); renderChallenges(); });
   renderLegendary(); renderChallenges();
+}
+
+// ============================================================================
+// DOOR & SAFE CODES (data: guides.js)
+// ============================================================================
+function renderDoors() {
+  const q = document.getElementById("doorSearch").value.trim().toLowerCase();
+  const rows = DOORCODES.filter(d => !q || (d.n + " " + d.c + " " + (d.note || "")).toLowerCase().includes(q));
+  const card = d => `<div class="door"><div class="dn">${escapeHtml(d.n)}</div>
+      <button type="button" class="dcode" data-copy="${d.c}" title="Copy code">${d.c}</button>
+      ${d.note ? `<div class="dnote">${escapeHtml(d.note)}</div>` : ""}
+      <div class="dact">${d.map ? `<button type="button" data-fly="${d.map[0]},${d.map[1]},${d.prec === "spot" ? 5 : 4}" data-label="🔐 ${escapeHtml(d.n)} — ${d.c}">📍 Show on map${d.prec === "approx" ? " (approx.)" : d.prec === "area" ? " (area)" : ""}</button>` : ""}${d.src === "tracker" ? `<span class="src">tracker</span>` : ""}</div></div>`;
+  let html = "";
+  [["door", "🚪 Door & garage codes"], ["safe", "🔒 Safe codes"]].forEach(([g, title]) => {
+    const list = rows.filter(d => d.g === g);
+    if (list.length) html += `<h3 class="mg-h">${title} <span style="color:var(--muted);font-size:0.8rem;font-weight:600">${list.length}</span></h3><div class="door-grid">${list.map(card).join("")}</div>`;
+  });
+  document.getElementById("doorList").innerHTML = html || `<div class="empty-filter">No codes match.</div>`;
+}
+function initDoors() {
+  document.getElementById("doorSearch").addEventListener("input", renderDoors);
+  document.getElementById("doorList").addEventListener("click", async e => {
+    const c = e.target.closest("[data-copy]");
+    if (c) {
+      try { await navigator.clipboard.writeText(c.dataset.copy); } catch (err) {}
+      c.classList.add("copied"); const t = c.textContent; c.textContent = "Copied ✓"; setTimeout(() => { c.textContent = t; c.classList.remove("copied"); }, 1100);
+      return;
+    }
+    const f = e.target.closest("[data-fly]");
+    if (f) { const [x, y, z] = f.dataset.fly.split(",").map(Number); flyToGame(x, y, z, f.dataset.label); }
+  });
+  renderDoors();
 }
 
 // ============================================================================
@@ -1982,6 +2034,7 @@ initGallery("vehicles");
 initFastest();
 initGuides();
 initHundred();
+initDoors();
 initGallery("weapons");
 { const h = location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
 </script>
