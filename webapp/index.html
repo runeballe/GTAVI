@@ -245,6 +245,9 @@
   .bon-loc { font-size: 0.8rem; color: #cfd5df; }
 
   .know-g { margin-bottom: 1.4rem; }
+  .know-tips { list-style: none; display: grid; gap: 0.4rem; font-size: 0.84rem; color: #d5dae3; }
+  .know-tips li { position: relative; padding-left: 1.1rem; }
+  .know-tips li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
   .know-g h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1.2rem; margin-bottom: 0.6rem; }
   .know-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1rem; }
   @media (max-width: 500px) { .know-grid { grid-template-columns: 1fr; } }
@@ -1040,7 +1043,7 @@
     </div>
     <div id="sub-know" role="tabpanel" aria-labelledby="subbtn-know">
     <div class="money-hero">💡 Master Of Knowledge</div>
-    <div class="money-sub">Lore, mysteries and little-known mechanics the game barely mentions.</div>
+    <div class="money-sub">Starter tips, lore, mysteries and little-known mechanics the game barely mentions.</div>
     <div id="knowList"></div>
     <p class="leo-credit">Sources: leonidaverse.com (Secrets &amp; Tips), Nov 2026.</p>
   </div>
@@ -1952,7 +1955,10 @@ function initBonus() {
 function initKnowledge() {
   const groups = [...new Set(KNOWLEDGE.map(k => k.g))];
   const el = document.getElementById("knowList");
-  el.innerHTML = groups.map(g => `<section class="know-g"><h3>${escapeHtml(g)}</h3><div class="know-grid">${KNOWLEDGE.filter(k => k.g === g).map(k => `<article class="egg">
+  const starter = `<section class="know-g"><h3>Before you start <span style="color:var(--muted);font-family:Inter,sans-serif;text-transform:none;font-size:0.8rem;font-weight:500">· tips checked since release, no spoilers</span></h3><div class="know-grid">${STARTER_TIPS.map(t => `<article class="egg">
+      <div class="egg-top"><div class="egg-ic" aria-hidden="true">${t.e}</div><div class="egg-n" style="align-self:center">${escapeHtml(t.n)}</div></div>
+      <ul class="know-tips">${t.tips.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul></article>`).join("")}</div></section>`;
+  el.innerHTML = starter + groups.map(g => `<section class="know-g"><h3>${escapeHtml(g)}</h3><div class="know-grid">${KNOWLEDGE.filter(k => k.g === g).map(k => `<article class="egg">
       <div class="egg-top"><div class="egg-ic" aria-hidden="true">${k.e}</div><div class="egg-n" style="align-self:center">${escapeHtml(k.n)}</div></div>
       <div class="egg-what">${escapeHtml(k.t)}</div>
       ${k.map ? `<div class="egg-act"><button type="button" data-fly="${k.map[0]},${k.map[1]},4" data-label="${k.e} ${escapeHtml(k.n)}">📍 Show on map${k.prec === "approx" ? " (approx.)" : " (area)"}</button></div>` : ""}
