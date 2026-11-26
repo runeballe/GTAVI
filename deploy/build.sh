@@ -9,6 +9,8 @@ SRC=../webapp
 OUT=public/GTAVI
 rm -rf public && mkdir -p "$OUT/tiles"
 cp "$SRC"/index.html "$SRC"/landmarks.js "$SRC"/codex.js "$OUT"/
+cp "$SRC"/llms.txt "$SRC"/og.jpg "$OUT"/
+cp root/* "$SRC"/llms.txt public/   # domain-root crawler files: robots.txt, sitemap.xml, llms.txt
 [ -d "$SRC/assets" ] && [ -n "$(ls -A "$SRC/assets")" ] && cp -r "$SRC/assets" "$OUT/"
 TILES=$(cd -P "$SRC/tiles" && pwd)
 cd "$TILES"

@@ -10,7 +10,10 @@
   },
   "routes": [
     { "pattern": "runeball.no/GTAVI*", "zone_name": "runeball.no" },
-    { "pattern": "runeball.no/gtavi*", "zone_name": "runeball.no" }
+    { "pattern": "runeball.no/gtavi*", "zone_name": "runeball.no" },
+    { "pattern": "runeball.no/robots.txt", "zone_name": "runeball.no" },
+    { "pattern": "runeball.no/sitemap.xml", "zone_name": "runeball.no" },
+    { "pattern": "runeball.no/llms.txt", "zone_name": "runeball.no" }
   ],
   "workers_dev": false
 }

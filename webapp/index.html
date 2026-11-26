@@ -3,7 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GTA6 Playthrough Tracker — Checklist · Money · Map</title>
+<title>GTA VI Playthrough Tracker — Checklist, Money Guide & Leonida Map</title>
+<meta name="description" content="Free GTA VI playthrough tracker: all 102 story missions and missables per chapter, a money guide, and an interactive Leonida map with supercar spawns, hide spots and secrets. Plus cheats and trophies.">
+<link rel="canonical" href="https://runeball.no/GTAVI/">
+<meta name="theme-color" content="#0b0c10">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GTA VI Playthrough Tracker">
+<meta property="og:title" content="GTA VI Playthrough Tracker — Checklist, Money Guide & Leonida Map">
+<meta property="og:description" content="Free GTA VI playthrough tracker: all 102 story missions and missables per chapter, a money guide, and an interactive Leonida map with supercar spawns, hide spots and secrets. Plus cheats and trophies.">
+<meta property="og:url" content="https://runeball.no/GTAVI/">
+<meta property="og:image" content="https://runeball.no/GTAVI/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Leonida map with supercar, secret and guide pins">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GTA VI Playthrough Tracker">
+<meta name="twitter:description" content="Free GTA VI playthrough tracker: all 102 story missions and missables per chapter, a money guide, and an interactive Leonida map with supercar spawns, hide spots and secrets. Plus cheats and trophies.">
+<meta name="twitter:image" content="https://runeball.no/GTAVI/og.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GTA VI Playthrough Tracker",
+  "url": "https://runeball.no/GTAVI/",
+  "description": "Free GTA VI playthrough tracker: all 102 story missions and missables per chapter, a money guide, and an interactive Leonida map with supercar spawns, hide spots and secrets. Plus cheats and trophies.",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "image": "https://runeball.no/GTAVI/og.jpg",
+  "about": { "@type": "VideoGame", "name": "Grand Theft Auto VI", "gamePlatform": ["PlayStation 5", "Xbox Series X|S"] },
+  "featureList": ["102-mission checklist with missables per chapter", "Money-making guide", "Interactive Leonida map: supercars, hide spots, secrets, landmarks", "Cheat codes", "Trophy tracker"],
+  "author": { "@type": "Person", "name": "Rune Balstad", "url": "https://github.com/runeballe" },
+  "license": "https://opensource.org/licenses/MIT",
+  "codeRepository": "https://github.com/runeballe/GTAVI"
+}
+</script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,7 +65,7 @@
   header { background: linear-gradient(135deg, #0f1117 0%, #161822 100%); border-bottom: 1px solid var(--border); padding: 0.9rem 2rem 0; position: sticky; top: 0; z-index: 100; }
   .header-inner { max-width: 1400px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
   .brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 800; font-size: 1.15rem; }
-  .brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .brand .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
   .subtitle { color: var(--muted); font-size: 0.8rem; }
 
   /* Tabs */
@@ -221,20 +258,21 @@
 
 <header>
   <div class="header-inner">
-    <div class="brand"><div class="dot"></div>GTA6 <span style="color:var(--muted); font-weight:400; font-size:0.8rem;">Playthrough Tracker</span></div>
+    <h1 class="brand"><span class="dot" aria-hidden="true"></span>GTA6 <span style="color:var(--muted); font-weight:400; font-size:0.8rem;">Playthrough Tracker</span></h1>
     <div class="subtitle">102 missions · money guide · big map: supercars, hide spots, secrets</div>
   </div>
-  <nav class="tabs">
-    <button class="tab active" id="tabbtn-checklist" onclick="showTab('checklist')">📋 Checklist</button>
-    <button class="tab" id="tabbtn-money" onclick="showTab('money')">💰 Money Fast</button>
-    <button class="tab" id="tabbtn-map" onclick="showTab('map')">🗺️ Live Map</button>
-    <button class="tab" id="tabbtn-cheats" onclick="showTab('cheats')">🔑 Cheats</button>
-    <button class="tab" id="tabbtn-trophies" onclick="showTab('trophies')">🏆 Trophies</button>
+  <nav class="tabs" aria-label="Sections" role="tablist">
+    <button class="tab active" id="tabbtn-checklist" role="tab" aria-controls="tab-checklist" aria-selected="true" onclick="showTab('checklist')">📋 Checklist</button>
+    <button class="tab" id="tabbtn-money" role="tab" aria-controls="tab-money" aria-selected="false" onclick="showTab('money')">💰 Money Fast</button>
+    <button class="tab" id="tabbtn-map" role="tab" aria-controls="tab-map" aria-selected="false" onclick="showTab('map')">🗺️ Live Map</button>
+    <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Cheats</button>
+    <button class="tab" id="tabbtn-trophies" role="tab" aria-controls="tab-trophies" aria-selected="false" onclick="showTab('trophies')">🏆 Trophies</button>
   </nav>
 </header>
 
+<main>
 <!-- ==================== TAB 1: CHECKLIST ==================== -->
-<section id="tab-checklist">
+<section id="tab-checklist" role="tabpanel" aria-labelledby="tabbtn-checklist">
   <div class="toolbar-wrap">
     <div class="toolbar">
       <input type="search" id="searchBox" placeholder="Search missions, items, locations…" />
@@ -302,7 +340,7 @@
 </section>
 
 <!-- ==================== TAB 2: MONEY ==================== -->
-<section id="tab-money" style="display:none">
+<section id="tab-money" role="tabpanel" aria-labelledby="tabbtn-money" style="display:none">
   <div class="money-wrap">
     <div class="money-hero">💰 Make Money Fast</div>
     <div class="money-sub">Payouts per method, per chapter — best farm changes as the story opens new systems. Sources: G2A money guide, Skycoach, PowerPyx, PC Gamer, Space4Games.</div>
@@ -405,7 +443,7 @@
 </section>
 
 <!-- ==================== TAB 3: MAP ==================== -->
-<section id="tab-map" style="display:none">
+<section id="tab-map" role="tabpanel" aria-labelledby="tabbtn-map" style="display:none">
   <div class="map-wrap">
     <div class="map-layout">
       <aside class="map-side">
@@ -436,7 +474,7 @@
 </section>
 
 <!-- ==================== TAB 4: CHEATS ==================== -->
-<section id="tab-cheats" style="display:none">
+<section id="tab-cheats" role="tabpanel" aria-labelledby="tabbtn-cheats" style="display:none">
   <div class="money-wrap">
     <div class="money-hero">🔑 Cheat Codes</div>
     <div class="money-sub">61 story-mode cheats · unlock after the story credits, then hold <b>L1 + R1</b> on the phone and tap the d-pad sequence. A used cheat disables trophies &amp; saving until the session ends. Data: leonidaverse.com — 40 inputs not community-verified yet.</div>
@@ -446,7 +484,7 @@
 </section>
 
 <!-- ==================== TAB 5: TROPHIES ==================== -->
-<section id="tab-trophies" style="display:none">
+<section id="tab-trophies" role="tabpanel" aria-labelledby="tabbtn-trophies" style="display:none">
   <div class="money-wrap">
     <div class="money-hero">🏆 Trophies &amp; Achievements</div>
     <div class="money-sub">55 trophies · 1,000 Gamerscore · click to mark earned — progress saves automatically. Data: leonidaverse.com</div>
@@ -455,6 +493,7 @@
     <div id="trophyList"></div>
   </div>
 </section>
+</main>
 
 <footer>
   GTA6 Playthrough Tracker — from 12 guide images + Reddit · X · Skycoach · G2A · Insider-Gaming · VICE · Space4Games · RPS. Checklist progress saves automatically. Map: gtadb.org Leonida tiles & landmarks (CC BY 4.0), real in-game coordinates.
@@ -688,6 +727,7 @@ function showTab(name) {
   ["checklist", "money", "map", "cheats", "trophies"].forEach(t => {
     document.getElementById("tab-" + t).style.display = t === name ? "" : "none";
     document.getElementById("tabbtn-" + t).classList.toggle("active", t === name);
+    document.getElementById("tabbtn-" + t).setAttribute("aria-selected", t === name);
   });
   if (name === "map") setTimeout(() => { const first = !bigMap._fitOnShow; bigMap.invalidateSize(); if (first) { bigMap._fitOnShow = true; fitVisiblePins(bigMap, layers); } }, 60);
   if (location.hash.slice(1) !== name) history.replaceState(null, "", "#" + name);
