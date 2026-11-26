@@ -22,3 +22,5 @@ webapp/media/
 /*.md
 !/README.md
 /*.MD
+# third-party map pins (gta6map.io) — regenerate with deploy/tools/fetch_gta6map.py
+webapp/community.js

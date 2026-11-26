@@ -11,7 +11,7 @@ rm -rf public && mkdir -p "$OUT/tiles"
 cp "$SRC"/index.html "$SRC"/landmarks.js "$SRC"/codex.js "$SRC"/gallery.js "$SRC"/fastest.js "$SRC"/guides.js "$SRC"/cars.js "$SRC"/hundred.js "$SRC"/eggs.js "$SRC"/knowledge.js "$OUT"/
 [ -d "$SRC/media" ] && cp -r "$SRC/media" "$OUT"/   # vehicle/weapon thumbnails (gta.wiki, not in git)
 cp "$SRC"/llms.txt "$SRC"/og.jpg "$OUT"/
-for f in favicon.ico apple-touch-icon.png vi-logo.png; do [ -f "$SRC/$f" ] && cp "$SRC/$f" "$OUT"/; done   # optional, not in git (trademark logo)
+for f in favicon.ico apple-touch-icon.png vi-logo.png community.js; do [ -f "$SRC/$f" ] && cp "$SRC/$f" "$OUT"/; done   # optional, not in git (trademark logo)
 cp root/* "$SRC"/llms.txt public/   # domain-root crawler files: robots.txt, sitemap.xml, llms.txt
 [ -d "$SRC/assets" ] && [ -n "$(ls -A "$SRC/assets")" ] && cp -r "$SRC/assets" "$OUT/"
 TILES=$(cd -P "$SRC/tiles" && pwd)

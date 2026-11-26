@@ -18,6 +18,7 @@ Source code (MIT): https://github.com/runeballe/GTAVI
 - [Legendary Weapons](https://runeball.no/GTAVI/#legendary) (sub-tab of Weapons): all 15 legendary weapon variants with locations, steps, map pins and a found checklist.
 - [Easter Eggs](https://runeball.no/GTAVI/#eggs): 14 easter eggs and secrets (Skunk Ape, UFO abduction, Dexter's apartment, Paul Walker's Eclipse, Arthur Morgan's hat, Cool Dog…) with where to find them, map pins and a found checklist.
 - [Master Of Knowledge](https://runeball.no/GTAVI/#knowledge): lore and little-known mechanics — the 2021 San Andreas house photo found in Belville, the Manifest Canyon monument, pushing/flipping vehicles, Focus Mode encounters, 24/7 shops.
+- [Best settings](https://runeball.no/GTAVI/#settings) (sub-tab of Master Of Knowledge): recommended Xbox/PS5 options (motion blur, camera bob, cinematic cameras, sensitivity, deadzone).
 - [Door & safe codes](https://runeball.no/GTAVI/#doors) (sub-tab of Master Of Knowledge): keypad codes for doors, garages and safes (e.g. Brian's Lock Up 7700, La Cascara Motel safe 6969), copy buttons and map links.
 - [Codes](https://runeball.no/GTAVI/#cheats): all 61 story-mode cheats with unlock conditions; 21 known d-pad codes, cross-checked across sources. Unlock checklist with progress counter. Enter on the phone: hold LB + press RB (Xbox) or L1 + R1 (PS5).
 - [Challenges](https://runeball.no/GTAVI/#challenges) (sub-tab of Master Of Knowledge): all 80 challenges in 8 categories with a checklist; shows which vehicle cheat unlocks at 5 and 10 per category, and Platinum progress (70/80).
@@ -27,6 +28,7 @@ Source code (MIT): https://github.com/runeballe/GTAVI
 
 - Map tiles and landmark coordinates: gtadb.org contributors (CC BY 4.0) — https://gtadb.org
 - Cheats and trophies: leonidaverse.com codex (unofficial fan wiki), cross-checked with gta.wiki and launch-week cheat guides
+- Optional map layers with ~2,900 community pins: gta6map.io
 - Vehicles and weapons: gta.wiki (Vehicles_in_GTA_VI, Weapons_in_GTA_VI)
 - Guide tips: community sources (Reddit, X, Skycoach, G2A, Insider Gaming, VICE, Space4Games, Rock Paper Shotgun)
 

@@ -245,6 +245,11 @@
   .bon-loc { font-size: 0.8rem; color: #cfd5df; }
 
   .know-g { margin-bottom: 1.4rem; }
+  .set-table td:nth-child(3) { color: var(--muted); white-space: nowrap; }
+  .set-table td.set-rec { color: var(--accent); font-weight: 600; }
+  .set-table td b { color: var(--text); }
+  .set-table td.set-why { color: var(--muted); font-size: 0.8rem; }
+  .set-tab { font-size: 0.7rem; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 0.05rem 0.5rem; white-space: nowrap; }
   .know-tips { list-style: none; display: grid; gap: 0.4rem; font-size: 0.84rem; color: #d5dae3; }
   .know-tips li { position: relative; padding-left: 1.1rem; }
   .know-tips li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
@@ -392,6 +397,10 @@
   .glinks button:hover { text-decoration: underline; }
 
 
+  .cm-head { margin-top: 0.7rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); display: flex; gap: 0.4rem; align-items: baseline; flex-wrap: wrap; }
+  .cm-head span { color: var(--muted); font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 0.68rem; }
+  .cm-head b { color: var(--muted); font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 0.68rem; margin-left: auto; }
+  #cmChips { margin-top: 0.4rem; }
   /* ============ MY PINS ============ */
   .map-add { position: absolute; right: 10px; top: 52px; z-index: 500; background: rgba(15,22,38,0.85); border: 1px solid #00e5a0; color: #00e5a0; border-radius: 8px; padding: 0.4rem 0.75rem; font-size: 0.78rem; cursor: pointer; font-family: inherit; font-weight: 600; }
   .map-add.on { background: #00e5a0; color: #0f1626; }
@@ -927,6 +936,8 @@
         <div class="map-side-head">
           <input id="pinSearch" class="map-search" type="search" placeholder="Search pins — car, motel, Randy…" autocomplete="off" />
           <div class="map-chips" id="mapChips"></div>
+          <div class="cm-head">📚 More pins <span>from gta6map.io · off until you pick</span><b id="cmStatus"></b></div>
+          <div class="map-chips" id="cmChips"></div>
           <div class="mp-tools"><span>📌 My pins — tap <b>Add pin</b> or right-click the map</span><span><button type="button" id="mpExport">⬇ Export</button><button type="button" id="mpImport">⬆ Import</button></span><input type="file" id="mpFile" accept="application/json,.json" hidden></div>
         </div>
         <div class="pin-list" id="pinList"></div>
@@ -1037,6 +1048,7 @@
     <div class="subtabs" role="tablist" aria-label="Master Of Knowledge">
       <button type="button" class="subtab active" id="subbtn-know" role="tab" aria-selected="true" data-sub="know">💡 Knowledge</button>
       <button type="button" class="subtab" id="subbtn-eggs" role="tab" aria-selected="false" data-sub="eggs">🥚 Easter Eggs</button>
+      <button type="button" class="subtab" id="subbtn-settings" role="tab" aria-selected="false" data-sub="settings">⚙️ Settings</button>
       <button type="button" class="subtab" id="subbtn-codes" role="tab" aria-selected="false" data-sub="codes">🔑 Cheat codes</button>
       <button type="button" class="subtab" id="subbtn-doors" role="tab" aria-selected="false" data-sub="doors">🔐 Door &amp; safe codes</button>
       <button type="button" class="subtab" id="subbtn-challenges" role="tab" aria-selected="false" data-sub="challenges">🏅 Challenges (80)</button>
@@ -1047,6 +1059,11 @@
     <div id="knowList"></div>
     <p class="leo-credit">Sources: leonidaverse.com (Secrets &amp; Tips), Nov 2026.</p>
   </div>
+    <div id="sub-settings" role="tabpanel" aria-labelledby="subbtn-settings" hidden>
+      <div class="money-hero">⚙️ Best Settings</div>
+      <div class="money-sub">Recommended options for Xbox Series X|S — the same menus exist on PS5. Change one at a time and see what feels right.</div>
+      <div id="setList"></div>
+    </div>
     <div id="sub-eggs" role="tabpanel" aria-labelledby="subbtn-eggs" hidden>
     <div class="money-hero">🥚 Easter Eggs</div>
     <div class="money-sub">References, cameos and mysteries hidden around Leonida. Tick them off as you find them — eggs with a place are also pins in the Live Map's 👽 Secrets layer.</div>
@@ -1516,6 +1533,57 @@ function addPins(mapObj, store, track) {
 }
 
 // ---------------------------------------------------------------------------
+// COMMUNITY PINS — gta6map.io (community.js, lazy-loaded; same game coords as gtadb)
+// ---------------------------------------------------------------------------
+const CM_GROUPS = [["rob", "💰 Robberies", "#ff5f5f"], ["coll", "🃏 Collectibles", "#b388ff"], ["race", "🏁 Races & stunts", "#00d9ff"], ["act", "🎯 Activities", "#2ecc71"],
+  ["veh", "🚘 Vehicles", "#ffd60a"], ["wep", "🔫 Weapons", "#ff9f1a"], ["shop", "🛍️ Shops & services", "#9aa4b5"], ["place", "🏙️ Places & transport", "#7fd1c7"]];
+const COMM = { layers: {}, on: {}, loading: null };
+function loadCommunity() {
+  if (window.COMMUNITY) return Promise.resolve();
+  if (!COMM.loading) COMM.loading = new Promise((res, rej) => { const sc = document.createElement("script"); sc.src = "community.js"; sc.onload = res; sc.onerror = rej; document.head.appendChild(sc); });
+  return COMM.loading;
+}
+function commPopup(p) {
+  const g = window.COMMUNITY.groups[p[4]];
+  return `<div class="pp-cat" style="color:${g[1]}">📚 ${escapeHtml(g[0])} · ${escapeHtml(p[1].replace(/-/g, " "))}</div><div class="pp-name">${escapeHtml(p[0])}</div>`
+    + (p[5] ? `<div class="pp-note">${escapeHtml(p[5])}</div>` : "") + `<div class="pp-xy">x ${p[2]} · y ${p[3]} · source: gta6map.io</div>`;
+}
+function commLayer(g) {
+  if (COMM.layers[g]) return COMM.layers[g];
+  const rend = COMM.rend || (COMM.rend = L.canvas({ padding: 0.3 }));
+  const col = window.COMMUNITY.groups[g][1], lg = L.layerGroup();
+  window.COMMUNITY.pins.forEach(p => {
+    if (p[4] !== g) return;
+    L.circleMarker([p[3], p[2]], { radius: 5, color: "#0b0c10", weight: 1.5, fillColor: col, fillOpacity: 0.95, renderer: rend })
+      .bindTooltip(escapeHtml(p[0]), { direction: "right", className: "gtip" }).bindPopup(commPopup(p), { maxWidth: 280 }).addTo(lg);
+  });
+  return (COMM.layers[g] = lg);
+}
+function focusCommunity(i) {
+  const p = window.COMMUNITY.pins[i];
+  bigMap.flyTo([p[3], p[2]], Math.max(bigMap.getZoom(), 5), { duration: 0.6 });
+  bigMap.once("moveend", () => L.popup({ maxWidth: 280 }).setLatLng([p[3], p[2]]).setContent(commPopup(p)).openOn(bigMap));
+}
+function initCommunity() {
+  const box = document.getElementById("cmChips"), status = document.getElementById("cmStatus");
+  box.innerHTML = CM_GROUPS.map(([g, label, col]) => `<button type="button" class="mchip off" data-cm="${g}" aria-pressed="false"><span class="mswatch" style="background:${col}"></span>${label} <span class="n"></span></button>`).join("");
+  box.addEventListener("click", async e => {
+    const b = e.target.closest("[data-cm]"); if (!b) return;
+    const g = b.dataset.cm;
+    if (!window.COMMUNITY) { status.textContent = "loading…"; try { await loadCommunity(); } catch (err) { status.textContent = "couldn't load"; return; } }
+    COMM.on[g] = !COMM.on[g];
+    b.classList.toggle("off", !COMM.on[g]); b.setAttribute("aria-pressed", COMM.on[g]);
+    if (COMM.on[g]) commLayer(g).addTo(bigMap); else bigMap.removeLayer(commLayer(g));
+    const counts = {}; window.COMMUNITY.pins.forEach(p => counts[p[4]] = (counts[p[4]] || 0) + 1);
+    box.querySelectorAll("[data-cm]").forEach(x => x.querySelector(".n").textContent = counts[x.dataset.cm] || "");
+    status.textContent = `${window.COMMUNITY.pins.length} pins`;
+    renderPinList();
+  });
+  // searching also looks through the community pins once they're loaded
+  document.getElementById("pinSearch").addEventListener("focus", () => loadCommunity().then(() => { status.textContent = `${window.COMMUNITY.pins.length} pins`; if (pinQuery) renderPinList(); }).catch(() => {}), { once: true });
+}
+
+// ---------------------------------------------------------------------------
 // MY PINS — user-added pins, saved in this browser (localStorage); export/import as JSON
 // ---------------------------------------------------------------------------
 const MYPIN_STORE = "gta6_mypins_v1";
@@ -1627,6 +1695,11 @@ function renderPinList() {
     html += `<div class="pin-group">${CATS[cat].icon} ${CATS[cat].label}</div>`;
     html += rows.map(([b, i]) => `<button class="pin-row" data-i="${i}" type="button"><span class="mswatch" style="background:${pinColor(b.p, cat)}"></span><span><div class="pin-name">${escapeHtml(b.p.name)}</div><div class="pin-where">${escapeHtml(b.cat === "guide" ? "Ch " + b.p.ch + " · " + b.p.where : b.p.where)}</div></span></button>`).join("");
   });
+  if (pinQuery && window.COMMUNITY) {
+    const hits = [];
+    window.COMMUNITY.pins.forEach((p, i) => { if (hits.length < 60 && (p[0] + " " + p[1] + " " + p[5]).toLowerCase().includes(pinQuery)) hits.push(i); });
+    if (hits.length) html += `<div class="pin-group">📚 gta6map.io${hits.length === 60 ? " (first 60)" : ""}</div>` + hits.map(i => { const p = window.COMMUNITY.pins[i]; return `<button class="pin-row" data-cm="${i}" type="button"><span class="mswatch" style="background:${window.COMMUNITY.groups[p[4]][1]}"></span><span><div class="pin-name">${escapeHtml(p[0])}</div><div class="pin-where">${escapeHtml(p[1].replace(/-/g, " "))}</div></span></button>`; }).join("");
+  }
   el.innerHTML = html || `<div class="pin-empty">No pins match${pinQuery ? ` “${escapeHtml(pinQuery)}”` : ""}.</div>`;
   updateChipCounts();
 }
@@ -1683,6 +1756,7 @@ function initBigMap() {
 
   document.getElementById("pinList").addEventListener("click", e => {
     const row = e.target.closest(".pin-row");
+    if (row && row.dataset.cm !== undefined) { focusCommunity(+row.dataset.cm); return; }
     if (row) focusPin(+row.dataset.i);
   });
   document.getElementById("pinSearch").addEventListener("input", e => {
@@ -1767,7 +1841,7 @@ function renderFastest() {
   document.getElementById("fastText").textContent = `${n} collected` + (n === FASTEST.length ? " — full garage! 🏁" : "");
   document.getElementById("fastCount").textContent = `${n} / ${FASTEST.length} cars · ${FASTEST.filter(c => c.map).length} with map spots`;
 }
-const SUBS = { checklist: ["story", "hundred"], money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest", "bonus"], weapons: ["allwep", "legendary"], knowledge: ["know", "eggs", "codes", "doors", "challenges"] };
+const SUBS = { checklist: ["story", "hundred"], money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest", "bonus"], weapons: ["allwep", "legendary"], knowledge: ["know", "eggs", "settings", "codes", "doors", "challenges"] };
 const SUB_PARENT = Object.fromEntries(Object.entries(SUBS).flatMap(([t, l]) => l.slice(1).map(n => [n, t])));
 function currentSub(tab) { return (SUBS[tab] || []).find(n => !document.getElementById("sub-" + n).hidden); }
 function subHash(tab) { const c = currentSub(tab); return c && c !== SUBS[tab][0] ? "#" + c : "#" + tab; }
@@ -1964,6 +2038,12 @@ function initKnowledge() {
       ${k.map ? `<div class="egg-act"><button type="button" data-fly="${k.map[0]},${k.map[1]},4" data-label="${k.e} ${escapeHtml(k.n)}">📍 Show on map${k.prec === "approx" ? " (approx.)" : " (area)"}</button></div>` : ""}
     </article>`).join("")}</div></section>`).join("");
   el.addEventListener("click", e => { const b = e.target.closest("[data-fly]"); if (b) { const [x, y, z] = b.dataset.fly.split(",").map(Number); flyToGame(x, y, z, b.dataset.label); } });
+}
+
+function initSettings() {
+  const quick = `<div class="mg-quick"><b>Quick setup:</b><ul class="know-tips" style="margin-top:0.5rem">${SETTINGS_QUICK.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul></div>`;
+  const rows = SETTINGS.map(([tab, n, def, rec, why]) => `<tr><td><span class="set-tab">${escapeHtml(tab)}</span></td><td><b>${escapeHtml(n)}</b></td><td>${escapeHtml(def)}</td><td class="set-rec">${escapeHtml(rec)}</td><td class="set-why">${escapeHtml(why)}</td></tr>`).join("");
+  document.getElementById("setList").innerHTML = quick + `<h3 class="mg-h">All recommended changes</h3><div class="mg-table-wrap"><table class="mg-table set-table"><thead><tr><th>Menu</th><th>Setting</th><th>Default</th><th>Recommended</th><th>Why</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 // ============================================================================
@@ -2195,6 +2275,7 @@ renderTrophies();
 initBigMap();
 initSideMap();
 initMyPins();
+initCommunity();
 initGallery("vehicles");
 initFastest();
 initGuides();
@@ -2203,6 +2284,7 @@ initDoors();
 initEggs();
 initBonus();
 initKnowledge();
+initSettings();
 updateHero();
 initGallery("weapons");
 { const h = ({ cheats: "codes" })[location.hash.slice(1)] || location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "knowledge", "trophies"].includes(h)) showTab(h); }

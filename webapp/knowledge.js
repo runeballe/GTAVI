@@ -38,3 +38,25 @@ const STARTER_TIPS = [
     "Sell the loot quickly — it's lost if you die",
   ]},
 ];
+
+// Recommended settings (Xbox; same menus on PS5) — supplied by the site owner, Nov 2026.
+// [tab, setting, default, recommended, why]
+const SETTINGS_QUICK = [
+  "Motion Blur Strength: 3 → 1",
+  "Camera Shake: Off",
+  "Cinematic kill-shot and crash cameras: 3 → 0 or 1",
+  "Subtitles: On for every conversation",
+  "Coming from GTA 5? Use the Classic control scheme — sprint goes back to A (Cross on PS5)",
+];
+const SETTINGS = [
+  ["Display", "Motion Blur Strength", "3", "1 (0 for maximum sharpness)", ""],
+  ["Camera", "Camera Bob", "10", "0–3", "if walking makes you queasy"],
+  ["Camera", "Cinematic Kill Shot Frequency", "3", "0–1", ""],
+  ["Camera", "Cinematic Vehicle Crash Frequency", "3", "0–1", "keeps you in control after a crash"],
+  ["Gameplay: aiming & combat", "Targeting", "Partial", "Keep Partial", "Lock-On = GTA 5's automatic lock"],
+  ["Controls", "Look / Aim Sensitivity", "6–7", "1–2 steps higher", "if the camera feels slow"],
+  ["Controls", "Aim Response Curve", "Standard", "Try Aggressive", "snappier aiming"],
+  ["Controls", "Deadzone (left / right stick)", "4", "3", "if your controller doesn't drift"],
+  ["Controls", "Adaptive Triggers Resistance", "On", "Lower or Off", "if the triggers feel stiff"],
+  ["Controls", "Aim & Look Sensitivity: horizontal/vertical look, horizontal/vertical aim, look & aim acceleration", "—", "3 (all of them)", "lower, steadier camera"],
+];
