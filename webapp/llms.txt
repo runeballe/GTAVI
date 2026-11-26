@@ -28,7 +28,7 @@ Source code (MIT): https://github.com/runeballe/GTAVI
 
 - Map tiles and landmark coordinates: gtadb.org contributors (CC BY 4.0) — https://gtadb.org
 - Cheats and trophies: leonidaverse.com codex (unofficial fan wiki), cross-checked with gta.wiki and launch-week cheat guides
-- Optional map layers with ~2,900 community pins: gta6map.io
+- Optional map layers with ~4,700 pins: Open GTA 6 Map (CC BY 4.0, github.com/fbritoferreira/gta6) + gta6map.io
 - Vehicles and weapons: gta.wiki (Vehicles_in_GTA_VI, Weapons_in_GTA_VI)
 - Guide tips: community sources (Reddit, X, Skycoach, G2A, Insider Gaming, VICE, Space4Games, Rock Paper Shotgun)
 

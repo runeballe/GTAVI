@@ -38,6 +38,7 @@ cd deploy
 
 ## Credits
 
+- Extra map pins: [Open GTA 6 Map](https://github.com/fbritoferreira/gta6) by fbritoferreira — "Map data from Open GTA 6 Map (fbritoferreira), CC BY 4.0" (converted to game coordinates; `deploy/tools/fetch_opengta6.py`). Plus a few pins from [gta6map.io](https://gta6map.io) (not stored in this repo).
 - Map tiles and landmark coordinates: [gtadb.org](https://gtadb.org) and its contributors — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) ([source](https://github.com/rolux/gtadb.org)).
 - Cheat and trophy data: [leonidaverse.com](https://leonidaverse.com/en/codex) (unofficial fan wiki), cross-checked with [gta.wiki](https://gta.wiki/w/Cheats_in_GTA_VI).
 - Vehicle/weapon names and classes: [gta.wiki](https://gta.wiki) (CC BY-SA). Thumbnails are Rockstar images and are not included in this repo.

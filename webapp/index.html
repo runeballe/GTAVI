@@ -949,7 +949,7 @@
         <div class="map-side-head">
           <input id="pinSearch" class="map-search" type="search" placeholder="Search pins — car, motel, Randy…" autocomplete="off" />
           <div class="map-chips" id="mapChips"></div>
-          <div class="cm-head">📚 More pins <span>from gta6map.io · off until you pick</span><b id="cmStatus"></b></div>
+          <div class="cm-head">📚 More pins <span>Open GTA 6 Map + gta6map.io · off until you pick</span><b id="cmStatus"></b></div>
           <div class="map-chips" id="cmChips"></div>
           <div class="mp-tools"><span>📌 My pins — <b>Add pin</b>, right-click the map, or paste a link/X,Y</span><span><button type="button" id="mpByXY" title="Place a pin from X/Y or a pasted link">＋ X/Y or link</button><button type="button" id="mpExport">⬇ Export</button><button type="button" id="mpImport">⬆ Import</button></span><input type="file" id="mpFile" accept="application/json,.json" hidden></div>
         </div>
@@ -1551,15 +1551,28 @@ function addPins(mapObj, store, track) {
 const CM_GROUPS = [["rob", "💰 Robberies", "#ff5f5f"], ["coll", "🃏 Collectibles", "#b388ff"], ["race", "🏁 Races & stunts", "#00d9ff"], ["act", "🎯 Activities", "#2ecc71"],
   ["veh", "🚘 Vehicles", "#ffd60a"], ["wep", "🔫 Weapons", "#ff9f1a"], ["shop", "🛍️ Shops & services", "#9aa4b5"], ["place", "🏙️ Places & transport", "#7fd1c7"]];
 const COMM = { layers: {}, on: {}, loading: null };
+// Two sources, merged: Open GTA 6 Map (CC BY 4.0, primary) + gta6map.io pins that Open GTA 6 Map doesn't already have.
+const CM_SOURCES = { o: "Open GTA 6 Map (CC BY 4.0)", g: "gta6map.io" };
+function loadScript(src) { return new Promise(res => { const sc = document.createElement("script"); sc.src = src; sc.onload = () => res(true); sc.onerror = () => res(false); document.head.appendChild(sc); }); }
 function loadCommunity() {
   if (window.COMMUNITY) return Promise.resolve();
-  if (!COMM.loading) COMM.loading = new Promise((res, rej) => { const sc = document.createElement("script"); sc.src = "community.js"; sc.onload = res; sc.onerror = rej; document.head.appendChild(sc); });
+  if (!COMM.loading) COMM.loading = Promise.all([loadScript("opengta6.js"), loadScript("community.js")]).then(() => {
+    const open = (window.OPENGTA6 && window.OPENGTA6.pins) || [];
+    const g6 = window.COMMUNITY_G6 || [];
+    if (!open.length && !g6.length) throw new Error("no data");
+    const grid = {}, cell = 60;
+    open.forEach(p => { const k = Math.round(p[2] / cell) + "," + Math.round(p[3] / cell); (grid[k] = grid[k] || []).push(p); });
+    const near = (x, y) => { for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) for (const q of grid[(Math.round(x / cell) + i) + "," + (Math.round(y / cell) + j)] || []) if (Math.hypot(q[2] - x, q[3] - y) < 40) return true; return false; };
+    const extra = g6.filter(p => !near(p[2], p[3])).map(p => [p[0], p[1], p[2], p[3], p[4], p[5], p[6], "g"]);
+    window.COMMUNITY = { groups: Object.fromEntries(CM_GROUPS.map(([g, label, col]) => [g, [label.replace(/^\S+\s/, ""), col]])), pins: open.concat(extra), counts: { o: open.length, g: extra.length } };
+    if (typeof bigMap !== "undefined" && bigMap.attributionControl) bigMap.attributionControl.addAttribution('Pins: <a href="https://github.com/fbritoferreira/gta6" target="_blank" rel="noopener">Open GTA 6 Map</a> (CC BY 4.0) · <a href="https://gta6map.io" target="_blank" rel="noopener">gta6map.io</a>');
+  });
   return COMM.loading;
 }
 function commPopup(p) {
   const g = window.COMMUNITY.groups[p[4]];
   return `<div class="pp-cat" style="color:${g[1]}">📚 ${escapeHtml(g[0])} · ${escapeHtml(p[1].replace(/-/g, " "))}</div><div class="pp-name">${escapeHtml(p[0])}</div>`
-    + (p[5] ? `<div class="pp-note">${escapeHtml(p[5])}</div>` : "") + `<div class="pp-xy">x ${p[2]} · y ${p[3]} · source: gta6map.io</div>`;
+    + (p[5] ? `<div class="pp-note">${escapeHtml(p[5])}</div>` : "") + `<div class="pp-xy">x ${p[2]} · y ${p[3]} · source: ${CM_SOURCES[p[7]] || "gta6map.io"}</div>`;
 }
 function commLayer(g) {
   if (COMM.layers[g]) return COMM.layers[g];
@@ -1683,7 +1696,7 @@ async function parseSpotInput(text) {
   m = /[#&?]loc=([a-z0-9]{6,10})/i.exec(t);
   if (m) {
     try { await loadCommunity(); } catch (e) { return { error: "Couldn't load gta6map.io data" }; }
-    const p = window.COMMUNITY.pins.find(q => q[6] === m[1].toLowerCase());
+    const p = (window.COMMUNITY_G6 || []).find(q => q[6] === m[1].toLowerCase());
     return p ? { x: p[2], y: p[3], name: p[0], note: p[5], from: "gta6map.io link" } : { error: "That gta6map.io location isn't in our copy of their data" };
   }
   m = /^\s*x?\s*[:=]?\s*(-?\d{1,6}(?:\.\d+)?)\s*[,;\s]\s*y?\s*[:=]?\s*(-?\d{1,6}(?:\.\d+)?)\s*$/i.exec(t);
@@ -1755,7 +1768,7 @@ function renderPinList() {
   if (pinQuery && window.COMMUNITY) {
     const hits = [];
     window.COMMUNITY.pins.forEach((p, i) => { if (hits.length < 60 && (p[0] + " " + p[1] + " " + p[5]).toLowerCase().includes(pinQuery)) hits.push(i); });
-    if (hits.length) html += `<div class="pin-group">📚 gta6map.io${hits.length === 60 ? " (first 60)" : ""}</div>` + hits.map(i => { const p = window.COMMUNITY.pins[i]; return `<button class="pin-row" data-cm="${i}" type="button"><span class="mswatch" style="background:${window.COMMUNITY.groups[p[4]][1]}"></span><span><div class="pin-name">${escapeHtml(p[0])}</div><div class="pin-where">${escapeHtml(p[1].replace(/-/g, " "))}</div></span></button>`; }).join("");
+    if (hits.length) html += `<div class="pin-group">📚 More pins${hits.length === 60 ? " (first 60)" : ""}</div>` + hits.map(i => { const p = window.COMMUNITY.pins[i]; return `<button class="pin-row" data-cm="${i}" type="button"><span class="mswatch" style="background:${window.COMMUNITY.groups[p[4]][1]}"></span><span><div class="pin-name">${escapeHtml(p[0])}</div><div class="pin-where">${escapeHtml(p[1].replace(/-/g, " "))}</div></span></button>`; }).join("");
   }
   el.innerHTML = html || `<div class="pin-empty">No pins match${pinQuery ? ` “${escapeHtml(pinQuery)}”` : ""}.</div>`;
   updateChipCounts();
