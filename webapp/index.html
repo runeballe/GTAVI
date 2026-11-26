@@ -397,6 +397,8 @@
   .glinks button:hover { text-decoration: underline; }
 
 
+  .cpin { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; line-height: 1; background: #111a2b; border: 2px solid var(--c); box-shadow: 0 0 0 2px rgba(11, 12, 16, 0.85), 0 2px 6px rgba(0, 0, 0, 0.5); transition: transform 0.12s; }
+  .leaflet-marker-icon:hover .cpin { transform: scale(1.25); }
   .cm-head { margin-top: 0.7rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); display: flex; gap: 0.4rem; align-items: baseline; flex-wrap: wrap; }
   .cm-head span { color: var(--muted); font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 0.68rem; }
   .cm-head b { color: var(--muted); font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 0.68rem; margin-left: auto; }
@@ -1574,16 +1576,43 @@ function commPopup(p) {
   return `<div class="pp-cat" style="color:${g[1]}">📚 ${escapeHtml(g[0])} · ${escapeHtml(p[1].replace(/-/g, " "))}</div><div class="pp-name">${escapeHtml(p[0])}</div>`
     + (p[5] ? `<div class="pp-note">${escapeHtml(p[5])}</div>` : "") + `<div class="pp-xy">x ${p[2]} · y ${p[3]} · source: ${CM_SOURCES[p[7]] || "gta6map.io"}</div>`;
 }
+const CM_DEFAULT_ICON = { rob: "💰", coll: "🃏", race: "🏁", act: "🎯", veh: "🚘", wep: "🔫", shop: "🛍️", place: "🏙️" };
+function cmKind(p) {
+  const K = window.OPENGTA6 && window.OPENGTA6.kinds, k = p[8] && K && K[p[8]];
+  return k ? { icon: k[0], col: k[1] } : { icon: CM_DEFAULT_ICON[p[4]] || "📍", col: window.COMMUNITY.groups[p[4]][1] };
+}
+// Zoomed out: light canvas dots (one layer per group, coloured by kind)
 function commLayer(g) {
   if (COMM.layers[g]) return COMM.layers[g];
   const rend = COMM.rend || (COMM.rend = L.canvas({ padding: 0.3 }));
-  const col = window.COMMUNITY.groups[g][1], lg = L.layerGroup();
+  const lg = L.layerGroup();
   window.COMMUNITY.pins.forEach(p => {
     if (p[4] !== g) return;
-    L.circleMarker([p[3], p[2]], { radius: 5, color: "#0b0c10", weight: 1.5, fillColor: col, fillOpacity: 0.95, renderer: rend })
+    L.circleMarker([p[3], p[2]], { radius: 5, color: "#0b0c10", weight: 1.5, fillColor: cmKind(p).col, fillOpacity: 0.95, renderer: rend })
       .bindTooltip(escapeHtml(p[0]), { direction: "right", className: "gtip" }).bindPopup(commPopup(p), { maxWidth: 280 }).addTo(lg);
   });
   return (COMM.layers[g] = lg);
+}
+// Zoomed in (zoom ≥ 4): icon badges, only for pins in view (kept in sync as you pan)
+COMM.icons = null; COMM.iconMap = new Map();
+function commIconMarker(p) {
+  const k = cmKind(p);
+  return L.marker([p[3], p[2]], { keyboard: false, riseOnHover: true, icon: L.divIcon({ className: "", iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -13], tooltipAnchor: [13, 0],
+      html: `<div class="cpin" style="--c:${k.col}">${k.icon}</div>` }) })
+    .bindTooltip(escapeHtml(p[0]), { direction: "right", className: "gtip" }).bindPopup(commPopup(p), { maxWidth: 280 });
+}
+function refreshComm() {
+  if (!window.COMMUNITY) return;
+  if (!COMM.icons) COMM.icons = L.layerGroup().addTo(bigMap);
+  const zoomedIn = bigMap.getZoom() >= 4, bounds = bigMap.getBounds().pad(0.25), want = new Set();
+  if (zoomedIn) window.COMMUNITY.pins.forEach((p, i) => { if (COMM.on[p[4]] && bounds.contains([p[3], p[2]])) want.add(i); });
+  const useIcons = zoomedIn && want.size <= 900;   // very dense views fall back to dots
+  Object.keys(COMM.on).forEach(g => {
+    const lay = commLayer(g), show = COMM.on[g] && !useIcons;
+    if (show && !bigMap.hasLayer(lay)) lay.addTo(bigMap); else if (!show && bigMap.hasLayer(lay)) bigMap.removeLayer(lay);
+  });
+  for (const [i, m] of COMM.iconMap) if ((!useIcons || !want.has(i)) && !m.isPopupOpen()) { COMM.icons.removeLayer(m); COMM.iconMap.delete(i); }
+  if (useIcons) want.forEach(i => { if (!COMM.iconMap.has(i)) { const m = commIconMarker(window.COMMUNITY.pins[i]); COMM.iconMap.set(i, m); m.addTo(COMM.icons); } });
 }
 function focusCommunity(i) {
   const p = window.COMMUNITY.pins[i];
@@ -1599,12 +1628,13 @@ function initCommunity() {
     if (!window.COMMUNITY) { status.textContent = "loading…"; try { await loadCommunity(); } catch (err) { status.textContent = "couldn't load"; return; } }
     COMM.on[g] = !COMM.on[g];
     b.classList.toggle("off", !COMM.on[g]); b.setAttribute("aria-pressed", COMM.on[g]);
-    if (COMM.on[g]) commLayer(g).addTo(bigMap); else bigMap.removeLayer(commLayer(g));
+    refreshComm();
     const counts = {}; window.COMMUNITY.pins.forEach(p => counts[p[4]] = (counts[p[4]] || 0) + 1);
     box.querySelectorAll("[data-cm]").forEach(x => x.querySelector(".n").textContent = counts[x.dataset.cm] || "");
     status.textContent = `${window.COMMUNITY.pins.length} pins`;
     renderPinList();
   });
+  bigMap.on("moveend zoomend", refreshComm);
   // searching also looks through the community pins once they're loaded
   document.getElementById("pinSearch").addEventListener("focus", () => loadCommunity().then(() => { status.textContent = `${window.COMMUNITY.pins.length} pins`; if (pinQuery) renderPinList(); }).catch(() => {}), { once: true });
 }
