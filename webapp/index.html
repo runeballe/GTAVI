@@ -186,6 +186,24 @@
 
 
 
+  .mg-quick { background: rgba(0, 217, 255, 0.07); border: 1px solid rgba(0, 217, 255, 0.3); border-radius: 10px; padding: 0.8rem 1rem; font-size: 0.88rem; margin-bottom: 0.8rem; }
+  .mg-ending { background: linear-gradient(90deg, rgba(255, 95, 162, 0.12), rgba(180, 76, 255, 0.08)); border: 1px solid rgba(255, 95, 162, 0.45); border-radius: 10px; padding: 0.8rem 1rem; font-size: 0.88rem; margin-bottom: 1.3rem; }
+  .mg-h { font-size: 1.05rem; margin: 0.4rem 0 0.6rem; }
+  .mg-table-wrap { overflow-x: auto; margin-bottom: 1.4rem; border: 1px solid var(--border); border-radius: 10px; }
+  .mg-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 560px; }
+  .mg-table th, .mg-table td { text-align: left; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); }
+  .mg-table th { background: #0f1117; color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .mg-table tr:last-child td { border-bottom: none; }
+  .mg-table td:nth-child(3) { color: var(--gold); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .rk-l, .rk-m, .rk-h { font-size: 0.7rem; font-weight: 700; border-radius: 999px; padding: 0.08rem 0.5rem; border: 1px solid; white-space: nowrap; }
+  .rk-l { color: var(--done); } .rk-m { color: var(--gold); } .rk-h { color: #ff5f5f; }
+  .mg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+  @media (max-width: 500px) { .mg-grid { grid-template-columns: 1fr; } }
+  .mg-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1.1rem; font-size: 0.84rem; line-height: 1.5; }
+  .mg-card h3 { font-size: 0.98rem; margin-bottom: 0.45rem; color: var(--accent); }
+  .mg-card ul, .mg-card ol { margin-left: 1.1rem; display: grid; gap: 0.35rem; }
+  .mg-card p { margin-top: 0.4rem; }
+  .mg-warn { color: var(--muted); font-size: 0.78rem; }
   .glitch { background: var(--card); border: 1px solid rgba(46, 204, 113, 0.45); border-radius: 12px; padding: 1rem 1.2rem; margin: 0 0 1.5rem; }
   .glitch-head { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
   .glitch ol { margin: 0.3rem 0 0.6rem 1.2rem; font-size: 0.85rem; display: grid; gap: 0.25rem; }
@@ -415,7 +433,7 @@
   </div>
   <nav class="tabs" aria-label="Sections" role="tablist">
     <button class="tab active" id="tabbtn-checklist" role="tab" aria-controls="tab-checklist" aria-selected="true" onclick="showTab('checklist')">📋 Checklist</button>
-    <button class="tab" id="tabbtn-money" role="tab" aria-controls="tab-money" aria-selected="false" onclick="showTab('money')">💰 Money Fast</button>
+    <button class="tab" id="tabbtn-money" role="tab" aria-controls="tab-money" aria-selected="false" onclick="showTab('money')">💰 Money Guide</button>
     <button class="tab" id="tabbtn-map" role="tab" aria-controls="tab-map" aria-selected="false" onclick="showTab('map')">🗺️ Live Map</button>
     <button class="tab" id="tabbtn-leonida" role="tab" aria-controls="tab-leonida" aria-selected="false" onclick="showTab('leonida')">🌴 Leonida</button>
     <button class="tab" id="tabbtn-vehicles" role="tab" aria-controls="tab-vehicles" aria-selected="false" onclick="showTab('vehicles')">🚗 Vehicles</button>
@@ -497,13 +515,85 @@
 <!-- ==================== TAB 2: MONEY ==================== -->
 <section id="tab-money" role="tabpanel" aria-labelledby="tabbtn-money" style="display:none">
   <div class="money-wrap">
+    <div class="subtabs" role="tablist" aria-label="Money">
+      <button type="button" class="subtab active" id="subbtn-mguide" role="tab" aria-selected="true" data-sub="mguide">📘 Money Guide</button>
+      <button type="button" class="subtab" id="subbtn-moneyfast" role="tab" aria-selected="false" data-sub="moneyfast">⚡ Money Fast</button>
+    </div>
+    <div id="sub-mguide" role="tabpanel" aria-labelledby="subbtn-mguide">
+      <div class="money-hero">📘 Money Guide</div>
+      <div class="money-sub">How to earn — and keep — money in each chapter. Payouts are what guide writers saw in their own runs; loot, car condition and buyer change the numbers.</div>
+      <div class="mg-quick"><b>Quick answer:</b> don't grind in Chapter 1 (that cash doesn't carry over). <b>Ch 2:</b> stolen cars to Moses + the barn glitch. <b>Ch 3:</b> Yasmani's jewelry stores and Randy's supercars. <b>End of Ch 4+:</b> large bank vaults (~$200k) and Pilot Pete's drops.</div>
+      <div class="mg-ending">🏁 <b>Save $3M in Family Savings before <i>The End of the Road</i>.</b> The amount helps decide your ending — guides quote $2M–$3M for the best one, so $3M covers them all. Even ~$2M adds an epilogue where the money reaches Lucia's family.</div>
+
+      <h3 class="mg-h">At a glance</h3>
+      <div class="mg-table-wrap"><table class="mg-table">
+        <thead><tr><th>Method</th><th>Unlocks</th><th>Payout</th><th>Risk</th></tr></thead>
+        <tbody>
+          <tr><td>Store stick-ups</td><td>Start</td><td>A few hundred</td><td><span class="rk-l">Low</span></td></tr>
+          <tr><td>Barn loot-respawn glitch</td><td>Ch 2</td><td>~$8.6–10k / loop</td><td><span class="rk-l">Low</span></td></tr>
+          <tr><td>Stolen cars → Moses</td><td>Ch 2</td><td>$1k – a few k / car</td><td><span class="rk-l">Low</span></td></tr>
+          <tr><td>Hunting for Bret</td><td>Ch 2 (Jason)</td><td>Hundreds – a few k / animal</td><td><span class="rk-l">Low</span></td></tr>
+          <tr><td>Demolition derby</td><td>Ambrosia Raceway</td><td>$3.8–6.3k / win</td><td><span class="rk-l">Low</span></td></tr>
+          <tr><td>Jewelry stores (Yasmani)</td><td>Ch 3</td><td>$10–25k / store</td><td><span class="rk-m">Medium</span></td></tr>
+          <tr><td>Supercars → Randy</td><td>Ch 3 (Key Cloner)</td><td>~$20–30k+ / car</td><td><span class="rk-m">Medium</span></td></tr>
+          <tr><td>Payday Loans & small banks</td><td>Ch 3 (after Credit Check)</td><td>Marked bills → fence</td><td><span class="rk-m">Medium</span></td></tr>
+          <tr><td>Pilot Pete's cocaine drops</td><td>Ch 4</td><td>$10–20k / drop</td><td><span class="rk-m">Medium</span></td></tr>
+          <tr><td>Large bank vaults</td><td>End of Ch 4</td><td>Up to ~$200k</td><td><span class="rk-h">High · instant 4★</span></td></tr>
+        </tbody></table></div>
+
+      <div class="mg-grid">
+        <section class="mg-card"><h3>Chapter 1 — don't farm yet</h3>
+          <p>Cash you hold here doesn't make it into Chapter 2, so spend it as you go. Practise instead: stick-ups (aim at the clerk), the yellow gang operations (39 on the map) and street races.</p>
+          <p class="mg-warn">Guides disagree on whether moving it into BuckMe first saves it — the tracker's Ch 1 checklist says only <b>Family Savings</b> carries over.</p></section>
+        <section class="mg-card"><h3>Chapter 2 — Moses, hunting, the glitch</h3>
+          <ul>
+            <li><b>Moses</b> buys older, low-key stolen cars: ~$1k up to a few thousand. No trackers; garage closes a couple of minutes after each sale (sleeping skips it); he refuses cars stolen right next to his garage — grab them further out, e.g. Port Gellhorn's main road; damage lowers the price.</li>
+            <li><b>Hunting</b> for Bret (Jason): common animals pay hundreds, rare/legendary much more (~$2.5k for a wild boar).</li>
+            <li><b>Fake breakdowns</b> on the roads can be drug drops (~$1.3k in the trunk); <b>plane crash</b> smoke in the Grassrivers ≈ $1k of goods — leave before the cops and rivals arrive.</li>
+            <li><b>Fencing:</b> drugs and marked bills can't be spent — sell at <b>Brian's Lockup</b>, SW Key Lento (keypad <b>7700</b>) or Donnie's trailer; payment arrives in the mailbox at Jason's safehouse.</li>
+          </ul></section>
+        <section class="mg-card"><h3>Early spots (late Ch 1 – Ch 2)</h3>
+          <ul>
+            <li>Kingfishers hideouts — fishing shacks NW of Key Lento: ~$1–2k+ each</li>
+            <li>Donnie's 4 lost drug packages around Cottonmouth Lake (after <i>Buck Me</i>): ~$900 each</li>
+            <li>Treasure dives for Kenton (after <i>Island Dreams</i>): ~$1.4k+</li>
+            <li>Random events (plane crashes, burning boats) in the Keys & Grassrivers: ~$1.5–2k</li>
+            <li>Gang stash safes in Illegal Operations: a few thousand, more in big compounds</li>
+            <li>Pawn shops (mid Ch 2): ~$1–12k</li>
+          </ul></section>
+        <section class="mg-card"><h3>Chapter 3 — jewelry & supercars</h3>
+          <ul>
+            <li><b>Yasmani's Jewelry Jobs:</b> Smash 'n' Grabs pay $10–25k a store, chainable, plus the back-room safe. Kill the alarm panel first.</li>
+            <li><b>Randy's Wish List:</b> the Key Cloner (mid Ch 3) lets you take high-end cars cleanly; a perfect one fetches ~$20–30k+. Text Randy for spots. Pay 'n' Spray starts buying standard-tracker cars (~$4k).</li>
+            <li><b>Payday Loans (7) & small banks</b> open after <i>Credit Check</i>; marked bills go to a fence — the Dye Pack Jammer from Credit Check stops dye packs ruining them.</li>
+            <li><b>Demolition derby</b> (Ambrosia Raceway): last car running wins $3.8–6.3k; the oval pays ~double the figure-eight; rent a car there.</li>
+          </ul></section>
+        <section class="mg-card"><h3>Chapter 4+ — bank vaults & Pete</h3>
+          <ol>
+            <li>Optional quest <i>That's Where the Money Is… (Wait at the Cafe)</i> unlocks the 8 large banks.</li>
+            <li>Vaults only open during a cash delivery — tail an armored van to a bank or wait for one.</li>
+            <li>Grab what you can: instant 4★. Escape on a fast bike, then swap vehicles.</li>
+          </ol>
+          <p>Yasmani sells van-schedule tips for $10k after two Payday Loans jobs. It unlocks right before the final stretch — <b>make a separate save</b>. <b>Pilot Pete</b> (met in Ch 3) offers timed drug drops from Ch 4: ~$10–20k each.</p></section>
+        <section class="mg-card"><h3>Keep what you earn</h3>
+          <ul>
+            <li><b>Bank it</b> — cash on hand is lost if you die or get arrested; move it to BuckMe or the safehouse.</li>
+            <li><b>Save manually</b> right after a big sale — autosave is rare.</li>
+            <li>Missing a stash bag? <b>Check the car trunk.</b></li>
+            <li>On big robberies, the partner controls the crowd while you loot.</li>
+            <li>Cheats disable saving, so the money cheat can't be kept.</li>
+          </ul></section>
+      </div>
+      <p class="leo-credit">Based on <a href="https://stealthygaming.com/gta-6-money-guide/" target="_blank" rel="noopener">Stealthy Gaming's money guide</a> (updated 26 Nov 2026), which compiles PowerPyx, PC Gamer, Beebom, GamesRadar+ and AlcastHQ. Condensed in our own words.</p>
+    </div>
+    <div id="sub-moneyfast" role="tabpanel" aria-labelledby="subbtn-moneyfast" hidden>
     <div class="money-hero">💰 Make Money Fast</div>
     <div class="money-sub">Payouts per method, per chapter — best farm changes as the story opens new systems. Sources: G2A money guide, Skycoach, PowerPyx, PC Gamer, Space4Games.</div>
 
     <div class="stat-grid">
       <div class="stat best"><div class="amt">$100–205k</div><div class="lbl">🏦 Large bank vaults</div><div class="meta">Late Ch 4 / endgame · best farm</div></div>
-      <div class="stat"><div class="amt">~$10k / run</div><div class="lbl">🔁 Hamlet stash respawn glitch</div><div class="meta">After Ch 1 · repeatable · see below</div></div>
-      <div class="stat"><div class="amt">$30k+</div><div class="lbl">🚗 Randy's Wish List cars</div><div class="meta">Mid Ch 3 · 22 cars · reward: Advanced Tracker demobiliser</div></div>
+      <div class="stat"><div class="amt">~$8.6–10k / loop</div><div class="lbl">🔁 Hamlet stash respawn glitch</div><div class="meta">After Ch 1 · repeatable · see below</div></div>
+      <div class="stat"><div class="amt">$30k+</div><div class="lbl">🚗 Randy's Wish List cars</div><div class="meta">Mid Ch 3 · 18–22 cars (guides differ) · reward: Advanced Tracker demobiliser</div></div>
       <div class="stat"><div class="amt">$120k</div><div class="lbl">📖 Story payment</div><div class="meta">End of Chapter 3</div></div>
       <div class="stat"><div class="amt">$10–25k</div><div class="lbl">💎 Jewelry Smash 'n' Grabs</div><div class="meta">Ch 3 · one night = $37k possible</div></div>
       <div class="stat"><div class="amt">$12–20k</div><div class="lbl">✈️ Pilot Pete deliveries</div><div class="meta">Ch 4 questline</div></div>
@@ -515,7 +605,7 @@
     </div>
 
     <div class="glitch">
-      <div class="glitch-head"><b>🔁 Loot respawn glitch — Apollo Aggregates, NE of Hamlet</b><span class="fbadge ch">Checked: 2 sources agree</span></div>
+      <div class="glitch-head"><b>🔁 Loot respawn glitch — Apollo Aggregates, NE of Hamlet</b><span class="fbadge ch">Checked: 3 sources agree</span></div>
       <ol>
         <li>Bring a registered vehicle with lots of trunk space (a van with 10+ slots is ideal) — wait until after Chapter 1.</li>
         <li>At the abandoned barn/warehouse next to Apollo Aggregates (Peregrine Bay, just NE of Hamlet) there are bodies everywhere — a drug deal gone wrong.</li>
@@ -523,9 +613,9 @@
         <li><b>Respawn the loot:</b> either save and reload (you wake at home with the bags still in your car), or quickly switch to the other character and back.</li>
         <li>Sell the goods at any Fence, then repeat.</li>
       </ol>
-      <div class="glitch-note">⚠ Realistic take: about <b>$10k per run</b>, and each chapter has a cap on how much cash you can hold, so you'll max out fast. Glitches like this can be patched in any update. Ignore viral "$3.8M/hour" route images — that one's fake.</div>
+      <div class="glitch-note">⚠ Realistic take: about <b>$8.6–10k per loop</b>, and each chapter has a cap on how much cash you can hold, so you'll max out fast. Glitches like this can be patched in any update. Ignore viral "$3.8M/hour" route images — that one's fake.</div>
       <div class="place-actions"><button type="button" data-fly="-1837,-2876,5" data-label="🔁 Money glitch — Apollo Aggregates">📍 Show on map</button>
-        <a href="https://insider-gaming.com/gta-6-infinite-money-glitch/" target="_blank" rel="noopener">Insider Gaming ↗</a><a href="https://thetab.com/2026/11/25/gta-6s-unlimited-money-glitch-is-solving-everyones-shopping-problems-and-its-so-easy-to-do" target="_blank" rel="noopener">The Tab ↗</a></div>
+        <a href="https://insider-gaming.com/gta-6-infinite-money-glitch/" target="_blank" rel="noopener">Insider Gaming ↗</a><a href="https://thetab.com/2026/11/25/gta-6s-unlimited-money-glitch-is-solving-everyones-shopping-problems-and-its-so-easy-to-do" target="_blank" rel="noopener">The Tab ↗</a><a href="https://stealthygaming.com/gta-6-money-glitch/" target="_blank" rel="noopener">Stealthy Gaming ↗</a></div>
     </div>
 
     <div class="playbook">
@@ -609,6 +699,7 @@
         </table>
       </div>
     </div>
+  </div>
   </div>
 </section>
 
@@ -1367,7 +1458,7 @@ function renderFastest() {
   document.getElementById("fastText").textContent = `${n} collected` + (n === FASTEST.length ? " — full garage! 🏁" : "");
   document.getElementById("fastCount").textContent = `${n} / ${FASTEST.length} cars · ${FASTEST.filter(c => c.map).length} with map spots`;
 }
-const SUBS = { vehicles: ["allveh", "fastest"], weapons: ["allwep", "legendary"], cheats: ["codes", "challenges"] };
+const SUBS = { money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest"], weapons: ["allwep", "legendary"], cheats: ["codes", "challenges"] };
 const SUB_PARENT = Object.fromEntries(Object.entries(SUBS).flatMap(([t, l]) => l.slice(1).map(n => [n, t])));
 function currentSub(tab) { return (SUBS[tab] || []).find(n => !document.getElementById("sub-" + n).hidden); }
 function subHash(tab) { const c = currentSub(tab); return c && c !== SUBS[tab][0] ? "#" + c : "#" + tab; }
