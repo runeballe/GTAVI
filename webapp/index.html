@@ -424,6 +424,11 @@
   .mp-custom { position: relative; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 0.75rem; background: conic-gradient(#ff3b30, #ffd60a, #00e5a0, #f5a623, #b388ff, #ff4fd8, #ff3b30); box-shadow: 0 0 0 1px var(--border); cursor: pointer; overflow: hidden; }
   .mp-custom input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; border: 0; padding: 0; }
   .mp-custom span { pointer-events: none; filter: drop-shadow(0 0 2px #000); }
+  .mp-xy { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+  .mp-xy label { display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; color: var(--muted); }
+  .mp-xy input { width: 78px; font: inherit; font-size: 0.8rem; background: #0f1626; color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 0.3rem 0.4rem; }
+  .mp-xy input:focus { outline: none; border-color: #00e5a0; }
+  .mp-xy button { font: inherit; font-size: 0.7rem; background: #253045; border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 0.25rem 0.5rem; cursor: pointer; }
   .mp-btns { display: flex; gap: 0.3rem; }
   .mp-btns button { margin-left: 0; padding: 0.35rem 0.8rem; font-size: 0.8rem; }
   .mp-btns .pri { background: #00e5a0; color: #0f1626; border-color: #00e5a0; font-weight: 700; }
@@ -938,7 +943,7 @@
           <div class="map-chips" id="mapChips"></div>
           <div class="cm-head">📚 More pins <span>from gta6map.io · off until you pick</span><b id="cmStatus"></b></div>
           <div class="map-chips" id="cmChips"></div>
-          <div class="mp-tools"><span>📌 My pins — tap <b>Add pin</b> or right-click the map</span><span><button type="button" id="mpExport">⬇ Export</button><button type="button" id="mpImport">⬆ Import</button></span><input type="file" id="mpFile" accept="application/json,.json" hidden></div>
+          <div class="mp-tools"><span>📌 My pins — tap <b>Add pin</b>, right-click the map, or type X/Y</span><span><button type="button" id="mpByXY" title="Place a pin by typing X and Y">＋ by X/Y</button><button type="button" id="mpExport">⬇ Export</button><button type="button" id="mpImport">⬆ Import</button></span><input type="file" id="mpFile" accept="application/json,.json" hidden></div>
         </div>
         <div class="pin-list" id="pinList"></div>
       </aside>
@@ -1623,8 +1628,9 @@ function openPinForm(latlng, existing) {
     <div class="mp-emoji">${MY_EMOJI.map(e => `<button type="button" data-e="${e}" class="${e === p.emoji ? "sel" : ""}">${e}</button>`).join("")}</div>
     <div class="mp-colors">${MY_COLORS.map(c => `<button type="button" data-c="${c}" class="${c === cur ? "sel" : ""}" style="background:${c}" aria-label="Colour ${c}"></button>`).join("")}<label class="mp-custom" title="Custom colour"><input type="color" value="${cur}" aria-label="Custom colour"><span>🎨</span></label></div>
     <textarea name="note" maxlength="300" rows="3" placeholder="Note (optional)">${escapeHtml(p.note || "")}</textarea>
+    <div class="mp-xy"><label>X <input name="px" type="number" step="1" value="${Math.round(latlng.lng)}"></label><label>Y <input name="py" type="number" step="1" value="${Math.round(latlng.lat)}"></label><button type="button" data-here title="Use the map centre">⌖ map centre</button></div>
     <div class="mp-btns"><button type="submit" class="pri">Save</button><button type="button" data-cancel>Cancel</button></div>
-    <div class="pp-xy">x ${Math.round(latlng.lng)} · y ${Math.round(latlng.lat)}</div></form>`;
+    <div class="pp-xy">Game coordinates — hover the map to read them in the bottom-left corner</div></form>`;
   const pop = L.popup({ maxWidth: 280, closeOnClick: false, autoClose: true }).setLatLng(latlng).setContent(html).openOn(bigMap);
   const form = pop.getElement().querySelector("form");
   let emoji = p.emoji || "📌", color = cur;
@@ -1634,19 +1640,25 @@ function openPinForm(latlng, existing) {
   markColor(cur);
   form.querySelectorAll("[data-e]").forEach(b => b.onclick = () => { emoji = b.dataset.e; form.querySelectorAll("[data-e]").forEach(x => x.classList.toggle("sel", x === b)); });
   form.querySelector("[data-cancel]").onclick = () => bigMap.closePopup(pop);
+  form.querySelector("[data-here]").onclick = () => { const c = bigMap.getCenter(); form.px.value = Math.round(c.lng); form.py.value = Math.round(c.lat); };
   form.onsubmit = e => {
     e.preventDefault();
     const name = form.name.value.trim(); if (!name) return;
     const note = form.note.value.trim();
-    if (existing) updateMyPin(existing.id, { name, note, emoji, color });
-    else { myPins.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, note, emoji, color, x: Math.round(latlng.lng), y: Math.round(latlng.lat) }); saveMyPins(); refreshMyPins(); }
+    const x = Math.round(Number(form.px.value)), y = Math.round(Number(form.py.value));
+    if (!isFinite(x) || !isFinite(y) || Math.abs(x) > 16384 || Math.abs(y) > 16384) { form.px.focus(); form.px.setCustomValidity("X and Y must be between -16384 and 16384"); form.px.reportValidity(); return; }
+    form.px.setCustomValidity("");
+    if (existing) updateMyPin(existing.id, { name, note, emoji, color, x, y });
+    else { myPins.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, note, emoji, color, x, y }); saveMyPins(); refreshMyPins(); }
     bigMap.closePopup(pop);
+    if (x !== Math.round(latlng.lng) || y !== Math.round(latlng.lat)) bigMap.panTo([y, x]);
     if (!CATS.mine.on) document.querySelector('#mapChips .mchip[data-cat="mine"]')?.click();
   };
   setTimeout(() => form.name.focus(), 50);
 }
 function initMyPins() {
   document.getElementById("mapAddPin").onclick = () => setAddPinMode(!addPinMode);
+  document.getElementById("mpByXY").onclick = () => openPinForm(bigMap.getCenter());
   bigMap.on("click", e => { if (addPinMode) openPinForm(e.latlng); });
   bigMap.on("contextmenu", e => openPinForm(e.latlng));
   document.addEventListener("keydown", e => { if (e.key === "Escape" && addPinMode) setAddPinMode(false); });
