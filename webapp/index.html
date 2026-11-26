@@ -334,6 +334,28 @@
   .glinks button { background: none; border: none; color: var(--done); cursor: pointer; padding: 0; font: inherit; }
   .glinks button:hover { text-decoration: underline; }
 
+
+  /* ============ MY PINS ============ */
+  .map-add { position: absolute; right: 10px; top: 52px; z-index: 500; background: rgba(11,12,16,0.85); border: 1px solid #00e5a0; color: #00e5a0; border-radius: 8px; padding: 0.4rem 0.75rem; font-size: 0.78rem; cursor: pointer; font-family: inherit; font-weight: 600; }
+  .map-add.on { background: #00e5a0; color: #0b0c10; }
+  #bigmap.adding, #bigmap.adding .leaflet-interactive { cursor: crosshair; }
+  .gpin.mine { box-shadow: 0 0 0 2px #0b0c10, 0 0 10px rgba(0, 229, 160, 0.8); }
+  .mp-tools { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.4rem; align-items: center; margin-top: 0.55rem; font-size: 0.7rem; color: var(--muted); }
+  .mp-tools button, .pp-actions button, .mp-btns button { font: inherit; font-size: 0.72rem; background: #1f222d; border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 0.2rem 0.55rem; cursor: pointer; margin-left: 0.25rem; }
+  .mp-tools button:hover, .pp-actions button:hover { border-color: #00e5a0; color: #00e5a0; }
+  .pp-actions { display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center; margin-top: 0.5rem; }
+  .pp-actions button { margin-left: 0; }
+  .pp-actions span { font-size: 0.66rem; color: var(--muted); }
+  .mp-form { display: flex; flex-direction: column; gap: 0.45rem; min-width: 220px; }
+  .mp-form input, .mp-form textarea { font: inherit; font-size: 0.82rem; background: #0b0c10; color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.5rem; resize: vertical; }
+  .mp-form input:focus, .mp-form textarea:focus { outline: none; border-color: #00e5a0; }
+  .mp-emoji { display: flex; flex-wrap: wrap; gap: 0.2rem; }
+  .mp-emoji button { font-size: 1rem; background: #1f222d; border: 1px solid var(--border); border-radius: 6px; width: 30px; height: 30px; cursor: pointer; padding: 0; }
+  .mp-emoji button.sel { border-color: #00e5a0; background: rgba(0, 229, 160, 0.15); }
+  .mp-btns { display: flex; gap: 0.3rem; }
+  .mp-btns button { margin-left: 0; padding: 0.35rem 0.8rem; font-size: 0.8rem; }
+  .mp-btns .pri { background: #00e5a0; color: #0b0c10; border-color: #00e5a0; font-weight: 700; }
+
   /* ============ MAP TAB ============ */
   .map-wrap { max-width: 1600px; margin: 0 auto; padding: 1rem 2rem 2rem; }
   @media (max-width: 950px) { .map-wrap { padding: 0.75rem 1rem 2rem; } }
@@ -711,12 +733,14 @@
         <div class="map-side-head">
           <input id="pinSearch" class="map-search" type="search" placeholder="Search pins — car, motel, Randy…" autocomplete="off" />
           <div class="map-chips" id="mapChips"></div>
+          <div class="mp-tools"><span>📌 My pins — tap <b>Add pin</b> or right-click the map</span><span><button type="button" id="mpExport">⬇ Export</button><button type="button" id="mpImport">⬆ Import</button></span><input type="file" id="mpFile" accept="application/json,.json" hidden></div>
         </div>
         <div class="pin-list" id="pinList"></div>
       </aside>
       <div class="map-main">
         <div id="bigmap"></div>
         <button class="map-fit" id="mapFit" type="button">⤢ Show all pins</button>
+        <button class="map-add" id="mapAddPin" type="button">📌 Add pin</button>
         <div class="map-hud" id="mapHud">x — · y —</div>
       </div>
     </div>
@@ -1208,6 +1232,7 @@ function gtaTileLayer() {
 }
 
 const CATS = {
+  mine:   { label: "My pins",      icon: "📌", color: "#00e5a0", on: true },
   guide:  { label: "Guide items",  icon: "📍", color: "#00d9ff", on: true },
   super:  { label: "Cars — where to find", icon: "🚗", color: "#ffd60a", on: true },
   hide:   { label: "Hide & money", icon: "🙈", color: "#2ecc71", on: true },
@@ -1225,7 +1250,7 @@ function pinIcon(p, cat) {
   const s = big ? 30 : 26;
   return L.divIcon({
     className: "", iconSize: [s, s], iconAnchor: [s / 2, s * 1.2], popupAnchor: [0, -s * 1.1], tooltipAnchor: [s / 2, -s * 0.7],
-    html: `<div class="gpin${big ? " big" : ""}" style="background:${pinColor(p, cat)}"><span>${CATS[cat].icon}</span></div>`,
+    html: `<div class="gpin${big ? " big" : ""}${cat === "mine" ? " mine" : ""}" style="background:${pinColor(p, cat)}"><span>${p.emoji || CATS[cat].icon}</span></div>`,
   });
 }
 function popupHtml(p, cat) {
@@ -1234,30 +1259,123 @@ function popupHtml(p, cat) {
     + `<div class="pp-name">${escapeHtml(p.name)}</div>`
     + (p.where ? `<div class="pp-where">${escapeHtml(p.where)}</div>` : "")
     + (p.note ? `<div class="pp-note">${escapeHtml(p.note)}</div>` : "")
-    + `<div class="pp-xy">x ${Math.round(p.gx)} · y ${Math.round(p.gy)}</div>`;
+    + `<div class="pp-xy">x ${Math.round(p.gx)} · y ${Math.round(p.gy)}</div>`
+    + (cat === "mine" ? `<div class="pp-actions"><button type="button" data-mp-edit="${p.id}">✏️ Edit</button><button type="button" data-mp-del="${p.id}">🗑 Delete</button><span>drag the pin to move it</span></div>` : "");
 }
 function pinsFor(cat) {
-  return cat === "land"
-    ? GTA_LANDMARKS.map(l => { const parts = l[0].split(", "); return { gx: l[1], gy: l[2], name: parts[0], where: parts.slice(1).join(", ") }; })
-    : mapPins.filter(p => p.cat === cat);
+  if (cat === "land") return GTA_LANDMARKS.map(l => { const parts = l[0].split(", "); return { gx: l[1], gy: l[2], name: parts[0], where: parts.slice(1).join(", ") }; });
+  if (cat === "mine") return myPins.map(p => ({ ...p, gx: p.x, gy: p.y, where: "" }));
+  return mapPins.filter(p => p.cat === cat);
+}
+function buildCat(mapObj, store, cat, track, landRenderer) {
+  store[cat] = L.layerGroup();
+  pinsFor(cat).forEach(p => {
+    let m;
+    if (cat === "land") {
+      m = L.circleMarker([p.gy, p.gx], { radius: 4, color: "#0b0c10", weight: 1.5, fillColor: CATS.land.color, fillOpacity: 0.9, renderer: landRenderer });
+    } else {
+      m = L.marker([p.gy, p.gx], { icon: pinIcon(p, cat), riseOnHover: true, zIndexOffset: cat === "mine" ? 400 : cat === "super" ? 200 : 0, draggable: cat === "mine" && track });
+      m.bindTooltip(escapeHtml(p.name), { direction: "right", className: "gtip" });
+      if (cat === "mine" && track) m.on("dragend", () => { const ll = m.getLatLng(); updateMyPin(p.id, { x: Math.round(ll.lng), y: Math.round(ll.lat) }); });
+    }
+    m.bindPopup(popupHtml(p, cat), { maxWidth: 280 }).addTo(store[cat]);
+    if (track && cat !== "land") bigMarkers.push({ p, cat, marker: m });
+  });
+  if (CATS[cat].on) store[cat].addTo(mapObj);
 }
 function addPins(mapObj, store, track) {
   const landRenderer = L.canvas({ padding: 0.3 }); // one renderer per map — Leaflet renderers can't be shared
-  Object.keys(CATS).forEach(cat => {
-    store[cat] = L.layerGroup();
-    pinsFor(cat).forEach(p => {
-      let m;
-      if (cat === "land") {
-        m = L.circleMarker([p.gy, p.gx], { radius: 4, color: "#0b0c10", weight: 1.5, fillColor: CATS.land.color, fillOpacity: 0.9, renderer: landRenderer });
-      } else {
-        m = L.marker([p.gy, p.gx], { icon: pinIcon(p, cat), riseOnHover: true, zIndexOffset: cat === "super" ? 200 : 0 });
-        m.bindTooltip(escapeHtml(p.name), { direction: "right", className: "gtip" });
-      }
-      m.bindPopup(popupHtml(p, cat), { maxWidth: 280 }).addTo(store[cat]);
-      if (track && cat !== "land") bigMarkers.push({ p, cat, marker: m });
-    });
-    if (CATS[cat].on) store[cat].addTo(mapObj);
+  Object.keys(CATS).forEach(cat => buildCat(mapObj, store, cat, track, landRenderer));
+}
+
+// ---------------------------------------------------------------------------
+// MY PINS — user-added pins, saved in this browser (localStorage); export/import as JSON
+// ---------------------------------------------------------------------------
+const MYPIN_STORE = "gta6_mypins_v1";
+const MY_EMOJI = ["📌", "⭐", "💰", "🚗", "🔫", "🏠", "🎯", "💀", "🗝️", "❓"];
+let myPins = [];
+try { myPins = JSON.parse(localStorage.getItem(MYPIN_STORE) || "[]").filter(p => p && isFinite(p.x) && isFinite(p.y)); } catch (e) { myPins = []; }
+let addPinMode = false;
+function saveMyPins() { try { localStorage.setItem(MYPIN_STORE, JSON.stringify(myPins)); } catch (e) {} }
+function refreshMyPins() {
+  [[bigMap, layers, true], [sideMap, sideLayers, false]].forEach(([m, st, track]) => {
+    if (!m) return;
+    if (st.mine) m.removeLayer(st.mine);
+    if (track) for (let i = bigMarkers.length - 1; i >= 0; i--) if (bigMarkers[i].cat === "mine") bigMarkers.splice(i, 1);
+    buildCat(m, st, "mine", track);
   });
+  renderPinList();
+}
+function updateMyPin(id, patch) {
+  const p = myPins.find(x => x.id === id); if (!p) return;
+  Object.assign(p, patch); saveMyPins(); refreshMyPins();
+}
+function setAddPinMode(on) {
+  addPinMode = on;
+  document.getElementById("bigmap").classList.toggle("adding", on);
+  const b = document.getElementById("mapAddPin");
+  b.classList.toggle("on", on); b.textContent = on ? "✕ Cancel — click the map" : "📌 Add pin";
+}
+function openPinForm(latlng, existing) {
+  setAddPinMode(false);
+  const p = existing || { name: "", note: "", emoji: "📌" };
+  const html = `<form class="mp-form">
+    <div class="pp-cat" style="color:${CATS.mine.color}">${existing ? "✏️ Edit pin" : "📌 New pin"}</div>
+    <input name="name" maxlength="60" placeholder="Name — e.g. Hidden stash" value="${escapeHtml(p.name)}" required>
+    <div class="mp-emoji">${MY_EMOJI.map(e => `<button type="button" data-e="${e}" class="${e === p.emoji ? "sel" : ""}">${e}</button>`).join("")}</div>
+    <textarea name="note" maxlength="300" rows="3" placeholder="Note (optional)">${escapeHtml(p.note || "")}</textarea>
+    <div class="mp-btns"><button type="submit" class="pri">Save</button><button type="button" data-cancel>Cancel</button></div>
+    <div class="pp-xy">x ${Math.round(latlng.lng)} · y ${Math.round(latlng.lat)}</div></form>`;
+  const pop = L.popup({ maxWidth: 280, closeOnClick: false, autoClose: true }).setLatLng(latlng).setContent(html).openOn(bigMap);
+  const form = pop.getElement().querySelector("form");
+  let emoji = p.emoji || "📌";
+  form.querySelectorAll("[data-e]").forEach(b => b.onclick = () => { emoji = b.dataset.e; form.querySelectorAll("[data-e]").forEach(x => x.classList.toggle("sel", x === b)); });
+  form.querySelector("[data-cancel]").onclick = () => bigMap.closePopup(pop);
+  form.onsubmit = e => {
+    e.preventDefault();
+    const name = form.name.value.trim(); if (!name) return;
+    const note = form.note.value.trim();
+    if (existing) updateMyPin(existing.id, { name, note, emoji });
+    else { myPins.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, note, emoji, x: Math.round(latlng.lng), y: Math.round(latlng.lat) }); saveMyPins(); refreshMyPins(); }
+    bigMap.closePopup(pop);
+    if (!CATS.mine.on) document.querySelector('#mapChips .mchip[data-cat="mine"]')?.click();
+  };
+  setTimeout(() => form.name.focus(), 50);
+}
+function initMyPins() {
+  document.getElementById("mapAddPin").onclick = () => setAddPinMode(!addPinMode);
+  bigMap.on("click", e => { if (addPinMode) openPinForm(e.latlng); });
+  bigMap.on("contextmenu", e => openPinForm(e.latlng));
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && addPinMode) setAddPinMode(false); });
+  bigMap.on("popupopen", e => {
+    const el = e.popup.getElement();
+    const ed = el.querySelector("[data-mp-edit]"), del = el.querySelector("[data-mp-del]");
+    if (ed) ed.onclick = () => { const p = myPins.find(x => x.id === ed.dataset.mpEdit); if (p) openPinForm(L.latLng(p.y, p.x), p); };
+    if (del) del.onclick = () => {
+      const p = myPins.find(x => x.id === del.dataset.mpDel); if (!p) return;
+      if (!confirm(`Delete "${p.name}"?`)) return;
+      myPins = myPins.filter(x => x.id !== p.id); saveMyPins(); bigMap.closePopup(); refreshMyPins();
+    };
+  });
+  document.getElementById("mpExport").onclick = () => {
+    const blob = new Blob([JSON.stringify(myPins, null, 2)], { type: "application/json" });
+    const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "gtavi-my-pins.json" });
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+  const file = document.getElementById("mpFile");
+  document.getElementById("mpImport").onclick = () => file.click();
+  file.onchange = async () => {
+    try {
+      const data = JSON.parse(await file.files[0].text());
+      const ok = (Array.isArray(data) ? data : []).filter(p => p && typeof p.name === "string" && isFinite(p.x) && isFinite(p.y))
+        .map(p => ({ id: String(p.id || Date.now().toString(36) + Math.random().toString(36).slice(2, 6)), name: p.name.slice(0, 60), note: String(p.note || "").slice(0, 300), emoji: MY_EMOJI.includes(p.emoji) ? p.emoji : "📌", x: Math.round(p.x), y: Math.round(p.y) }));
+      const have = new Set(myPins.map(p => p.id));
+      const added = ok.filter(p => !have.has(p.id));
+      myPins.push(...added); saveMyPins(); refreshMyPins();
+      alert(`Imported ${added.length} pin${added.length === 1 ? "" : "s"}${ok.length > added.length ? ` (${ok.length - added.length} already here)` : ""}.`);
+    } catch (e) { alert("That file isn't a valid pins export."); }
+    file.value = "";
+  };
 }
 
 function pinMatches(p) {
@@ -1267,7 +1385,7 @@ function pinMatches(p) {
 function renderPinList() {
   const el = document.getElementById("pinList");
   let html = "";
-  ["super", "legend", "guide", "hide", "secret"].forEach(cat => {
+  ["mine", "super", "legend", "guide", "hide", "secret"].forEach(cat => {
     if (!CATS[cat].on) return;
     const rows = bigMarkers.map((b, i) => [b, i]).filter(([b]) => b.cat === cat && pinMatches(b.p));
     if (!rows.length) return;
@@ -1296,7 +1414,7 @@ function focusPin(i) {
 }
 function fitVisiblePins(mapObj, store, animate = false) {
   const pts = [];
-  ["guide", "super", "legend", "hide", "secret"].forEach(cat => { if (CATS[cat].on) store[cat].eachLayer(l => pts.push(l.getLatLng())); });
+  ["mine", "guide", "super", "legend", "hide", "secret"].forEach(cat => { if (CATS[cat].on) store[cat].eachLayer(l => pts.push(l.getLatLng())); });
   if (pts.length) mapObj.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 5, animate: animate });
   else mapObj.fitBounds(WORLD_BOUNDS, { animate: animate });
 }
@@ -1705,6 +1823,7 @@ renderCheats();
 renderTrophies();
 initBigMap();
 initSideMap();
+initMyPins();
 renderLeonida();
 initGallery("vehicles");
 initFastest();
