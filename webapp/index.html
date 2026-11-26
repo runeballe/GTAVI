@@ -185,6 +185,46 @@
 
 
 
+
+  /* ============ FASTEST CARS ============ */
+  .fast-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.6rem; margin-bottom: 1.1rem; }
+  .fast-steps div { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.78rem; color: var(--muted); }
+  .fast-steps b { color: var(--accent); }
+  .fast-list { display: flex; flex-direction: column; gap: 0.7rem; }
+  .fcar { display: grid; grid-template-columns: 56px 180px minmax(0, 1fr); gap: 0.9rem; align-items: stretch; background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; padding-right: 0.9rem; }
+  .fcar.got { border-color: rgba(46, 204, 113, 0.55); background: linear-gradient(90deg, var(--done-bg), var(--card) 40%); }
+  .fcar .rk { display: grid; place-items: center; font-size: 1.5rem; font-weight: 900; color: var(--muted); background: #0f1117; font-variant-numeric: tabular-nums; }
+  .fcar.top3 .rk { background: linear-gradient(180deg, #ffd27a, #ff5fa2 60%, #b44cff); color: #0b0c10; }
+  .fcar .fimg { background: #0f1117 center / cover no-repeat; min-height: 110px; display: grid; place-items: center; font-size: 2rem; position: relative; }
+  .fcar .fimg .bm { position: absolute; left: 6px; bottom: 6px; font-size: 0.6rem; background: rgba(11,12,16,0.8); color: var(--muted); border-radius: 4px; padding: 0.05rem 0.35rem; }
+  .fbody { padding: 0.7rem 0; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+  .ftop { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.45rem 0.6rem; }
+  .fname { font-size: 1.02rem; font-weight: 800; }
+  .fmfr { font-size: 0.75rem; color: var(--muted); }
+  .fbadge { font-size: 0.65rem; font-weight: 700; border-radius: 999px; padding: 0.08rem 0.5rem; border: 1px solid var(--border); color: var(--muted); }
+  .fbadge.set { color: #b388ff; border-color: rgba(179,136,255,0.5); }
+  .fbadge.ch { color: var(--gold); border-color: rgba(255,214,10,0.5); }
+  .fbadge.best { color: #0b0c10; background: var(--gold); border-color: var(--gold); }
+  .fspeed { display: flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+  .fspeed .bar { flex: 1; max-width: 320px; height: 8px; border-radius: 999px; background: #0f1117; overflow: hidden; border: 1px solid var(--border); }
+  .fspeed .bar span { display: block; height: 100%; background: linear-gradient(90deg, #00d9ff, #b44cff, #ff5fa2); }
+  .fspeed b { font-size: 0.95rem; }
+  .floc { font-size: 0.82rem; }
+  .fhow { font-size: 0.8rem; color: var(--muted); }
+  .fsec { font-size: 0.72rem; color: var(--muted); }
+  .factions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.15rem; }
+  .factions button { font: inherit; font-size: 0.76rem; padding: 0.3rem 0.7rem; border-radius: 8px; border: 1px solid var(--border); background: #1f222d; color: var(--text); cursor: pointer; }
+  .factions button:hover { border-color: var(--accent); color: var(--accent); }
+  .factions label { font-size: 0.76rem; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--muted); }
+  .factions input { accent-color: var(--done); width: 15px; height: 15px; }
+  .fnomap { font-size: 0.72rem; color: var(--muted); }
+  @media (max-width: 700px) {
+    .fcar { grid-template-columns: 44px minmax(0, 1fr); padding-right: 0; }
+    .fcar .fimg { display: none; }
+    .fbody { padding: 0.6rem 0.8rem 0.7rem 0; }
+    .fcar .rk { font-size: 1.15rem; }
+  }
+
   /* ============ LEONIDA ============ */
   .leo-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1.4rem; align-items: stretch; margin-bottom: 1.6rem; }
   @media (max-width: 860px) { .leo-hero { grid-template-columns: 1fr; } }
@@ -352,6 +392,7 @@
     <button class="tab" id="tabbtn-map" role="tab" aria-controls="tab-map" aria-selected="false" onclick="showTab('map')">🗺️ Live Map</button>
     <button class="tab" id="tabbtn-leonida" role="tab" aria-controls="tab-leonida" aria-selected="false" onclick="showTab('leonida')">🌴 Leonida</button>
     <button class="tab" id="tabbtn-vehicles" role="tab" aria-controls="tab-vehicles" aria-selected="false" onclick="showTab('vehicles')">🚗 Vehicles</button>
+    <button class="tab" id="tabbtn-fastest" role="tab" aria-controls="tab-fastest" aria-selected="false" onclick="showTab('fastest')">🏎️ Fastest Cars</button>
     <button class="tab" id="tabbtn-weapons" role="tab" aria-controls="tab-weapons" aria-selected="false" onclick="showTab('weapons')">🔫 Weapons</button>
     <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Cheats</button>
     <button class="tab" id="tabbtn-trophies" role="tab" aria-controls="tab-trophies" aria-selected="false" onclick="showTab('trophies')">🏆 Trophies</button>
@@ -581,6 +622,30 @@
   </div>
 </section>
 
+<!-- ==================== TAB: FASTEST CARS ==================== -->
+<section id="tab-fastest" role="tabpanel" aria-labelledby="tabbtn-fastest" style="display:none">
+  <div class="money-wrap gal-wrap">
+    <div class="money-hero">🏎️ Fastest Cars</div>
+    <div class="money-sub">The 30 fastest cars ranked by the in-game <b>Speed</b> stat (0–10). GTA VI doesn't show real top speeds in mph/km/h yet — no site has measured them all, so this uses the game's own rating. Tap <b>📍 Show on map</b> to fly to the spot; the same cars are on the Live Map as the 🏎️ layer.</div>
+    <div class="fast-steps">
+      <div><b>1 · Scan</b> it with WAiNK (hold ↑, aim, RB/R1) — shows lock, tracker and value.</div>
+      <div><b>2 · Register</b> stolen cars to keep them — unlocks with Moses in Chapter 2.</div>
+      <div><b>3 · Key Cloner</b> for keyless supercars — Randy, Chapter 3 (after Clonin' Keys, Makin' Gs).</div>
+      <div><b>4 · Trackers</b> — advanced ones bring cops; tracker-free picks: Node's Thrax, Royal Ruby &amp; Purple Drank Emerus.</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="fastFill"></div></div>
+    <div class="progress-text"><span id="fastText">0 collected</span><span id="fastCount"></span></div>
+    <div class="gal-bar">
+      <input type="search" id="fastSearch" class="gal-search" placeholder="Search — Emerus, Capri, no tracker…" autocomplete="off" />
+      <select id="fastFilter" class="gal-select" aria-label="Filter">
+        <option value="">All 30</option><option value="map">With map location</option><option value="todo">Not collected yet</option><option value="got">Collected</option>
+      </select>
+    </div>
+    <div class="fast-list" id="fastList"></div>
+    <p class="leo-credit">Speed stats &amp; locations: <a href="https://www.g2a.com/news/gta-6-news/fastest-cars-in-gta-6/" target="_blank" rel="noopener">G2A News</a>, <a href="https://insider-gaming.com/top-20-fastest-cars-in-gta-6-all-locations-how-to-get-them/" target="_blank" rel="noopener">Insider Gaming</a>, <a href="https://www.gtabase.com/articles/gta-6/gta-6-fastest-cars-ranked-list-by-top-speed" target="_blank" rel="noopener">GTABase</a> (Nov 2026). Pins come from the written location cues matched to gtadb.org landmarks — "area" pins mark the district, not the exact garage. Photos show the base model.</p>
+  </div>
+</section>
+
 <!-- ==================== TAB: WEAPONS ==================== -->
 <section id="tab-weapons" role="tabpanel" aria-labelledby="tabbtn-weapons" style="display:none">
   <div class="money-wrap gal-wrap">
@@ -636,6 +701,7 @@
 <script src="codex.js"></script>
 <script src="gallery.js"></script>
 <script src="leonida.js"></script>
+<script src="fastest.js"></script>
 <script>
 // ============================================================================
 // CHECKLIST DATA (same as before — missions + finds/sides)
@@ -851,6 +917,20 @@ const mapPins = [
   { cat: "guide", ch: 4, name: "Bad Driver! — Felipe", where: "Millport", note: "After Party Hard, closes at Power Play. Spare → car, kill → $20k.", gx: -199, gy: 6840 },
 ];
 
+// Fastest-cars layer (data: fastest.js)
+{
+  const seen = {};
+  FASTEST.filter(c => c.map).forEach(c => {
+    // Several cars share an area pin (e.g. 3 on Starfish Island): fan them out so each marker stays clickable.
+    const k = c.map.join(","), i = seen[k] = (seen[k] || 0) + 1, a = (i - 1) * 2.1;
+    const off = i > 1 ? [Math.cos(a) * 90, Math.sin(a) * 90] : [0, 0];
+    mapPins.push({
+      cat: "fast", name: `#${c.r} ${c.n} — Speed ${c.s}`, where: c.loc + (c.prec === "area" ? " (area pin)" : ""),
+      note: [c.how, c.sec].filter(Boolean).join(" · "), gx: c.map[0] + off[0], gy: c.map[1] + off[1],
+    });
+  });
+}
+
 // ============================================================================
 // STATE + CHECKLIST RENDER (same logic as before)
 // ============================================================================
@@ -931,7 +1011,7 @@ function updateProgress() {
 // TABS
 // ============================================================================
 function showTab(name) {
-  ["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].forEach(t => {
+  ["checklist", "money", "map", "leonida", "vehicles", "fastest", "weapons", "cheats", "trophies"].forEach(t => {
     document.getElementById("tab-" + t).style.display = t === name ? "" : "none";
     document.getElementById("tabbtn-" + t).classList.toggle("active", t === name);
     document.getElementById("tabbtn-" + t).setAttribute("aria-selected", t === name);
@@ -967,6 +1047,7 @@ const CATS = {
   super:  { label: "Supercars",    icon: "💎", color: "#ffd60a", on: true },
   hide:   { label: "Hide & money", icon: "🙈", color: "#2ecc71", on: true },
   secret: { label: "Secrets",      icon: "👽", color: "#b388ff", on: true },
+  fast:   { label: "Fastest cars", icon: "🏎️", color: "#ff3b30", on: true },
   land:   { label: "Landmarks",    icon: "🏙️", color: "#c3cad8", on: false },
 };
 let bigMap, sideMap, layers = {}, sideLayers = {};
@@ -1021,7 +1102,7 @@ function pinMatches(p) {
 function renderPinList() {
   const el = document.getElementById("pinList");
   let html = "";
-  ["super", "guide", "hide", "secret"].forEach(cat => {
+  ["super", "fast", "guide", "hide", "secret"].forEach(cat => {
     if (!CATS[cat].on) return;
     const rows = bigMarkers.map((b, i) => [b, i]).filter(([b]) => b.cat === cat && pinMatches(b.p));
     if (!rows.length) return;
@@ -1050,7 +1131,7 @@ function focusPin(i) {
 }
 function fitVisiblePins(mapObj, store, animate = false) {
   const pts = [];
-  ["guide", "super", "hide", "secret"].forEach(cat => { if (CATS[cat].on) store[cat].eachLayer(l => pts.push(l.getLatLng())); });
+  ["guide", "super", "fast", "hide", "secret"].forEach(cat => { if (CATS[cat].on) store[cat].eachLayer(l => pts.push(l.getLatLng())); });
   if (pts.length) mapObj.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 5, animate: animate });
   else mapObj.fitBounds(WORLD_BOUNDS, { animate: animate });
 }
@@ -1167,6 +1248,65 @@ function renderLeonida() {
     const j = e.target.closest("[data-jump]");
     if (j) { e.preventDefault(); document.getElementById(j.dataset.jump).scrollIntoView({ behavior: "smooth", block: "start" }); }
   });
+}
+
+// ============================================================================
+// FASTEST CARS (data: fastest.js)
+// ============================================================================
+const FAST_STORE = "gta6_fastest_v1";
+let fastGot = {};
+try { fastGot = JSON.parse(localStorage.getItem(FAST_STORE) || "{}"); } catch (e) {}
+function saveFast() { try { localStorage.setItem(FAST_STORE, JSON.stringify(fastGot)); } catch (e) {} }
+function fastImg(c) {
+  const v = c.base && VEHICLES.find(x => x.n === c.base && x.f);
+  return v ? `url('media/veh/${v.f}.webp')` : "none";
+}
+function renderFastest() {
+  const q = document.getElementById("fastSearch").value.trim().toLowerCase();
+  const f = document.getElementById("fastFilter").value;
+  const rows = FASTEST.filter(c => {
+    if (f === "map" && !c.map) return false;
+    if (f === "todo" && fastGot[c.r]) return false;
+    if (f === "got" && !fastGot[c.r]) return false;
+    return !q || [c.n, c.m, c.set, c.loc, c.how, c.sec, c.rl].filter(Boolean).join(" ").toLowerCase().includes(q);
+  });
+  document.getElementById("fastList").innerHTML = rows.map(c => {
+    const img = fastImg(c);
+    return `<article class="fcar${c.r <= 3 ? " top3" : ""}${fastGot[c.r] ? " got" : ""}">
+      <div class="rk">${c.r}</div>
+      <div class="fimg" style="background-image:${img}">${img === "none" ? "🏎️" : `<span class="bm">base model</span>`}</div>
+      <div class="fbody">
+        <div class="ftop"><span class="fname">${escapeHtml(c.n)}</span><span class="fmfr">${escapeHtml(c.m)}${c.rl ? " · real-life: " + escapeHtml(c.rl) : ""}</span>
+          ${c.set ? `<span class="fbadge set">${escapeHtml(c.set)}</span>` : ""}${c.ch ? `<span class="fbadge ch">From Ch ${c.ch}</span>` : ""}${c.best ? `<span class="fbadge best">${escapeHtml(c.best)}</span>` : ""}</div>
+        <div class="fspeed">Speed <span class="bar"><span style="width:${c.s * 10}%"></span></span><b>${c.s.toFixed(1)}</b>/10</div>
+        <div class="floc">📍 ${escapeHtml(c.loc)}</div>
+        ${c.how ? `<div class="fhow">${escapeHtml(c.how)}</div>` : ""}
+        ${c.sec ? `<div class="fsec">🔐 ${escapeHtml(c.sec)}</div>` : ""}
+        <div class="factions">
+          ${c.map ? `<button type="button" data-fly="${c.map[0]},${c.map[1]},${c.prec === "spot" ? 5 : 4}" data-label="#${c.r} ${escapeHtml(c.n)}">📍 Show on map${c.prec === "area" ? " (area)" : ""}</button>` : `<span class="fnomap">No map spot yet</span>`}
+          <label><input type="checkbox" data-got="${c.r}" ${fastGot[c.r] ? "checked" : ""}> Got it</label>
+        </div>
+      </div></article>`;
+  }).join("") || `<div class="empty-filter">Nothing matches 🎉</div>`;
+  const n = FASTEST.filter(c => fastGot[c.r]).length;
+  document.getElementById("fastFill").style.width = Math.round(n / FASTEST.length * 100) + "%";
+  document.getElementById("fastText").textContent = `${n} collected` + (n === FASTEST.length ? " — full garage! 🏁" : "");
+  document.getElementById("fastCount").textContent = `${n} / ${FASTEST.length} cars · ${FASTEST.filter(c => c.map).length} with map spots`;
+}
+function initFastest() {
+  ["fastSearch", "fastFilter"].forEach(id => document.getElementById(id).addEventListener("input", renderFastest));
+  const list = document.getElementById("fastList");
+  list.addEventListener("click", e => {
+    const b = e.target.closest("[data-fly]");
+    if (b) { const [x, y, z] = b.dataset.fly.split(",").map(Number); flyToGame(x, y, z, b.dataset.label); }
+  });
+  list.addEventListener("change", e => {
+    const r = e.target.dataset.got;
+    if (r === undefined) return;
+    if (e.target.checked) fastGot[r] = true; else delete fastGot[r];
+    saveFast(); renderFastest();
+  });
+  renderFastest();
 }
 
 // ============================================================================
@@ -1321,8 +1461,9 @@ initBigMap();
 initSideMap();
 renderLeonida();
 initGallery("vehicles");
+initFastest();
 initGallery("weapons");
-{ const h = location.hash.slice(1); if (["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
+{ const h = location.hash.slice(1); if (["checklist", "money", "map", "leonida", "vehicles", "fastest", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
 </script>
 </body>
 </html>

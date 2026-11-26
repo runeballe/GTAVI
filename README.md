@@ -7,6 +7,7 @@ A single-page tracker for GTA VI story mode:
 - **Checklist** — all 102 missions plus finds, missables and side jobs, per chapter. Progress saves in your browser (localStorage).
 - **Money Fast** — money-making guide.
 - **Live Map** — the real Leonida map with pins for supercars, hide spots, secrets and chapter guide items. Search, filter by category, click a pin in the list to fly to it. Optional layer with ~1,200 gtadb.org landmarks.
+- **Fastest Cars** — top 30 by in-game Speed stat with locations, how-to, map pins and a collected checklist (sources: G2A, Insider Gaming, GTABase).
 - **Leonida** — the 5 counties and 11 cities/towns: summaries, real-world inspirations, highlights, "show on map".
 - **Vehicles** and **Weapons** — searchable galleries by class, linking to gta.wiki (supercars with a known spawn jump to the map).
 - **Cheats** — all 61 cheats with sources cross-checked, plus an unlock checklist with progress counter and a field to note codes yourself.
