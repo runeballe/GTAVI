@@ -13,6 +13,7 @@ Source code (MIT): https://github.com/runeballe/GTAVI
 - [Live Map](https://runeball.no/GTAVI/#map): Leaflet map on real in-game coordinates. Pin categories: supercars (13, e.g. Truffade Thrax — fastest car, garage code 8554013), chapter guide items, hide & money spots, secrets (UFO, tower egg), and ~1,200 gtadb.org landmarks.
 - [Vehicles](https://runeball.no/GTAVI/#vehicles): gallery of ~300 GTA VI vehicles by class (new vs returning, model year), with links to gta.wiki and to known spawns on the map.
 - [Fastest Cars](https://runeball.no/GTAVI/#fastest) (sub-tab of Vehicles): the 30 fastest cars ranked by the in-game Speed stat (no official mph/km/h exists), with location cues, how to get each one, security/tracker notes, map pins and a collected checklist. #1: Andrew Node's Thrax (9.2).
+- [Bonus vehicles](https://runeball.no/GTAVI/#bonus) (sub-tab of Vehicles): Ultimate Edition / pre-order bonus vehicles by chapter (Dinka Enduro, Dominator Buggy '67, Stanier '55, Shitzu Squalo, Cheetah '95…) with locations and pins.
 - [Weapons](https://runeball.no/GTAVI/#weapons): gallery of 74 GTA VI weapons by class, from melee to launchers.
 - [Legendary Weapons](https://runeball.no/GTAVI/#legendary) (sub-tab of Weapons): all 15 legendary weapon variants with locations, steps, map pins and a found checklist.
 - [Easter Eggs](https://runeball.no/GTAVI/#eggs): 14 easter eggs and secrets (Skunk Ape, UFO abduction, Dexter's apartment, Paul Walker's Eclipse, Arthur Morgan's hat, Cool Dog…) with where to find them, map pins and a found checklist.

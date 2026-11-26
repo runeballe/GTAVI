@@ -232,6 +232,18 @@
 
 
 
+  .bon-ch { margin-bottom: 1.2rem; }
+  .bon-ch h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1.15rem; margin-bottom: 0.55rem; }
+  .bon-ch h3 span { color: var(--accent); }
+  .bon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.7rem; }
+  .bon { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 0.8rem 0.95rem; display: flex; flex-direction: column; gap: 0.35rem; }
+  .bon.got { border-color: rgba(46, 204, 113, 0.55); background: linear-gradient(160deg, var(--done-bg), var(--card) 55%); }
+  .bon-n { font-weight: 700; font-size: 0.95rem; display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; }
+  .bon-k { font-size: 0.66rem; font-weight: 700; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 0.05rem 0.45rem; }
+  .bon-k.warn { color: #ff6b6b; border-color: rgba(255, 107, 107, 0.5); }
+  .bon-k.pre { color: var(--accent); border-color: rgba(245, 166, 35, 0.5); }
+  .bon-loc { font-size: 0.8rem; color: #cfd5df; }
+
   /* ============ EASTER EGGS ============ */
   .egg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 1rem; }
   @media (max-width: 500px) { .egg-grid { grid-template-columns: 1fr; } }
@@ -939,6 +951,7 @@
     <div class="subtabs" role="tablist" aria-label="Vehicles">
       <button type="button" class="subtab active" id="subbtn-allveh" role="tab" aria-selected="true" data-sub="allveh">🚗 All vehicles</button>
       <button type="button" class="subtab" id="subbtn-fastest" role="tab" aria-selected="false" data-sub="fastest">🏎️ Fastest Cars</button>
+      <button type="button" class="subtab" id="subbtn-bonus" role="tab" aria-selected="false" data-sub="bonus">🎁 Bonus vehicles</button>
     </div>
     <div id="sub-allveh" role="tabpanel" aria-labelledby="subbtn-allveh">
     <div class="money-hero">🚗 Vehicles</div>
@@ -951,6 +964,13 @@
     </div>
     <div class="gal-grid" id="vehiclesGrid"></div>
   </div>
+    <div id="sub-bonus" role="tabpanel" aria-labelledby="subbtn-bonus" hidden>
+      <div class="money-hero">🎁 Bonus vehicles</div>
+      <div class="money-sub">Ultimate Edition extras, chapter by chapter — plus the Vapid Stanier '55 pre-order bonus (both editions). <b>Chapter 1 pickups are only available in Chapter 1</b>, so grab them before it ends. They're also pins in the Live Map's 🚗 Cars layer.</div>
+      <div class="progress-bar"><div class="progress-fill" id="bonFill"></div></div>
+      <div class="progress-text"><span id="bonText">0 collected</span><span id="bonCount"></span></div>
+      <div id="bonList"></div>
+    </div>
     <div id="sub-fastest" role="tabpanel" aria-labelledby="subbtn-fastest" hidden>
     <div class="money-hero">🏎️ Fastest Cars</div>
     <div class="money-sub">The 30 fastest cars ranked by the in-game <b>Speed</b> stat (0–10). GTA VI doesn't show real top speeds in mph/km/h yet — no site has measured them all, so this uses the game's own rating. Tap <b>📍 Show on map</b> to fly to the spot; the same cars are on the Live Map in the 🚗 Cars layer.</div>
@@ -1304,6 +1324,7 @@ EGGS.filter(e => e.map).forEach(e => mapPins.push({ cat: "secret", name: `${e.e}
     mapPins.push({ cat: "super", name, where: loc + (prec === "area" ? " (area pin)" : prec === "approx" ? " (approx. pin)" : ""), note, gx: map[0] + off[0], gy: map[1] + off[1] });
   };
   CARS.forEach(c => add(c.n, c.loc, c.prec, c.how, c.map));
+  BONUS.filter(b => !b.place).forEach(b => add(b.n, b.loc, b.prec, `🎁 Bonus vehicle · Chapter ${b.ch}${b.only ? " (Ch 1 only)" : ""}${b.preorder ? " · pre-order bonus" : " · Ultimate Edition"}`, b.map));
   FASTEST.forEach(c => {
     const full = c.n.startsWith(c.m) ? c.n : `${c.m} ${c.n}`;
     add(full, c.loc, c.prec, [`#${c.r} fastest · Speed ${c.s}/10`, c.how, c.sec].filter(Boolean).join(" · "), c.map);
@@ -1731,7 +1752,7 @@ function renderFastest() {
   document.getElementById("fastText").textContent = `${n} collected` + (n === FASTEST.length ? " — full garage! 🏁" : "");
   document.getElementById("fastCount").textContent = `${n} / ${FASTEST.length} cars · ${FASTEST.filter(c => c.map).length} with map spots`;
 }
-const SUBS = { checklist: ["story", "hundred"], money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest"], weapons: ["allwep", "legendary"], cheats: ["codes", "doors", "challenges"] };
+const SUBS = { checklist: ["story", "hundred"], money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest", "bonus"], weapons: ["allwep", "legendary"], cheats: ["codes", "doors", "challenges"] };
 const SUB_PARENT = Object.fromEntries(Object.entries(SUBS).flatMap(([t, l]) => l.slice(1).map(n => [n, t])));
 function currentSub(tab) { return (SUBS[tab] || []).find(n => !document.getElementById("sub-" + n).hidden); }
 function subHash(tab) { const c = currentSub(tab); return c && c !== SUBS[tab][0] ? "#" + c : "#" + tab; }
@@ -1881,6 +1902,36 @@ function updateHero() {
   const el = document.getElementById("ygRows");
   el.innerHTML = rows.map(([n, d, t], i) => `<div class="yg-row" data-yg="${i}"><div>${n}<span>${d} of ${t}</span></div><div class="bar"><i style="width:${t ? Math.round(d / t * 100) : 0}%"></i></div></div>`).join("");
   el.onclick = e => { const r = e.target.closest("[data-yg]"); if (r) { rows[+r.dataset.yg][3](); window.scrollTo({ top: 0 }); } };
+}
+
+// ============================================================================
+// BONUS VEHICLES (data: cars.js → BONUS)
+// ============================================================================
+const BON_STORE = "gta6_bonus_v1";
+let bonGot = {};
+try { bonGot = JSON.parse(localStorage.getItem(BON_STORE) || "{}"); } catch (e) {}
+function renderBonus() {
+  let html = "";
+  [1, 2, 3, 4, 5].forEach(ch => {
+    const list = BONUS.filter(b => b.ch === ch);
+    if (!list.length) return;
+    html += `<section class="bon-ch"><h3><span>Chapter ${ch}</span> · ${escapeHtml((chapters.find(c => c.id === ch) || {}).name?.split("—")[1]?.trim() || "")}</h3><div class="bon-grid">` + list.map(b => `<article class="bon${bonGot[b.n] ? " got" : ""}">
+      <div class="bon-n">${escapeHtml(b.n)} <span class="bon-k">${escapeHtml(b.kind)}</span>${b.only ? `<span class="bon-k warn">Ch 1 only</span>` : ""}${b.preorder ? `<span class="bon-k pre">Pre-order · both editions</span>` : ""}</div>
+      <div class="bon-loc">📍 ${escapeHtml(b.loc)}</div>
+      <div class="egg-act">${b.map ? `<button type="button" data-fly="${b.map[0]},${b.map[1]},${b.prec === "spot" ? 5 : 4}" data-label="🎁 ${escapeHtml(b.n)}">📍 Show on map${b.prec === "area" ? " (area)" : ""}</button>` : `<span class="fnomap">No single map spot</span>`}
+        <label><input type="checkbox" data-bon="${escapeHtml(b.n)}" ${bonGot[b.n] ? "checked" : ""}> ${b.place ? "Unlocked" : "Got it"}</label></div></article>`).join("") + `</div></section>`;
+  });
+  document.getElementById("bonList").innerHTML = html;
+  const n = BONUS.filter(b => bonGot[b.n]).length;
+  document.getElementById("bonFill").style.width = Math.round(n / BONUS.length * 100) + "%";
+  document.getElementById("bonText").textContent = `${n} collected`;
+  document.getElementById("bonCount").textContent = `${n} / ${BONUS.length} bonus items`;
+}
+function initBonus() {
+  const el = document.getElementById("bonList");
+  el.addEventListener("click", e => { const b = e.target.closest("[data-fly]"); if (b) { const [x, y, z] = b.dataset.fly.split(",").map(Number); flyToGame(x, y, z, b.dataset.label); } });
+  el.addEventListener("change", e => { const k = e.target.dataset.bon; if (k === undefined) return; if (e.target.checked) bonGot[k] = true; else delete bonGot[k]; try { localStorage.setItem(BON_STORE, JSON.stringify(bonGot)); } catch (err) {} renderBonus(); });
+  renderBonus();
 }
 
 // ============================================================================
@@ -2118,6 +2169,7 @@ initGuides();
 initHundred();
 initDoors();
 initEggs();
+initBonus();
 updateHero();
 initGallery("weapons");
 { const h = location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "eggs", "cheats", "trophies"].includes(h)) showTab(h); }

@@ -38,3 +38,19 @@ const CARS = [
     how: "Come back after Moses (Ch 2) to keep it." },
 ];
 const RANDY_REWARD = "Randy's Wishlist: 22 cars — reward is the Advanced Tracker demobiliser plus cash bonuses up to $10,000.";
+
+// Bonus vehicles (Ultimate Edition; Vapid Stanier '55 is the pre-order bonus in both editions) — list supplied by the site owner.
+// ch chapter it unlocks · only "Chapter 1 only" pickups · kind vehicle | garage | shop | activity
+const BONUS = [
+  { ch: 1, n: "Dinka Enduro", kind: "Motorcycle", loc: "Jason's house, Key Lento", only: true, map: [-2354, -5532], prec: "spot" },
+  { ch: 1, n: "Crest kayak", kind: "Boat", loc: "Jason's house, Key Lento", only: true, map: [-2354, -5532], prec: "spot" },
+  { ch: 1, n: "Ganado Retro Build", kind: "Car (mod)", loc: "Any Mod Shop, e.g. Coastal Auto Care", only: true, map: null },
+  { ch: 1, n: "Rideout Customs", kind: "Mod shop", loc: "Crosstown, Vice City", map: [-866, 975], prec: "spot", place: true },
+  { ch: 1, n: "One-Eyed Willie's", kind: "Mod shop", loc: "One Eyed Willie, north Leonida", map: [-1843, 5650], prec: "spot", place: true },
+  { ch: 2, n: "Vapid Dominator Buggy '67", kind: "Car", loc: "Paradise Garage, Watson Bay", map: [-4088, -2424], prec: "spot" },
+  { ch: 2, n: "Paradise Garage", kind: "Garage", loc: "Watson Bay", map: [-4088, -2424], prec: "spot", place: true },
+  { ch: 2, n: "Wyman's Classic Car Collection", kind: "Activity", loc: "Classic cars spread across Leonida — also a side mission", map: null },
+  { ch: 3, n: "Vapid Stanier '55", kind: "Car (pre-order bonus)", loc: "Outside the Ocean View Hotel, Shore Dr, Ocean Beach — with the Shore Court garage", map: [1960, 639], prec: "spot", preorder: true },
+  { ch: 4, n: "Shitzu Squalo", kind: "Boat", loc: "Docked in the Washington Beach canal (Vice Beach)", map: [1934, 1815], prec: "area" },
+  { ch: 5, n: "Grotti Cheetah '95", kind: "Car", loc: "Pegassi Residences parking garage, Tequesta Retreat", map: [48, -1081], prec: "spot" },
+];

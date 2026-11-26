@@ -21,3 +21,4 @@ webapp/media/
 # Root notes / source material (README.md excepted)
 /*.md
 !/README.md
+/*.MD
