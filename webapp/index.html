@@ -204,6 +204,17 @@
   .mg-card ul, .mg-card ol { margin-left: 1.1rem; display: grid; gap: 0.35rem; }
   .mg-card p { margin-top: 0.4rem; }
   .mg-warn { color: var(--muted); font-size: 0.78rem; }
+  .mg-ladder { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem; margin-bottom: 0.7rem; }
+  .mg-ladder > div { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 0.85rem; font-size: 0.8rem; }
+  .mg-ladder > div > b { display: block; font-size: 0.95rem; margin: 0.25rem 0 0.2rem; }
+  .mg-ladder p b { color: var(--text); }
+  .mg-ladder p { color: var(--muted); }
+  .lv { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 999px; padding: 0.05rem 0.45rem; border: 1px solid; }
+  .lv0 { color: #ff5f5f; } .lv1 { color: var(--gold); } .lv2 { color: var(--accent); } .lv3 { color: var(--done); }
+  .mg-tip { font-size: 0.82rem; background: rgba(0, 217, 255, 0.06); border: 1px solid rgba(0, 217, 255, 0.25); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 1.3rem; }
+  .mg-not { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1.1rem; font-size: 0.84rem; margin-bottom: 1rem; }
+  .mg-not span { display: inline-block; margin: 0.35rem 0.3rem 0 0; font-size: 0.74rem; background: #1f222d; border: 1px solid var(--border); border-radius: 999px; padding: 0.1rem 0.6rem; color: var(--muted); }
+  .mg-not p { margin-top: 0.6rem; color: var(--muted); }
   .glitch { background: var(--card); border: 1px solid rgba(46, 204, 113, 0.45); border-radius: 12px; padding: 1rem 1.2rem; margin: 0 0 1.5rem; }
   .glitch-head { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
   .glitch ol { margin: 0.3rem 0 0.6rem 1.2rem; font-size: 0.85rem; display: grid; gap: 0.25rem; }
@@ -544,7 +555,7 @@
     <div id="sub-mguide" role="tabpanel" aria-labelledby="subbtn-mguide">
       <div class="money-hero">📘 Money Guide</div>
       <div class="money-sub">How to earn — and keep — money in each chapter. Payouts are what guide writers saw in their own runs; loot, car condition and buyer change the numbers.</div>
-      <div class="mg-quick"><b>Quick answer:</b> don't grind in Chapter 1 (that cash doesn't carry over). <b>Ch 2:</b> stolen cars to Moses + the barn glitch. <b>Ch 3:</b> Yasmani's jewelry stores and Randy's supercars. <b>End of Ch 4+:</b> large bank vaults (~$200k) and Pilot Pete's drops.</div>
+      <div class="mg-quick"><b>Quick answer:</b> don't grind in Chapter 1 (that cash doesn't carry over). <b>Ch 2:</b> stolen cars to Moses + the barn glitch (still works after the 23 Nov patch). <b>Ch 3:</b> Yasmani's jewelry stores and Randy's supercars. <b>End of Ch 4+:</b> large bank vaults (~$200k) and Pilot Pete's drops.</div>
       <div class="mg-ending">🏁 <b>Save $3M in Family Savings before <i>The End of the Road</i>.</b> The amount helps decide your ending — guides quote $2M–$3M for the best one, so $3M covers them all. Even ~$2M adds an epilogue where the money reaches Lucia's family.</div>
 
       <h3 class="mg-h">At a glance</h3>
@@ -552,7 +563,7 @@
         <thead><tr><th>Method</th><th>Unlocks</th><th>Payout</th><th>Risk</th></tr></thead>
         <tbody>
           <tr><td>Store stick-ups</td><td>Start</td><td>A few hundred</td><td><span class="rk-l">Low</span></td></tr>
-          <tr><td>Barn loot-respawn glitch</td><td>Ch 2</td><td>~$8.6–10k / loop</td><td><span class="rk-l">Low</span></td></tr>
+          <tr><td>Barn loot-respawn glitch</td><td>Ch 2 (best from Ch 3)</td><td>~$10k / bag · ~$100k / van</td><td><span class="rk-l">Low</span></td></tr>
           <tr><td>Stolen cars → Moses</td><td>Ch 2</td><td>$1k – a few k / car</td><td><span class="rk-l">Low</span></td></tr>
           <tr><td>Hunting for Bret</td><td>Ch 2 (Jason)</td><td>Hundreds – a few k / animal</td><td><span class="rk-l">Low</span></td></tr>
           <tr><td>Demolition derby</td><td>Ambrosia Raceway</td><td>$3.8–6.3k / win</td><td><span class="rk-l">Low</span></td></tr>
@@ -562,6 +573,26 @@
           <tr><td>Pilot Pete's cocaine drops</td><td>Ch 4</td><td>$10–20k / drop</td><td><span class="rk-m">Medium</span></td></tr>
           <tr><td>Large bank vaults</td><td>End of Ch 4</td><td>Up to ~$200k</td><td><span class="rk-h">High · instant 4★</span></td></tr>
         </tbody></table></div>
+
+      <h3 class="mg-h">Where your money sits — and how you lose it</h3>
+      <div class="mg-ladder">
+        <div><span class="lv lv0">Least safe</span><b>Loot</b><p>Jewelry, drugs and marked bills in your stash bag. Worth nothing until a fence buys it.</p></div>
+        <div><span class="lv lv1">Risky</span><b>Pocket cash</b><p>Capped at <b>$20,000 per character</b> — and lost in full if you're wasted or busted.</p></div>
+        <div><span class="lv lv2">Safe</span><b>BuckMe account</b><p>Shared by Jason and Lucia. Deposit at any ATM after every job.</p></div>
+        <div><span class="lv lv3">Safest</span><b>Family Savings</b><p>Can't be withdrawn once deposited — and it decides your ending ($3M goal).</p></div>
+      </div>
+      <div class="mg-tip">💡 Treat $20k as a hard ceiling: near it, find an ATM before doing anything risky — and sell loot before starting the next job.</div>
+
+      <h3 class="mg-h">Best fence by chapter</h3>
+      <div class="mg-table-wrap"><table class="mg-table">
+        <thead><tr><th>Chapter</th><th>Fence</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td>Ch 1</td><td>Brian (Brian's Lockup, SW Key Lento — code 7700) · Donnie's trailer</td><td>Anything — lowest rates; payment arrives in Jason's mailbox</td></tr>
+          <tr><td>Ch 2</td><td>Dunk, Port Gellhorn</td><td>Drugs & jewelry (better than Brian/Donnie)</td></tr>
+          <tr><td>Ch 3+</td><td>Tyrone, Vice City</td><td>Drugs — highest price (sell the glitch cocaine here)</td></tr>
+          <tr><td>Ch 3+</td><td>Yasmani, Vice City</td><td>Jewelry & marked bills — highest price</td></tr>
+        </tbody></table></div>
+      <p class="mg-warn" style="margin:-0.8rem 0 1.2rem">Guides disagree on whether Brian & Donnie stay open after Chapter 1 — if one is closed, use the next fence down.</p>
 
       <div class="mg-grid">
         <section class="mg-card"><h3>Chapter 1 — don't farm yet</h3>
@@ -599,14 +630,33 @@
           <p>Yasmani sells van-schedule tips for $10k after two Payday Loans jobs. It unlocks right before the final stretch — <b>make a separate save</b>. <b>Pilot Pete</b> (met in Ch 3) offers timed drug drops from Ch 4: ~$10–20k each.</p></section>
         <section class="mg-card"><h3>Keep what you earn</h3>
           <ul>
-            <li><b>Bank it</b> — cash on hand is lost if you die or get arrested; move it to BuckMe or the safehouse.</li>
+            <li><b>Bank it</b> — pocket cash is capped at $20k per character and lost if you die or get arrested; deposit at an ATM (BuckMe).</li>
             <li><b>Save manually</b> right after a big sale — autosave is rare.</li>
             <li>Missing a stash bag? <b>Check the car trunk.</b></li>
             <li>On big robberies, the partner controls the crowd while you loot.</li>
             <li>Cheats disable saving, so the money cheat can't be kept.</li>
           </ul></section>
       </div>
-      <p class="leo-credit">Based on <a href="https://stealthygaming.com/gta-6-money-guide/" target="_blank" rel="noopener">Stealthy Gaming's money guide</a> (updated 26 Nov 2026), which compiles PowerPyx, PC Gamer, Beebom, GamesRadar+ and AlcastHQ. Condensed in our own words.</p>
+      <h3 class="mg-h">Sources compared</h3>
+      <div class="mg-table-wrap"><table class="mg-table">
+        <thead><tr><th>Method</th><th>Stealthy Gaming</th><th>GrindMap (≥2 launch guides)</th><th>Take</th></tr></thead>
+        <tbody>
+          <tr><td>Moses, per car</td><td>$1k – a few k (VGC: up to $5k)</td><td>~$1k</td><td>Plan on ~$1k; older/rarer models pay more</td></tr>
+          <tr><td>Randy supercar</td><td>~$20–30k+</td><td>$30k+</td><td>~$30k for a car in perfect condition</td></tr>
+          <tr><td>Jewelry store</td><td>$10–25k</td><td>$10–25k (Beebom: up to $20k)</td><td>Agreed</td></tr>
+          <tr><td>Large bank vault</td><td>up to ~$200k</td><td>up to ~$200k (PowerPyx: $205k)</td><td>Agreed</td></tr>
+          <tr><td>Barn / warehouse glitch</td><td>~$8.6k per 2-bag loop</td><td>~$10k per full bag, ~$100k per full van</td><td>Scales with how many bags you carry</td></tr>
+          <tr><td>Randy's list size</td><td>18 cars (PowerPyx)</td><td>"more than a dozen"</td><td>Insider Gaming lists 22</td></tr>
+          <tr><td>Chapter 1 cash</td><td>Lost at end of chapter</td><td>Fences close at end of Ch 1</td><td>Spend it; only Family Savings carries</td></tr>
+        </tbody></table></div>
+
+      <div class="mg-not">
+        <b>🚫 Not in GTA 6 at launch</b> (no review or launch guide mentions them — could change with updates):
+        <span>buyable businesses (garages are the only property)</span><span>passive income</span><span>a stock market</span><span>casino games (casino buildings are closed)</span><span>an Online mode</span>
+        <p>So there's nothing that earns while you're away — your only multiplier is spending play time on the best-paying job you've unlocked. Money also gates the story: some parts only open once you've saved a set amount.</p>
+      </div>
+
+      <p class="leo-credit">Based on <a href="https://stealthygaming.com/gta-6-money-guide/" target="_blank" rel="noopener">Stealthy Gaming</a> (26 Nov 2026) and <a href="https://grindmap.com/guides/how-to-make-money-in-gta-6" target="_blank" rel="noopener">GrindMap</a> (26 Nov 2026), which together compile PowerPyx, Insider Gaming, PC Gamer, GameSpot, Eurogamer, Beebom, GamesRadar+ and AlcastHQ. Condensed in our own words.</p>
     </div>
     <div id="sub-moneyfast" role="tabpanel" aria-labelledby="subbtn-moneyfast" hidden>
     <div class="money-hero">💰 Make Money Fast</div>
@@ -614,7 +664,7 @@
 
     <div class="stat-grid">
       <div class="stat best"><div class="amt">$100–205k</div><div class="lbl">🏦 Large bank vaults</div><div class="meta">Late Ch 4 / endgame · best farm</div></div>
-      <div class="stat"><div class="amt">~$8.6–10k / loop</div><div class="lbl">🔁 Hamlet stash respawn glitch</div><div class="meta">After Ch 1 · repeatable · see below</div></div>
+      <div class="stat"><div class="amt">~$10k / bag</div><div class="lbl">🔁 Hamlet stash respawn glitch</div><div class="meta">After Ch 1 · repeatable · see below</div></div>
       <div class="stat"><div class="amt">$30k+</div><div class="lbl">🚗 Randy's Wish List cars</div><div class="meta">Mid Ch 3 · 18–22 cars (guides differ) · reward: Advanced Tracker demobiliser</div></div>
       <div class="stat"><div class="amt">$120k</div><div class="lbl">📖 Story payment</div><div class="meta">End of Chapter 3</div></div>
       <div class="stat"><div class="amt">$10–25k</div><div class="lbl">💎 Jewelry Smash 'n' Grabs</div><div class="meta">Ch 3 · one night = $37k possible</div></div>
@@ -627,17 +677,17 @@
     </div>
 
     <div class="glitch">
-      <div class="glitch-head"><b>🔁 Loot respawn glitch — Apollo Aggregates, NE of Hamlet</b><span class="fbadge ch">Checked: 3 sources agree</span></div>
+      <div class="glitch-head"><b>🔁 Loot respawn glitch — Apollo Aggregates, NE of Hamlet</b><span class="fbadge ch">Checked: 5 sources · still works after 23 Nov patch</span></div>
       <ol>
         <li>Bring a registered vehicle with lots of trunk space (a van with 10+ slots is ideal) — wait until after Chapter 1.</li>
         <li>At the abandoned barn/warehouse next to Apollo Aggregates (Peregrine Bay, just NE of Hamlet) there are bodies everywhere — a drug deal gone wrong.</li>
         <li>Loot the van outside, the van inside, the cocaine on the office table and the office safe. Fill stash bags and load them into your trunk.</li>
-        <li><b>Respawn the loot:</b> either save and reload (you wake at home with the bags still in your car), or quickly switch to the other character and back.</li>
-        <li>Sell the goods at any Fence, then repeat.</li>
+        <li><b>Respawn the loot:</b> drive a short way off and come back, save and reload (bags stay in your car), or quickly switch character and back — guides report all three.</li>
+        <li>Sell at a fence — <b>Tyrone</b> (Vice City, from Ch 3) pays the most for the cocaine. Then repeat.</li>
       </ol>
-      <div class="glitch-note">⚠ Realistic take: about <b>$8.6–10k per loop</b>, and each chapter has a cap on how much cash you can hold, so you'll max out fast. Glitches like this can be patched in any update. Ignore viral "$3.8M/hour" route images — that one's fake.</div>
+      <div class="glitch-note">⚠ Realistic take: about <b>$10k per full bag</b> and ~<b>$100k per full van</b> (PC Gamer made $50k in 15 min). Pocket cash caps at $20k per character, so bank as you go. Still worked after Rockstar's 23 Nov update, but any patch can close it. Glitches like this can be patched in any update. Ignore viral "$3.8M/hour" route images — that one's fake.</div>
       <div class="place-actions"><button type="button" data-fly="-1837,-2876,5" data-label="🔁 Money glitch — Apollo Aggregates">📍 Show on map</button>
-        <a href="https://insider-gaming.com/gta-6-infinite-money-glitch/" target="_blank" rel="noopener">Insider Gaming ↗</a><a href="https://thetab.com/2026/11/25/gta-6s-unlimited-money-glitch-is-solving-everyones-shopping-problems-and-its-so-easy-to-do" target="_blank" rel="noopener">The Tab ↗</a><a href="https://stealthygaming.com/gta-6-money-glitch/" target="_blank" rel="noopener">Stealthy Gaming ↗</a></div>
+        <a href="https://insider-gaming.com/gta-6-infinite-money-glitch/" target="_blank" rel="noopener">Insider Gaming ↗</a><a href="https://thetab.com/2026/11/25/gta-6s-unlimited-money-glitch-is-solving-everyones-shopping-problems-and-its-so-easy-to-do" target="_blank" rel="noopener">The Tab ↗</a><a href="https://stealthygaming.com/gta-6-money-glitch/" target="_blank" rel="noopener">Stealthy Gaming ↗</a><a href="https://grindmap.com/guides/gta-6-money-glitch" target="_blank" rel="noopener">GrindMap ↗</a></div>
     </div>
 
     <div class="playbook">
