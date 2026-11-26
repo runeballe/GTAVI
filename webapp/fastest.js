@@ -2,7 +2,7 @@
 // Sources (checked 2026-11-26): G2A News "Fastest cars in GTA 6" (speeds + location cues), Insider Gaming
 // "Top 20 fastest cars" (speeds, standout sets, how-to), GTABase "Fastest Cars ranked" (ranks 21–30, real-life models).
 // r rank · n name · m manufacturer · set standout set · s speed · base gallery model for the photo · rl real-life model
-// loc location cue · how how to get it · ch chapter gate · sec security · map [gameX, gameY] · prec "spot"|"area" (gtadb landmarks)
+// loc location cue · how how to get it · ch chapter gate · sec security · map [gameX, gameY] · prec "spot"|"area"|"approx" (gtadb landmarks)
 const FASTEST = [
   { r: 1, n: "Andrew Node's Thrax", m: "Truffade", set: "Ultra-Luxe", s: 9.2, base: "Thrax", rl: "Bugatti Divo",
     loc: "Andrew Node's mansion garage, south Starfish Island", map: [906, 661], prec: "area",
@@ -45,7 +45,7 @@ const FASTEST = [
     loc: "Outside a paint-splattered house, Capri", map: [-6676, 215], prec: "area",
     how: "Parked out front — the house and car are covered in paint.", sec: "Advanced keyless + tracker" },
   { r: 14, n: "Tsunami Zorrusso", m: "Granforma", set: "Street Racer", s: 8.3, base: "Zorrusso",
-    loc: "Garage of a luxury residence, Peacock Estates", map: null,
+    loc: "Garage of a luxury residence, Peacock Estates", map: [-1194, -1742], prec: "approx",
     how: "Open the garage door.", sec: "AWD, stable" },
   { r: 15, n: "Emerus", m: "Progen", s: 8.3, base: "Emerus", rl: "McLaren Senna",
     loc: "Random spawn in wealthy neighbourhoods", map: null,
@@ -70,8 +70,8 @@ const FASTEST = [
   { r: 22, n: "Raul's Tempesta", m: "Pegassi", s: 8.1, base: "Tempesta", loc: "Not documented yet", map: null },
   { r: 23, n: "Burning Cypher", m: "Übermacht", s: 8.0, base: "Cypher", loc: "Not documented yet", map: null },
   { r: 24, n: "Furia", m: "Piccia", s: 7.8, base: "Furia", rl: "Pininfarina Battista",
-    loc: "Peacock Island, south Vice City (tracker guide)", map: [1958, 1501], prec: "area",
-    how: "Randy marks it if you call him; it spawns there either way." },
+    loc: "Mansion in Peacock Estates, south Vice-Dale — left-hand garage", map: [-1194, -1742], prec: "approx",
+    how: "Randy marks it if you call him. Key Cloner + tracker." },
   { r: 25, n: "Gauntlet Hellfire", m: "Bravado", s: 7.8, base: "Gauntlet Hellfire", rl: "2018 Dodge Challenger Demon",
     loc: "M7 compound, Hamlet (tracker guide)", map: [-2982, -3084], prec: "area",
     how: "Call Randy first — it only spawns once the area turns purple. Also needed for 'Capital Offense'." },

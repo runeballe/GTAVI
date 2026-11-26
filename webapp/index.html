@@ -186,6 +186,11 @@
 
 
 
+  .glitch { background: var(--card); border: 1px solid rgba(46, 204, 113, 0.45); border-radius: 12px; padding: 1rem 1.2rem; margin: 0 0 1.5rem; }
+  .glitch-head { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+  .glitch ol { margin: 0.3rem 0 0.6rem 1.2rem; font-size: 0.85rem; display: grid; gap: 0.25rem; }
+  .glitch-note { font-size: 0.8rem; color: var(--muted); background: rgba(255, 214, 10, 0.06); border: 1px solid rgba(255, 214, 10, 0.25); border-radius: 8px; padding: 0.5rem 0.7rem; margin-bottom: 0.6rem; }
+
   /* ============ SUB-TABS ============ */
   .subtabs { display: inline-flex; gap: 0.25rem; padding: 0.25rem; background: #0f1117; border: 1px solid var(--border); border-radius: 999px; margin-bottom: 1.2rem; max-width: 100%; overflow-x: auto; }
   .subtab { font: inherit; font-size: 0.85rem; font-weight: 600; color: var(--muted); background: none; border: none; border-radius: 999px; padding: 0.45rem 1rem; cursor: pointer; white-space: nowrap; }
@@ -497,7 +502,8 @@
 
     <div class="stat-grid">
       <div class="stat best"><div class="amt">$100–205k</div><div class="lbl">🏦 Large bank vaults</div><div class="meta">Late Ch 4 / endgame · best farm</div></div>
-      <div class="stat"><div class="amt">$30k+</div><div class="lbl">🚗 Randy's Wish List cars</div><div class="meta">Mid Ch 3 · 18 requested cars</div></div>
+      <div class="stat"><div class="amt">~$10k / run</div><div class="lbl">🔁 Hamlet stash respawn glitch</div><div class="meta">After Ch 1 · repeatable · see below</div></div>
+      <div class="stat"><div class="amt">$30k+</div><div class="lbl">🚗 Randy's Wish List cars</div><div class="meta">Mid Ch 3 · 22 cars · reward: Advanced Tracker demobiliser</div></div>
       <div class="stat"><div class="amt">$120k</div><div class="lbl">📖 Story payment</div><div class="meta">End of Chapter 3</div></div>
       <div class="stat"><div class="amt">$10–25k</div><div class="lbl">💎 Jewelry Smash 'n' Grabs</div><div class="meta">Ch 3 · one night = $37k possible</div></div>
       <div class="stat"><div class="amt">$12–20k</div><div class="lbl">✈️ Pilot Pete deliveries</div><div class="meta">Ch 4 questline</div></div>
@@ -506,6 +512,20 @@
       <div class="stat"><div class="amt">$1–15k</div><div class="lbl">🎒 Rob other criminals</div><div class="meta">Dynamic events · Ch 2–3</div></div>
       <div class="stat"><div class="amt">$1k+</div><div class="lbl">🚙 Sell cars to Moses</div><div class="meta">Ch 2 · ~2 min cooldown</div></div>
       <div class="stat"><div class="amt">$250k</div><div class="lbl">🎰 Money cheat</div><div class="meta">If you just want the cash</div></div>
+    </div>
+
+    <div class="glitch">
+      <div class="glitch-head"><b>🔁 Loot respawn glitch — Apollo Aggregates, NE of Hamlet</b><span class="fbadge ch">Checked: 2 sources agree</span></div>
+      <ol>
+        <li>Bring a registered vehicle with lots of trunk space (a van with 10+ slots is ideal) — wait until after Chapter 1.</li>
+        <li>At the abandoned barn/warehouse next to Apollo Aggregates (Peregrine Bay, just NE of Hamlet) there are bodies everywhere — a drug deal gone wrong.</li>
+        <li>Loot the van outside, the van inside, the cocaine on the office table and the office safe. Fill stash bags and load them into your trunk.</li>
+        <li><b>Respawn the loot:</b> either save and reload (you wake at home with the bags still in your car), or quickly switch to the other character and back.</li>
+        <li>Sell the goods at any Fence, then repeat.</li>
+      </ol>
+      <div class="glitch-note">⚠ Realistic take: about <b>$10k per run</b>, and each chapter has a cap on how much cash you can hold, so you'll max out fast. Glitches like this can be patched in any update. Ignore viral "$3.8M/hour" route images — that one's fake.</div>
+      <div class="place-actions"><button type="button" data-fly="-1837,-2876,5" data-label="🔁 Money glitch — Apollo Aggregates">📍 Show on map</button>
+        <a href="https://insider-gaming.com/gta-6-infinite-money-glitch/" target="_blank" rel="noopener">Insider Gaming ↗</a><a href="https://thetab.com/2026/11/25/gta-6s-unlimited-money-glitch-is-solving-everyones-shopping-problems-and-its-so-easy-to-do" target="_blank" rel="noopener">The Tab ↗</a></div>
     </div>
 
     <div class="playbook">
@@ -648,7 +668,7 @@
   </div>
     <div id="sub-fastest" role="tabpanel" aria-labelledby="subbtn-fastest" hidden>
     <div class="money-hero">🏎️ Fastest Cars</div>
-    <div class="money-sub">The 30 fastest cars ranked by the in-game <b>Speed</b> stat (0–10). GTA VI doesn't show real top speeds in mph/km/h yet — no site has measured them all, so this uses the game's own rating. Tap <b>📍 Show on map</b> to fly to the spot; the same cars are on the Live Map as the 🏎️ layer.</div>
+    <div class="money-sub">The 30 fastest cars ranked by the in-game <b>Speed</b> stat (0–10). GTA VI doesn't show real top speeds in mph/km/h yet — no site has measured them all, so this uses the game's own rating. Tap <b>📍 Show on map</b> to fly to the spot; the same cars are on the Live Map in the 🚗 Cars layer.</div>
     <div class="fast-steps">
       <div><b>1 · Scan</b> it with WAiNK (hold ↑, aim, RB/R1) — shows lock, tracker and value.</div>
       <div><b>2 · Register</b> stolen cars to keep them — unlocks with Moses in Chapter 2.</div>
@@ -753,6 +773,7 @@
 <script src="gallery.js"></script>
 <script src="leonida.js"></script>
 <script src="fastest.js"></script>
+<script src="cars.js"></script>
 <script src="guides.js"></script>
 <script>
 // ============================================================================
@@ -939,19 +960,7 @@ const chapters = [
 // MAP DATA — categories: guide / super / hide / secret
 // ============================================================================
 const mapPins = [
-  { cat: "super", name: "Truffade Thrax — FASTEST CAR", where: "Andrew Node's mansion, east Starfish Island", note: "Free! No tracker. Scan 10 blue graffiti nodes (WAiNK) → No Flusher quest → garage code 8554013. $70k to register.", gx: 906, gy: 661 },
-  { cat: "super", name: "Pegassi Vitello", where: "Flamingo Pkwy, Waning Sands (Leonard County)", note: "Hop mansion fence, RIGHT garage. One of the fastest — wrecks easily.", gx: 144, gy: 4109 },
-  { cat: "super", name: "Pegassi Tempesta", where: "NE 3rd St, Vice City downtown", note: "Behind a tow truck — owner sometimes arguing with the driver.", gx: 1958, gy: 1591 },
-  { cat: "super", name: "Pegassi Infernus", where: "Police station parking garage, 7th floor", note: "Sneak past the gates. Escape via roof stunt jump.", gx: -7042, gy: 193 },
-  { cat: "super", name: "Pegassi Toros", where: "Pegassi Residences, Bayside Dr, Tequesta Retreat", note: "Purple, parked outside. Clone the key. SLOW — keep speed up or tracker triggers.", gx: 48, gy: -1081 },
-  { cat: "super", name: "Grotti Itali RSX", where: "Vespucci Island", note: "Easiest one. Jump light-brown wooden fence, smash right-side garage door. Very fast, careful.", gx: 1050, gy: 3300 },
-  { cat: "super", name: "Invetero Coquette D10", where: "Waxman Island, near Vice Beach", note: "Enemies on site — bring ammo, heals, armor.", gx: 1408, gy: 1765 },
-  { cat: "super", name: "Bravado Banshee", where: "Southside showroom, left of Peacock Bay", note: "Also needed for 'Capital Offense' achievement.", gx: -1133, gy: -2051 },
-  { cat: "super", name: "Piccia Furia", where: "Peacock Island, south Vice City", note: "Randy marks it if you call him; spawns there regardless.", gx: 1958, gy: 1501 },
-  { cat: "super", name: "Gauntlet Hellfire", where: "M7 compound, Hamlet", note: "MUST call Randy first — car only spawns once area turns purple.", gx: -2982, gy: -3084 },
-  { cat: "super", name: "Pfister Growler", where: "Shore Dr, Ocean Beach beachfront", note: "Parked along restaurant row. Clone key. (Vanessa's laptop code also gives a free pink Growler!)", gx: 2008, gy: 912 },
-  { cat: "super", name: "Buckingham Jubilee", where: "Shore Dr, Ocean Beach beachfront", note: "Same spawn row as Growler.", gx: 2008, gy: 822 },
-  { cat: "super", name: "Maibatsu '97 Penumbra FF", where: "Villa garage, middle of Vespucci Island", note: "Guide: come back after Moses in Ch 2 to keep it.", gx: 1050, gy: 3210 },
+  { cat: "hide", name: "Money glitch — loot respawn", where: "Abandoned barn/warehouse by Apollo Aggregates, Peregrine Bay (NE of Hamlet)", note: "Loot vans, office cocaine + safe; save/reload or switch character to respawn. ~$10k a run, chapter cash caps apply.", gx: -1837, gy: -2876 },
   { cat: "hide", name: "Pay 'n' Spray — respray & swap", where: "Vice City mainland", note: "Unlocks early Ch 3. Respray breaks vehicle ID, also buys standard tracker cars ~$4k+.", gx: 2048, gy: 1501 },
   { cat: "hide", name: "Interiors = safe zones", where: "Anywhere with a door cops won't follow through", note: "Break line of sight inside buildings — grey search stars fade. Patrol cars can't chase on foot.", gx: 1140, gy: 3210 },
   { cat: "hide", name: "Narrow alley network", where: "Little Cuba backstreets, Vice City", note: "3+ stars: ditch car, run alleys on foot, change clothes to reset recognition.", gx: -1190, gy: 0 },
@@ -979,16 +988,20 @@ const mapPins = [
     mapPins.push({ cat: "legend", name: w.n, where: w.loc + " (area pin)", note: (w.op ? "Illegal Operation. " : "") + w.how, gx: w.map[0] + off[0], gy: w.map[1] + off[1] });
   });
 }
+// Cars layer: "where to find" guides (cars.js) + fastest cars (fastest.js), one pin per car, label = car name only.
 {
-  const seen = {};
-  FASTEST.filter(c => c.map).forEach(c => {
-    // Several cars share an area pin (e.g. 3 on Starfish Island): fan them out so each marker stays clickable.
-    const k = c.map.join(","), i = seen[k] = (seen[k] || 0) + 1, a = (i - 1) * 2.1;
+  const seen = {}, names = new Set();
+  const add = (name, loc, prec, note, map) => {
+    const key = name.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (names.has(key) || !map) return; names.add(key);
+    const k = map.join(","), i = seen[k] = (seen[k] || 0) + 1, a = (i - 1) * 2.1;
     const off = i > 1 ? [Math.cos(a) * 90, Math.sin(a) * 90] : [0, 0];
-    mapPins.push({
-      cat: "fast", name: `#${c.r} ${c.n} — Speed ${c.s}`, where: c.loc + (c.prec === "area" ? " (area pin)" : ""),
-      note: [c.how, c.sec].filter(Boolean).join(" · "), gx: c.map[0] + off[0], gy: c.map[1] + off[1],
-    });
+    mapPins.push({ cat: "super", name, where: loc + (prec === "area" ? " (area pin)" : prec === "approx" ? " (approx. pin)" : ""), note, gx: map[0] + off[0], gy: map[1] + off[1] });
+  };
+  CARS.forEach(c => add(c.n, c.loc, c.prec, c.how, c.map));
+  FASTEST.forEach(c => {
+    const full = c.n.startsWith(c.m) ? c.n : `${c.m} ${c.n}`;
+    add(full, c.loc, c.prec, [`#${c.r} fastest · Speed ${c.s}/10`, c.how, c.sec].filter(Boolean).join(" · "), c.map);
   });
 }
 
@@ -1105,11 +1118,10 @@ function gtaTileLayer() {
 
 const CATS = {
   guide:  { label: "Guide items",  icon: "📍", color: "#00d9ff", on: true },
-  super:  { label: "Supercars",    icon: "💎", color: "#ffd60a", on: true },
+  super:  { label: "Cars — where to find", icon: "🚗", color: "#ffd60a", on: true },
   hide:   { label: "Hide & money", icon: "🙈", color: "#2ecc71", on: true },
   secret: { label: "Secrets",      icon: "👽", color: "#b388ff", on: true },
-  fast:   { label: "Fastest cars", icon: "🏎️", color: "#ff3b30", on: true },
-  legend: { label: "Legendary weapons", icon: "⭐", color: "#ffb300", on: true },
+  legend: { label: "Legendary weapons", icon: "⭐", color: "#ff4fd8", on: true },
   land:   { label: "Landmarks",    icon: "🏙️", color: "#c3cad8", on: false },
 };
 let bigMap, sideMap, layers = {}, sideLayers = {};
@@ -1164,7 +1176,7 @@ function pinMatches(p) {
 function renderPinList() {
   const el = document.getElementById("pinList");
   let html = "";
-  ["super", "fast", "legend", "guide", "hide", "secret"].forEach(cat => {
+  ["super", "legend", "guide", "hide", "secret"].forEach(cat => {
     if (!CATS[cat].on) return;
     const rows = bigMarkers.map((b, i) => [b, i]).filter(([b]) => b.cat === cat && pinMatches(b.p));
     if (!rows.length) return;
@@ -1193,7 +1205,7 @@ function focusPin(i) {
 }
 function fitVisiblePins(mapObj, store, animate = false) {
   const pts = [];
-  ["guide", "super", "fast", "legend", "hide", "secret"].forEach(cat => { if (CATS[cat].on) store[cat].eachLayer(l => pts.push(l.getLatLng())); });
+  ["guide", "super", "legend", "hide", "secret"].forEach(cat => { if (CATS[cat].on) store[cat].eachLayer(l => pts.push(l.getLatLng())); });
   if (pts.length) mapObj.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 5, animate: animate });
   else mapObj.fitBounds(WORLD_BOUNDS, { animate: animate });
 }
@@ -1345,7 +1357,7 @@ function renderFastest() {
         ${c.how ? `<div class="fhow">${escapeHtml(c.how)}</div>` : ""}
         ${c.sec ? `<div class="fsec">🔐 ${escapeHtml(c.sec)}</div>` : ""}
         <div class="factions">
-          ${c.map ? `<button type="button" data-fly="${c.map[0]},${c.map[1]},${c.prec === "spot" ? 5 : 4}" data-label="#${c.r} ${escapeHtml(c.n)}">📍 Show on map${c.prec === "area" ? " (area)" : ""}</button>` : `<span class="fnomap">No map spot yet</span>`}
+          ${c.map ? `<button type="button" data-fly="${c.map[0]},${c.map[1]},${c.prec === "spot" ? 5 : 4}" data-label="${escapeHtml(c.n)}">📍 Show on map${c.prec === "area" ? " (area)" : c.prec === "approx" ? " (approx.)" : ""}</button>` : `<span class="fnomap">No map spot yet</span>`}
           <label><input type="checkbox" data-got="${c.r}" ${fastGot[c.r] ? "checked" : ""}> Got it</label>
         </div>
       </div></article>`;
@@ -1369,6 +1381,10 @@ function showSub(name) {
   if (location.hash !== subHash(tab)) history.replaceState(null, "", subHash(tab));
 }
 document.querySelectorAll(".subtab").forEach(b => b.addEventListener("click", () => showSub(b.dataset.sub)));
+document.getElementById("tab-money").addEventListener("click", e => {
+  const b = e.target.closest("[data-fly]");
+  if (b) { const [x, y, z] = b.dataset.fly.split(",").map(Number); flyToGame(x, y, z, b.dataset.label); }
+});
 function initFastest() {
   ["fastSearch", "fastFilter"].forEach(id => document.getElementById(id).addEventListener("input", renderFastest));
   const list = document.getElementById("fastList");

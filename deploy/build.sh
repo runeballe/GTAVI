@@ -8,7 +8,7 @@ OCEAN=85101f7d16dbea5183fa8a335f8a72a1
 SRC=../webapp
 OUT=public/GTAVI
 rm -rf public && mkdir -p "$OUT/tiles"
-cp "$SRC"/index.html "$SRC"/landmarks.js "$SRC"/codex.js "$SRC"/gallery.js "$SRC"/leonida.js "$SRC"/fastest.js "$SRC"/guides.js "$OUT"/
+cp "$SRC"/index.html "$SRC"/landmarks.js "$SRC"/codex.js "$SRC"/gallery.js "$SRC"/leonida.js "$SRC"/fastest.js "$SRC"/guides.js "$SRC"/cars.js "$OUT"/
 [ -d "$SRC/media" ] && cp -r "$SRC/media" "$OUT"/   # vehicle/weapon thumbnails (gta.wiki, not in git)
 cp "$SRC"/llms.txt "$SRC"/og.jpg "$OUT"/
 for f in favicon.ico apple-touch-icon.png vi-logo.png; do [ -f "$SRC/$f" ] && cp "$SRC/$f" "$OUT"/; done   # optional, not in git (trademark logo)
