@@ -578,9 +578,7 @@
     <button class="tab" id="tabbtn-map" role="tab" aria-controls="tab-map" aria-selected="false" onclick="showTab('map')">🗺️ Live Map</button>
     <button class="tab" id="tabbtn-vehicles" role="tab" aria-controls="tab-vehicles" aria-selected="false" onclick="showTab('vehicles')">🚗 Vehicles</button>
     <button class="tab" id="tabbtn-weapons" role="tab" aria-controls="tab-weapons" aria-selected="false" onclick="showTab('weapons')">🔫 Weapons</button>
-    <button class="tab" id="tabbtn-eggs" role="tab" aria-controls="tab-eggs" aria-selected="false" onclick="showTab('eggs')">🥚 Easter Eggs</button>
-    <button class="tab" id="tabbtn-knowledge" role="tab" aria-controls="tab-knowledge" aria-selected="false" onclick="showTab('knowledge')">💡 MasterOfKnowledge</button>
-    <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Codes</button>
+    <button class="tab" id="tabbtn-knowledge" role="tab" aria-controls="tab-knowledge" aria-selected="false" onclick="showTab('knowledge')">💡 Master Of Knowledge</button>
     <button class="tab" id="tabbtn-trophies" role="tab" aria-controls="tab-trophies" aria-selected="false" onclick="showTab('trophies')">🏆 Trophies</button>
   </nav>
 </header>
@@ -1029,9 +1027,24 @@
   </div>
 </section>
 
-<!-- ==================== TAB: EASTER EGGS ==================== -->
-<section id="tab-eggs" role="tabpanel" aria-labelledby="tabbtn-eggs" style="display:none">
+
+<!-- ==================== TAB: MASTER OF KNOWLEDGE ==================== -->
+<section id="tab-knowledge" role="tabpanel" aria-labelledby="tabbtn-knowledge" style="display:none">
   <div class="money-wrap gal-wrap">
+    <div class="subtabs" role="tablist" aria-label="Master Of Knowledge">
+      <button type="button" class="subtab active" id="subbtn-know" role="tab" aria-selected="true" data-sub="know">💡 Knowledge</button>
+      <button type="button" class="subtab" id="subbtn-eggs" role="tab" aria-selected="false" data-sub="eggs">🥚 Easter Eggs</button>
+      <button type="button" class="subtab" id="subbtn-codes" role="tab" aria-selected="false" data-sub="codes">🔑 Cheat codes</button>
+      <button type="button" class="subtab" id="subbtn-doors" role="tab" aria-selected="false" data-sub="doors">🔐 Door &amp; safe codes</button>
+      <button type="button" class="subtab" id="subbtn-challenges" role="tab" aria-selected="false" data-sub="challenges">🏅 Challenges (80)</button>
+    </div>
+    <div id="sub-know" role="tabpanel" aria-labelledby="subbtn-know">
+    <div class="money-hero">💡 Master Of Knowledge</div>
+    <div class="money-sub">Lore, mysteries and little-known mechanics the game barely mentions.</div>
+    <div id="knowList"></div>
+    <p class="leo-credit">Sources: leonidaverse.com (Secrets &amp; Tips), Nov 2026.</p>
+  </div>
+    <div id="sub-eggs" role="tabpanel" aria-labelledby="subbtn-eggs" hidden>
     <div class="money-hero">🥚 Easter Eggs</div>
     <div class="money-sub">References, cameos and mysteries hidden around Leonida. Tick them off as you find them — eggs with a place are also pins in the Live Map's 👽 Secrets layer.</div>
     <div class="progress-bar"><div class="progress-fill" id="eggFill"></div></div>
@@ -1039,27 +1052,7 @@
     <div class="egg-grid" id="eggList"></div>
     <p class="leo-credit">Easter eggs &amp; secrets: <a href="https://leonidaverse.com/en/codex/gta-6-easter-eggs" target="_blank" rel="noopener">leonidaverse.com</a> (Nov 2026), condensed. Pins from gtadb.org landmarks — "area"/"approx." mark the district, not the exact spot.</p>
   </div>
-</section>
-
-<!-- ==================== TAB: MASTER OF KNOWLEDGE ==================== -->
-<section id="tab-knowledge" role="tabpanel" aria-labelledby="tabbtn-knowledge" style="display:none">
-  <div class="money-wrap gal-wrap">
-    <div class="money-hero">💡 MasterOfKnowledge</div>
-    <div class="money-sub">Lore, mysteries and little-known mechanics the game barely mentions.</div>
-    <div id="knowList"></div>
-    <p class="leo-credit">Sources: leonidaverse.com (Secrets &amp; Tips), Nov 2026.</p>
-  </div>
-</section>
-
-<!-- ==================== TAB 4: CHEATS ==================== -->
-<section id="tab-cheats" role="tabpanel" aria-labelledby="tabbtn-cheats" style="display:none">
-  <div class="money-wrap">
-    <div class="subtabs" role="tablist" aria-label="Cheats">
-      <button type="button" class="subtab active" id="subbtn-codes" role="tab" aria-selected="true" data-sub="codes">🔑 Cheat codes</button>
-      <button type="button" class="subtab" id="subbtn-doors" role="tab" aria-selected="false" data-sub="doors">🔐 Door &amp; safe codes</button>
-      <button type="button" class="subtab" id="subbtn-challenges" role="tab" aria-selected="false" data-sub="challenges">🏅 Challenges (80)</button>
-    </div>
-    <div id="sub-codes" role="tabpanel" aria-labelledby="subbtn-codes">
+    <div id="sub-codes" role="tabpanel" aria-labelledby="subbtn-codes" hidden>
     <div class="money-hero">🔑 Cheat Codes</div>
     <div class="money-sub">61 story-mode cheats · unlock after the story credits. <b>Enter:</b> open the phone, then hold <b>LB</b> + press <b>RB</b> (Xbox) or hold <b>L1</b> + press <b>R1</b> (PS5), and tap the d-pad sequence — same code on both. A used cheat disables achievements/trophies &amp; saving until the session ends, so keep a clean save.
       Sources: leonidaverse.com, gta.wiki, and the Xbox cheat sheet (launch-week guides) — <span class="src-ok">✓✓</span> = confirmed by 2+ sources.</div>
@@ -1089,8 +1082,10 @@
       <div id="chalList"></div>
       <p class="leo-credit">Challenge list: <a href="https://insider-gaming.com/gta-6-challenges/" target="_blank" rel="noopener">Insider Gaming</a> (Nov 2026).</p>
     </div>
+  
   </div>
 </section>
+
 
 <!-- ==================== TAB 5: TROPHIES ==================== -->
 <section id="tab-trophies" role="tabpanel" aria-labelledby="tabbtn-trophies" style="display:none">
@@ -1429,7 +1424,7 @@ function updateProgress() {
 // TABS
 // ============================================================================
 function showTab(name) {
-  ["checklist", "money", "map", "vehicles", "weapons", "eggs", "knowledge", "cheats", "trophies"].forEach(t => {
+  ["checklist", "money", "map", "vehicles", "weapons", "knowledge", "trophies"].forEach(t => {
     document.getElementById("tab-" + t).style.display = t === name ? "" : "none";
     document.getElementById("tabbtn-" + t).classList.toggle("active", t === name);
     document.getElementById("tabbtn-" + t).setAttribute("aria-selected", t === name);
@@ -1769,7 +1764,7 @@ function renderFastest() {
   document.getElementById("fastText").textContent = `${n} collected` + (n === FASTEST.length ? " — full garage! 🏁" : "");
   document.getElementById("fastCount").textContent = `${n} / ${FASTEST.length} cars · ${FASTEST.filter(c => c.map).length} with map spots`;
 }
-const SUBS = { checklist: ["story", "hundred"], money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest", "bonus"], weapons: ["allwep", "legendary"], cheats: ["codes", "doors", "challenges"] };
+const SUBS = { checklist: ["story", "hundred"], money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest", "bonus"], weapons: ["allwep", "legendary"], knowledge: ["know", "eggs", "codes", "doors", "challenges"] };
 const SUB_PARENT = Object.fromEntries(Object.entries(SUBS).flatMap(([t, l]) => l.slice(1).map(n => [n, t])));
 function currentSub(tab) { return (SUBS[tab] || []).find(n => !document.getElementById("sub-" + n).hidden); }
 function subHash(tab) { const c = currentSub(tab); return c && c !== SUBS[tab][0] ? "#" + c : "#" + tab; }
@@ -1910,7 +1905,7 @@ function updateHero() {
     ["Side missions", side.filter(i => state[i.id]).length, side.length, () => { showTab("checklist"); showSub("story"); setTimeout(() => [...document.querySelectorAll(".chapter-title")].find(t => t.textContent.startsWith("Side"))?.scrollIntoView({ behavior: "smooth" }), 50); }],
     ["100% requirements", typeof hunValue === "function" ? hunItems.filter(it => hunValue(it) >= it.t).length : 0, hunItems.length, () => hunGo("hundred")],
     ["Trophies", typeof TROPHIES !== "undefined" ? TROPHIES.filter(t => trophState["t" + t.num]).length : 0, typeof TROPHIES !== "undefined" ? TROPHIES.length : 0, () => showTab("trophies")],
-    ["Cheats unlocked", typeof CHEATS !== "undefined" && typeof cheatState !== "undefined" ? CHEATS.filter(c => cheatState.u[c.n]).length : 0, typeof CHEATS !== "undefined" ? CHEATS.length : 0, () => { showTab("cheats"); showSub("codes"); }],
+    ["Cheats unlocked", typeof CHEATS !== "undefined" && typeof cheatState !== "undefined" ? CHEATS.filter(c => cheatState.u[c.n]).length : 0, typeof CHEATS !== "undefined" ? CHEATS.length : 0, () => { showTab("knowledge"); showSub("codes"); }],
   ];
   const done = rows.reduce((a, r) => a + r[1], 0), total = rows.reduce((a, r) => a + r[2], 0);
   const pct = total ? Math.round(done / total * 100) : 0;
@@ -2204,7 +2199,7 @@ initBonus();
 initKnowledge();
 updateHero();
 initGallery("weapons");
-{ const h = location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "eggs", "knowledge", "cheats", "trophies"].includes(h)) showTab(h); }
+{ const h = ({ cheats: "codes" })[location.hash.slice(1)] || location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "knowledge", "trophies"].includes(h)) showTab(h); }
 </script>
 </body>
 </html>
