@@ -31,8 +31,7 @@ Vehicle/weapon thumbnails (`webapp/media/`) aren't in git; without them the gall
 
 ```sh
 cd deploy
-./build.sh          # copies the app into public/GTAVI/
-npx wrangler deploy
+./deploy.sh        # build + wrangler deploy + purge Cloudflare cache
 ```
 
 `build.sh` skips ~12,800 byte-identical blank-ocean tiles (keeps one as `tiles/ocean.jpg`, which Leaflet uses as `errorTileUrl`). That keeps the upload under the 20,000-file asset limit of the Workers free plan. `worker.js` only redirects lowercase `/gtavi` to `/GTAVI/`.
