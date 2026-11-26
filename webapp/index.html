@@ -227,6 +227,26 @@
   .subtab.active { background: var(--accent); color: #0b0c10; }
 
 
+
+  /* ============ 100% ============ */
+  .hun-group { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; }
+  .hun-group h3 { font-size: 0.95rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+  .hun-group h3 span { color: var(--muted); font-size: 0.78rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .hun-row { display: grid; grid-template-columns: 22px minmax(0, 1fr) 150px 120px; gap: 0.7rem; align-items: center; padding: 0.55rem 1rem; border-bottom: 1px solid #1f222d; font-size: 0.83rem; }
+  .hun-row:last-child { border-bottom: none; }
+  .hun-row.met .hn { color: var(--done); }
+  .hun-row .ok { font-size: 0.95rem; text-align: center; }
+  .hun-row .hx { font-size: 0.7rem; color: var(--muted); margin-top: 0.1rem; }
+  .hun-row .hx a, .hun-row .hx button { color: var(--accent); background: none; border: none; padding: 0; font: inherit; cursor: pointer; }
+  .hun-row .bar { height: 7px; border-radius: 999px; background: #0f1117; border: 1px solid var(--border); overflow: hidden; }
+  .hun-row .bar span { display: block; height: 100%; background: var(--accent); }
+  .hun-row.met .bar span { background: var(--done); }
+  .hun-in { display: flex; align-items: center; gap: 0.3rem; justify-content: flex-end; font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .hun-in input { width: 58px; font: inherit; font-size: 0.82rem; background: #0b0c10; color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 0.2rem 0.35rem; text-align: right; }
+  .hun-in input:focus { outline: none; border-color: var(--accent); }
+  .hun-in .auto { color: var(--accent); font-weight: 700; }
+  @media (max-width: 700px) { .hun-row { grid-template-columns: 22px minmax(0, 1fr) 110px; } .hun-row .bar { display: none; } }
+
   /* ============ CHALLENGES ============ */
   .chal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
   @media (max-width: 500px) { .chal-grid { grid-template-columns: 1fr; } }
@@ -479,6 +499,13 @@
 <main>
 <!-- ==================== TAB 1: CHECKLIST ==================== -->
 <section id="tab-checklist" role="tabpanel" aria-labelledby="tabbtn-checklist">
+  <div class="toolbar-wrap" style="padding-bottom:0">
+    <div class="subtabs" role="tablist" aria-label="Checklist" style="margin-bottom:0.2rem">
+      <button type="button" class="subtab active" id="subbtn-story" role="tab" aria-selected="true" data-sub="story">📋 Story checklist</button>
+      <button type="button" class="subtab" id="subbtn-hundred" role="tab" aria-selected="false" data-sub="hundred">💯 100% Completion</button>
+    </div>
+  </div>
+  <div id="sub-story" role="tabpanel" aria-labelledby="subbtn-story">
   <div class="toolbar-wrap">
     <div class="toolbar">
       <input type="search" id="searchBox" placeholder="Search missions, items, locations…" />
@@ -542,6 +569,17 @@
         <p style="font-size:0.72rem; color:var(--muted); margin-top:0.5rem;">Click any card to toggle. Progress auto-saves.</p>
       </div>
     </aside>
+  </div>
+</div>
+  <div id="sub-hundred" role="tabpanel" aria-labelledby="subbtn-hundred" hidden>
+    <div class="money-wrap gal-wrap">
+      <div class="money-hero">💯 100% Completion</div>
+      <div class="money-sub">What the in-game 100% list asks for (it unlocks after the story, in Progress → Stats → 100% Completion). Reaching it pops <b>A Long Road</b>. Missable content doesn't count. Type your counts from the game — rows marked 🔗 fill in from your other tracker tabs.</div>
+      <div class="progress-bar"><div class="progress-fill" id="hunFill"></div></div>
+      <div class="progress-text"><span id="hunText">0 / 35 met</span><span id="hunCount"></span></div>
+      <div id="hunList"></div>
+      <p class="leo-credit">Requirements: <a href="https://gta.wiki/w/100%25_Completion_in_GTA_VI" target="_blank" rel="noopener">gta.wiki — 100% Completion in GTA VI</a> (CC BY-SA). Cross-checked against this tracker's chapter notes, Money Guide and Challenges.</p>
+    </div>
   </div>
 </section>
 
@@ -939,6 +977,7 @@
 <script src="leonida.js"></script>
 <script src="fastest.js"></script>
 <script src="cars.js"></script>
+<script src="hundred.js"></script>
 <script src="guides.js"></script>
 <script>
 // ============================================================================
@@ -1626,7 +1665,7 @@ function renderFastest() {
   document.getElementById("fastText").textContent = `${n} collected` + (n === FASTEST.length ? " — full garage! 🏁" : "");
   document.getElementById("fastCount").textContent = `${n} / ${FASTEST.length} cars · ${FASTEST.filter(c => c.map).length} with map spots`;
 }
-const SUBS = { money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest"], weapons: ["allwep", "legendary"], cheats: ["codes", "challenges"] };
+const SUBS = { checklist: ["story", "hundred"], money: ["mguide", "moneyfast"], vehicles: ["allveh", "fastest"], weapons: ["allwep", "legendary"], cheats: ["codes", "challenges"] };
 const SUB_PARENT = Object.fromEntries(Object.entries(SUBS).flatMap(([t, l]) => l.slice(1).map(n => [n, t])));
 function currentSub(tab) { return (SUBS[tab] || []).find(n => !document.getElementById("sub-" + n).hidden); }
 function subHash(tab) { const c = currentSub(tab); return c && c !== SUBS[tab][0] ? "#" + c : "#" + tab; }
@@ -1721,6 +1760,56 @@ function initGuides() {
   leg.addEventListener("change", e => { const k = e.target.dataset.leg; if (k === undefined) return; if (e.target.checked) guideState.leg[k] = true; else delete guideState.leg[k]; saveGuides(); renderLegendary(); });
   document.getElementById("chalList").addEventListener("change", e => { const k = e.target.dataset.chal; if (k === undefined) return; if (e.target.checked) guideState.chal[k] = true; else delete guideState.chal[k]; saveGuides(); renderChallenges(); });
   renderLegendary(); renderChallenges();
+}
+
+// ============================================================================
+// 100% COMPLETION (data: hundred.js)
+// ============================================================================
+const HUN_STORE = "gta6_hundred_v1";
+let hunState = {};
+try { hunState = JSON.parse(localStorage.getItem(HUN_STORE) || "{}"); } catch (e) {}
+function hunValue(it) {
+  if (it.auto === "story") return allItems.filter(i => i.type === "mission").every(i => state[i.id]) ? 1 : 0;
+  if (it.auto === "challenges") return Object.keys(guideState.chal || {}).length;
+  return Math.max(0, Number(hunState[it.k]) || 0);
+}
+function hunGo(tab) { const parent = SUB_PARENT[tab]; if (parent) { showTab(parent); showSub(tab); } else showTab(tab); window.scrollTo({ top: 0 }); }
+function renderHundred() {
+  let met = 0, total = 0, html = "";
+  HUNDRED.forEach(g => {
+    let gm = 0;
+    const rows = g.items.map(it => {
+      total++; const v = hunValue(it), ok = v >= it.t; if (ok) { met++; gm++; }
+      const max = it.of || (it.unit ? 9999 : it.t * 10);
+      const input = it.auto
+        ? `<span class="auto" title="Filled from your tracker">🔗 ${it.auto === "story" ? (v ? "Done" : "Not yet") : v}</span>${it.auto === "story" ? "" : ` / ${it.t}${it.of ? ` of ${it.of}` : ""}`}`
+        : `<input type="number" min="0" max="${max}" inputmode="numeric" data-hun="${it.k}" value="${v || ""}" placeholder="0" aria-label="${escapeHtml(it.n)} count"> / ${it.t}${it.unit ? "k" : ""}${it.of ? ` of ${it.of}` : ""}`;
+      const TABN = { moneyfast: "Money Fast", money: "Money Guide", checklist: "Story checklist", challenges: "Challenges", vehicles: "Vehicles", weapons: "Weapons" };
+      const link = it.tab ? `${it.x ? " · " : ""}<button type="button" data-hgo="${it.tab}">open ${TABN[it.tab] || it.tab} →</button>` : "";
+      return `<div class="hun-row${ok ? " met" : ""}"><span class="ok">${ok ? "✅" : "⬜"}</span>
+        <div><div class="hn">${escapeHtml(it.n)}</div>${it.x || link ? `<div class="hx">${it.x ? escapeHtml(it.x) : ""}${link}</div>` : ""}</div>
+        <div class="bar"><span style="width:${Math.min(100, Math.round(v / it.t * 100))}%"></span></div>
+        <div class="hun-in">${input}</div></div>`;
+    }).join("");
+    html += `<section class="hun-group"><h3>${g.g}<span>${gm} / ${g.items.length} met</span></h3>${rows}</section>`;
+  });
+  document.getElementById("hunList").innerHTML = html;
+  document.getElementById("hunFill").style.width = Math.round(met / total * 100) + "%";
+  document.getElementById("hunText").textContent = `${met} / ${total} requirements met` + (met === total ? " — A Long Road 🏆" : "");
+  document.getElementById("hunCount").textContent = "Saved in this browser";
+}
+function initHundred() {
+  const el = document.getElementById("hunList");
+  el.addEventListener("change", e => {
+    const k = e.target.dataset.hun; if (!k) return;
+    const v = Math.max(0, parseInt(e.target.value, 10) || 0);
+    if (v) hunState[k] = v; else delete hunState[k];
+    try { localStorage.setItem(HUN_STORE, JSON.stringify(hunState)); } catch (err) {}
+    renderHundred();
+  });
+  el.addEventListener("click", e => { const b = e.target.closest("[data-hgo]"); if (b) hunGo(b.dataset.hgo); });
+  document.getElementById("subbtn-hundred").addEventListener("click", renderHundred); // refresh auto rows on open
+  renderHundred();
 }
 
 // ============================================================================
@@ -1878,6 +1967,7 @@ renderLeonida();
 initGallery("vehicles");
 initFastest();
 initGuides();
+initHundred();
 initGallery("weapons");
 { const h = location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "leonida", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
 </script>
