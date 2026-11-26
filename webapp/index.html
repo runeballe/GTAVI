@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTA6 Playthrough Tracker — Checklist · Money · Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    color-scheme: dark;
+    --bg: #0b0c10;
+    --card: #15171f;
+    --text: #e8eaf2;
+    --muted: #9aa3b2;
+    --accent: #00d9ff;
+    --accent2: #7b2cff;
+    --done: #2ecc71;
+    --done-bg: rgba(46, 204, 113, 0.12);
+    --gold: #ffd60a;
+    --border: #2a2d3a;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header { background: linear-gradient(135deg, #0f1117 0%, #161822 100%); border-bottom: 1px solid var(--border); padding: 0.9rem 2rem 0; position: sticky; top: 0; z-index: 100; }
+  .header-inner { max-width: 1400px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 800; font-size: 1.15rem; }
+  .brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .subtitle { color: var(--muted); font-size: 0.8rem; }
+
+  /* Tabs */
+  .tabs { max-width: 1400px; margin: 0.6rem auto 0; display: flex; gap: 0.3rem; }
+  .tab {
+    padding: 0.55rem 1.3rem; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+    color: var(--muted); background: transparent; border: none; border-bottom: 3px solid transparent; border-radius: 6px 6px 0 0;
+  }
+  .tab:hover { color: var(--text); background: #1a1d28; }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); background: #14161e; }
+
+  /* Toolbar */
+  .toolbar-wrap { max-width: 1400px; margin: 0 auto; padding: 0.9rem 2rem 0.4rem; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.6rem; }
+  .toolbar input[type="search"] { background: #1f222d; border: 1px solid var(--border); color: var(--text); padding: 0.5rem 0.9rem; border-radius: 6px; font-size: 0.85rem; flex: 1; min-width: 180px; }
+  .toolbar input[type="search"]:focus { outline: none; border-color: var(--accent); }
+  .chip { background: #1f222d; border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.9rem; border-radius: 999px; font-size: 0.8rem; cursor: pointer; }
+  .chip.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .progress-bar { height: 8px; background: #1f222d; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; transition: width 0.4s ease; }
+  .progress-text { display: flex; justify-content: space-between; margin: 0.35rem 0 0.9rem; font-size: 0.8rem; color: var(--muted); }
+
+  .main { max-width: 1400px; margin: 0 auto; padding: 0.5rem 2rem 2rem; display: grid; grid-template-columns: 1fr 340px; gap: 2rem; }
+  @media (max-width: 950px) { .main { grid-template-columns: 1fr; padding: 0.5rem 1rem 2rem; } header { padding: 0.9rem 1rem 0; } .toolbar-wrap { padding: 0.9rem 1rem 0.4rem; } .tabs { padding: 0 1rem; } }
+
+  /* Chapters */
+  .chapter { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 1.5rem; }
+  .chapter-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .chapter-title { font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+  .chapter-chip { font-size: 0.68rem; padding: 0.15rem 0.5rem; border-radius: 4px; background: #1f222d; color: var(--muted); border: 1px solid var(--border); }
+  .chapter-chip.c1 { color: var(--accent); border-color: var(--accent); }
+  .chapter-chip.c2 { color: #f5a623; border-color: #f5a623; }
+  .chapter-chip.c3 { color: #ff4d94; border-color: #ff4d94; }
+  .chapter-chip.c4 { color: #8b5cf6; border-color: #8b5cf6; }
+  .chapter-chip.c5 { color: #ff6b35; border-color: #ff6b35; }
+  .chapter-body { padding: 1rem 1.25rem; }
+  .group-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 0.4rem 0 0.6rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.6rem; }
+  .grid.missions { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+
+  .todo { background: #0f1117; border: 1px solid var(--border); border-radius: 8px; padding: 0.65rem 0.8rem; display: flex; align-items: flex-start; gap: 0.55rem; cursor: pointer; transition: all 0.15s; }
+  .todo:hover { border-color: #3a3d4c; background: #14161e; }
+  .todo.done { border-color: var(--done); background: var(--done-bg); }
+  .todo.done .todo-text { text-decoration: line-through; color: var(--muted); }
+  .todo input { margin-top: 0.14rem; width: 17px; height: 17px; accent-color: var(--done); flex-shrink: 0; }
+  .todo-num { font-size: 0.68rem; font-weight: 700; color: #000; background: var(--accent); border-radius: 4px; padding: 0 0.35rem; margin-top: 0.15rem; flex-shrink: 0; min-width: 1.6em; text-align: center; }
+  .todo.done .todo-num { background: var(--done); }
+  .todo-text { flex: 1; font-size: 0.8rem; line-height: 1.35; }
+  .todo-note { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; }
+  .todo-tag { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.4px; color: var(--accent); margin-top: 0.2rem; white-space: nowrap; }
+  .todo.done .todo-tag { color: var(--done); }
+  .todo-tag.web { color: #ff9f43; }
+  .ch-progress { height: 4px; background: #1f222d; border-radius: 4px; overflow: hidden; margin-top: 0.35rem; width: 140px; }
+  .ch-progress-fill { height: 100%; transition: width 0.4s; }
+
+  /* Sidebar */
+  .sidebar { display: flex; flex-direction: column; gap: 1rem; height: fit-content; }
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; }
+  .panel h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; }
+  .tip { font-size: 0.78rem; color: var(--text); margin-bottom: 0.7rem; padding-bottom: 0.7rem; border-bottom: 1px solid #1f222d; }
+  .tip:last-child { border-bottom: none; margin-bottom: 0; }
+  .tip strong { color: var(--accent); }
+  .tip .src { color: var(--muted); font-size: 0.68rem; }
+  .sources { list-style: none; }
+  .sources li { font-size: 0.75rem; margin-bottom: 0.45rem; }
+  button { background: #1f222d; border: 1px solid var(--border); color: var(--text); padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.78rem; cursor: pointer; }
+  button:hover { background: #2a2d3a; border-color: var(--accent); }
+  .empty-filter { color: var(--muted); font-style: italic; text-align: center; padding: 1.5rem; font-size: 0.85rem; }
+
+  /* ============ MONEY TAB ============ */
+  .money-wrap { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+  @media (max-width: 950px) { .money-wrap { padding: 1.5rem 1rem 3rem; } }
+  .money-hero { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.3rem; }
+  .money-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.8rem; margin-bottom: 1.5rem; }
+  .stat {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem;
+    border-top: 3px solid var(--accent);
+  }
+  .stat.best { border-top-color: var(--gold); background: linear-gradient(180deg, rgba(255,214,10,0.07), var(--card)); }
+  .stat .amt { font-size: 1.15rem; font-weight: 800; color: var(--gold); }
+  .stat .lbl { font-size: 0.75rem; color: var(--text); margin-top: 0.15rem; }
+  .stat .meta { font-size: 0.68rem; color: var(--muted); margin-top: 0.25rem; }
+
+  .mgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .mcard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.2rem; }
+  .mcard h3 { font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
+  .mcard ul { list-style: none; }
+  .mcard li { font-size: 0.8rem; padding: 0.3rem 0 0.3rem 1.2rem; position: relative; border-bottom: 1px dashed #1f222d; }
+  .mcard li:last-child { border-bottom: none; }
+  .mcard li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+  .mcard li b { color: var(--gold); }
+  .mcard .badge { font-size: 0.62rem; background: #1f222d; border: 1px solid var(--border); color: var(--muted); padding: 0.1rem 0.45rem; border-radius: 999px; }
+  .mcard .badge.gold { color: var(--gold); border-color: var(--gold); }
+
+  .playbook { background: linear-gradient(135deg, rgba(255,214,10,0.08), rgba(123,44,255,0.08)); border: 1px solid var(--gold); border-radius: 14px; padding: 1.3rem 1.4rem; margin-bottom: 1.5rem; }
+  .playbook h3 { font-size: 1.25rem; margin-bottom: 0.6rem; }
+  .playbook .emoji-line { color: var(--gold); font-size: 1rem; margin-bottom: 0.8rem; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.6rem; margin-bottom: 0.9rem; }
+  .step { background: rgba(11,12,16,0.6); border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 0.8rem; font-size: 0.8rem; }
+  .step .n { display: inline-block; background: var(--gold); color: #000; font-weight: 800; border-radius: 4px; padding: 0 0.4rem; margin-bottom: 0.3rem; font-size: 0.75rem; }
+  .warn { background: rgba(255,77,148,0.1); border: 1px solid #ff4d94; border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.82rem; }
+  .warn b { color: #ff4d94; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 0.4rem; }
+  th, td { padding: 0.45rem 0.6rem; border-bottom: 1px solid #1f222d; text-align: left; }
+  th { color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td b { color: var(--gold); }
+  tr:hover td { background: #14161e; }
+
+  /* ============ MAP TAB ============ */
+  .map-wrap { max-width: 1600px; margin: 0 auto; padding: 1rem 2rem 2rem; }
+  @media (max-width: 950px) { .map-wrap { padding: 0.75rem 1rem 2rem; } }
+  .map-layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 1rem; height: calc(100vh - 150px); min-height: 520px; }
+  .map-side { display: flex; flex-direction: column; min-height: 0; background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .map-side-head { padding: 0.9rem 0.9rem 0.6rem; border-bottom: 1px solid var(--border); }
+  .map-search { width: 100%; background: #0f1117; border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 0.55rem 0.75rem; font-size: 0.85rem; font-family: inherit; }
+  .map-search:focus { outline: none; border-color: var(--accent); }
+  .map-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.6rem; }
+  .mchip { display: inline-flex; align-items: center; gap: 0.4rem; background: #1f222d; border: 1px solid var(--border); color: var(--text); padding: 0.28rem 0.65rem; border-radius: 999px; font-size: 0.74rem; cursor: pointer; font-family: inherit; }
+  .mchip:hover { border-color: #3a3e50; }
+  .mchip.off { opacity: 0.4; }
+  .mchip .n { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .mswatch { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
+  .pin-list { flex: 1; overflow-y: auto; padding: 0.35rem 0.4rem 0.8rem; }
+  .pin-group { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0.75rem 0.55rem 0.3rem; }
+  .pin-row { display: grid; grid-template-columns: 10px 1fr; gap: 0.6rem; align-items: start; width: 100%; text-align: left; background: none; border: 1px solid transparent; color: var(--text); font-family: inherit; padding: 0.45rem 0.55rem; border-radius: 8px; cursor: pointer; }
+  .pin-row:hover { background: #1c1f2a; }
+  .pin-row.active { background: #1c1f2a; border-color: var(--accent); }
+  .pin-row .mswatch { margin-top: 0.38rem; }
+  .pin-name { font-size: 0.82rem; font-weight: 600; line-height: 1.3; }
+  .pin-where { font-size: 0.72rem; color: var(--muted); line-height: 1.35; }
+  .pin-empty { color: var(--muted); font-size: 0.8rem; padding: 1rem 0.6rem; }
+  .map-main { position: relative; min-width: 0; min-height: 0; }
+  #bigmap { position: absolute; inset: 0; border-radius: 14px; border: 1px solid var(--border); background: #2e7d9a; }
+  .map-hud { position: absolute; left: 10px; bottom: 10px; z-index: 500; background: rgba(11,12,16,0.82); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 0.3rem 0.6rem; font-size: 0.72rem; font-variant-numeric: tabular-nums; pointer-events: none; }
+  .map-fit { position: absolute; right: 10px; top: 10px; z-index: 500; background: rgba(11,12,16,0.85); border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 0.4rem 0.75rem; font-size: 0.78rem; cursor: pointer; font-family: inherit; }
+  .map-fit:hover { border-color: var(--accent); color: var(--accent); }
+  @media (max-width: 950px) {
+    .map-layout { grid-template-columns: 1fr; grid-template-rows: 62vh auto; height: auto; }
+    .map-main { grid-row: 1; height: 62vh; }
+    .map-side { grid-row: 2; max-height: 60vh; }
+  }
+  .map-panel { position: sticky; top: 96px; z-index: 50; }
+  #sidemap { height: 380px; border-radius: 10px; border: 1px solid var(--border); background: #2e7d9a; }
+  @media (max-width: 950px) { .map-panel { position: static; } }
+  .map-tips-wrap { margin-top: 1rem; }
+  .map-tips-wrap summary { cursor: pointer; color: var(--muted); font-size: 0.82rem; font-weight: 600; padding: 0.3rem 0; }
+  .map-tips-wrap summary:hover { color: var(--text); }
+  .map-tips { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.8rem; margin-top: 0.6rem; }
+  .map-tip { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; font-size: 0.8rem; }
+  .map-tip b { color: var(--accent); }
+
+  /* Pin markers + dark popups */
+  .gpin { width: 26px; height: 26px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid #0b0c10; box-shadow: 0 2px 6px rgba(0,0,0,0.55); display: grid; place-items: center; transition: transform 0.12s; }
+  .gpin span { transform: rotate(45deg); font-size: 12px; line-height: 1; }
+  .gpin.big { width: 30px; height: 30px; }
+  .gpin.big span { font-size: 14px; }
+  .leaflet-marker-icon:hover .gpin, .gpin.hl { transform: rotate(-45deg) scale(1.2); }
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #15171f; color: var(--text); border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+  .leaflet-popup-content { font-size: 0.82rem; margin: 0.8rem 1rem; line-height: 1.45; }
+  .leaflet-popup-content .pp-cat { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .leaflet-popup-content .pp-name { font-size: 0.95rem; font-weight: 700; margin: 0.15rem 0 0.1rem; color: var(--text); }
+  .leaflet-popup-content .pp-where { color: var(--muted); font-size: 0.78rem; }
+  .leaflet-popup-content .pp-note { margin-top: 0.5rem; }
+  .leaflet-popup-content .pp-xy { margin-top: 0.5rem; color: var(--muted); font-size: 0.68rem; font-variant-numeric: tabular-nums; }
+  .leaflet-container a.leaflet-popup-close-button { color: var(--muted); }
+  .leaflet-container { font-family: inherit; }
+  .leaflet-bar a { background: #15171f; color: var(--text); border-bottom-color: var(--border); }
+  .leaflet-bar a:hover { background: #1f222d; color: var(--accent); }
+  .leaflet-control-attribution { background: rgba(11,12,16,0.75) !important; color: var(--muted); }
+  .leaflet-tooltip.gtip { background: #15171f; color: var(--text); border: 1px solid var(--border); box-shadow: none; font-size: 0.72rem; }
+  .leaflet-tooltip.gtip::before { display: none; }
+
+  .trophy-tier { font-size:0.65rem; padding:0.1rem 0.45rem; border-radius:999px; background:#1f222d; border:1px solid var(--border); color:var(--muted); font-weight:700; }
+  .trophy-tier.platinum { color:#e5e4e2; border-color:#e5e4e2; }
+  .trophy-tier.gold { color:var(--gold); border-color:var(--gold); }
+  .trophy-tier.silver { color:#c0c0c0; border-color:#c0c0c0; }
+  .trophy-tier.bronze { color:#cd7f32; border-color:#cd7f32; }
+  .dpad { display:inline-grid; place-items:center; width:26px; height:26px; border-radius:6px; background:#1f222d; border:1px solid var(--border); font-size:0.85rem; color:var(--accent); margin-right:3px; }
+  .cheat { background:#0f1117; border:1px solid var(--border); border-radius:8px; padding:0.7rem 0.85rem; }
+  .cheat-name { font-size:0.85rem; font-weight:700; margin-bottom:0.4rem; }
+  .cheat-in { margin-bottom:0.45rem; }
+
+  footer { max-width: 1400px; margin: 0 auto; padding: 1rem 2rem 3rem; color: var(--muted); font-size: 0.75rem; border-top: 1px solid var(--border); }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand"><div class="dot"></div>GTA6 <span style="color:var(--muted); font-weight:400; font-size:0.8rem;">Playthrough Tracker</span></div>
+    <div class="subtitle">102 missions · money guide · big map: supercars, hide spots, secrets</div>
+  </div>
+  <nav class="tabs">
+    <button class="tab active" id="tabbtn-checklist" onclick="showTab('checklist')">📋 Checklist</button>
+    <button class="tab" id="tabbtn-money" onclick="showTab('money')">💰 Money Fast</button>
+    <button class="tab" id="tabbtn-map" onclick="showTab('map')">🗺️ Live Map</button>
+    <button class="tab" id="tabbtn-cheats" onclick="showTab('cheats')">🔑 Cheats</button>
+    <button class="tab" id="tabbtn-trophies" onclick="showTab('trophies')">🏆 Trophies</button>
+  </nav>
+</header>
+
+<!-- ==================== TAB 1: CHECKLIST ==================== -->
+<section id="tab-checklist">
+  <div class="toolbar-wrap">
+    <div class="toolbar">
+      <input type="search" id="searchBox" placeholder="Search missions, items, locations…" />
+      <button class="chip active" data-filter="all" onclick="setFilter('all', this)">All</button>
+      <button class="chip" data-filter="open" onclick="setFilter('open', this)">To do</button>
+      <button class="chip" data-filter="done" onclick="setFilter('done', this)">Done</button>
+      <button class="chip" data-filter="missable" onclick="setFilter('missable', this)">⚠ Missables</button>
+      <button class="chip" data-filter="web" onclick="setFilter('web', this)">🌐 Web tips</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text"><span id="progressText">0% complete</span><span id="progressCount"></span></div>
+  </div>
+
+  <div class="main">
+    <div id="todoList"></div>
+    <aside class="sidebar">
+      <div class="panel map-panel">
+        <h2>🗺️ Quick Map</h2>
+        <div id="sidemap"></div>
+        <p style="font-size:0.7rem; color:var(--muted); margin-top:0.5rem;">Same pins as the Live Map tab — click a pin for details. The category chips on the Live Map tab filter this one too.</p>
+      </div>
+      <div class="panel">
+        <h2>Guide Tips</h2>
+        <div class="tip"><strong>Manual saves</strong> — 15 slots, no mission replay. Save before Tourist Trap and any hourglass job.</div>
+        <div class="tip"><strong>Focus mode</strong> — click both sticks to spot loot and packages.</div>
+        <div class="tip"><strong>Vanessa's laptop</strong> — Ch 3 only. Code <strong>92665</strong> → free pink Pfister Growler + Del Rio Blvd Garage.</div>
+        <div class="tip"><strong>Tower egg</strong> — atop the tallest Vice City tower.</div>
+        <div class="tip"><strong>Jet-ski dog</strong> — stranded in open water? A dog on a jet ski picks you up.</div>
+      </div>
+      <div class="panel">
+        <h2>🌐 Reddit / X Tips</h2>
+        <div class="tip"><strong>Race Against Yago = THE missable</strong> <span class="src">[r/Trophies]</span> — timed Jason-only race after Bumper to Bumper. Do it the moment it appears.</div>
+        <div class="tip"><strong>Tourist Trap = point of no return</strong> <span class="src">[r/Trophies]</span> — last 3 Ch 1 missions run back-to-back. Save before Recalibration.</div>
+        <div class="tip"><strong>Family Savings carry over</strong> <span class="src">[Skycoach]</span> — pocket/house/checking/BuckMe cash wiped at Ch 1→2. Hit $5,000 Family Savings first.</div>
+        <div class="tip"><strong>Sell loot to Donnie before Clear Skies</strong> <span class="src">[Skycoach]</span> — pays way more than Brian.</div>
+        <div class="tip"><strong>Find the Lost Drugs — turn in 1 by 1</strong> <span class="src">[Skycoach]</span> — all-at-once reportedly pays $0.</div>
+        <div class="tip"><strong>Lucia's balcony meditation</strong> <span class="src">[r/Trophies]</span> — after Down to Earth; likely needed for Positive Mental Attitude trophy.</div>
+        <div class="tip"><strong>Autosave is only 1 slot</strong> <span class="src">[@yabhishekhd]</span> — manual-save every chapter. Pocket cash caps at $20,000.</div>
+        <div class="tip"><strong>Focus reveals police through walls</strong> <span class="src">[@TGGonYT]</span> — crimes need a witness before cops respond.</div>
+        <div class="tip"><strong>Quiet door breach</strong> <span class="src">[@GernaderJake]</span> — unlock tool opens back doors silently, kills cams & alarms.</div>
+        <div class="tip"><strong>Bad Driver! choice matters</strong> <span class="src">[r/grandtheftauto]</span> — spare Felipe → his vehicle; kill → $20,000.</div>
+        <div class="tip"><strong>100% is forgiving</strong> <span class="src">[RPS]</span> — 50/91 stick-ups, 15/18 card sets, 300/397 stunts. Nothing missable.</div>
+      </div>
+      <div class="panel">
+        <h2>Sources</h2>
+        <ul class="sources">
+          <li><a href="https://www.reddit.com/r/grandtheftauto/comments/1y1mrn4/list_of_all_missables_in_gta_6_aggregated_from/" target="_blank">r/grandtheftauto — ALL missables list</a></li>
+          <li><a href="https://www.reddit.com/r/Trophies/comments/1xzgwa7/grand_theft_auto_vi_platinum_breakdown_long_not/" target="_blank">r/Trophies — Platinum breakdown</a></li>
+          <li><a href="https://skycoach.gg/blog/gta-6/articles/all-missables" target="_blank">Skycoach — Ch 1 missables</a></li>
+          <li><a href="https://www.g2a.com/news/gta-6-news/gta-6-money-making-guide/" target="_blank">G2A — Money-making guide (per chapter)</a></li>
+          <li><a href="https://insider-gaming.com/where-to-find-all-of-randys-wishlist-supercars-in-gta-6-car-locations-tips/" target="_blank">Insider-Gaming — Randy's Wishlist cars</a></li>
+          <li><a href="https://www.vice.com/en/article/gta-6-thrax-location/" target="_blank">VICE — Thrax (fastest car, free)</a></li>
+          <li><a href="https://space4games.com/en/games-en/gta-6-lower-wanted-level-guide/" target="_blank">Space4Games — Wanted/escape guide</a></li>
+          <li><a href="https://www.rockpapershotgun.com/gta-6-100-percent-completion" target="_blank">RPS — 100% Checklist</a></li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h2>Controls</h2>
+        <button class="chip" onclick="resetAll()">Reset All Progress</button>
+        <button class="chip" onclick="checkAllMissions()">Check All Missions</button>
+        <p style="font-size:0.72rem; color:var(--muted); margin-top:0.5rem;">Click any card to toggle. Progress auto-saves.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ==================== TAB 2: MONEY ==================== -->
+<section id="tab-money" style="display:none">
+  <div class="money-wrap">
+    <div class="money-hero">💰 Make Money Fast</div>
+    <div class="money-sub">Payouts per method, per chapter — best farm changes as the story opens new systems. Sources: G2A money guide, Skycoach, PowerPyx, PC Gamer, Space4Games.</div>
+
+    <div class="stat-grid">
+      <div class="stat best"><div class="amt">$100–205k</div><div class="lbl">🏦 Large bank vaults</div><div class="meta">Late Ch 4 / endgame · best farm</div></div>
+      <div class="stat"><div class="amt">$30k+</div><div class="lbl">🚗 Randy's Wish List cars</div><div class="meta">Mid Ch 3 · 18 requested cars</div></div>
+      <div class="stat"><div class="amt">$120k</div><div class="lbl">📖 Story payment</div><div class="meta">End of Chapter 3</div></div>
+      <div class="stat"><div class="amt">$10–25k</div><div class="lbl">💎 Jewelry Smash 'n' Grabs</div><div class="meta">Ch 3 · one night = $37k possible</div></div>
+      <div class="stat"><div class="amt">$12–20k</div><div class="lbl">✈️ Pilot Pete deliveries</div><div class="meta">Ch 4 questline</div></div>
+      <div class="stat"><div class="amt">$6–15k</div><div class="lbl">🚪 Back-door store jobs</div><div class="meta">Ch 3 · keeps Professional profile</div></div>
+      <div class="stat"><div class="amt">$3.8–6.3k</div><div class="lbl">💥 Demolition Derby win</div><div class="meta">Repeatable · low risk</div></div>
+      <div class="stat"><div class="amt">$1–15k</div><div class="lbl">🎒 Rob other criminals</div><div class="meta">Dynamic events · Ch 2–3</div></div>
+      <div class="stat"><div class="amt">$1k+</div><div class="lbl">🚙 Sell cars to Moses</div><div class="meta">Ch 2 · ~2 min cooldown</div></div>
+      <div class="stat"><div class="amt">$250k</div><div class="lbl">🎰 Money cheat</div><div class="meta">If you just want the cash</div></div>
+    </div>
+
+    <div class="playbook">
+      <h3>💥 The Smash 'n' Grab Playbook</h3>
+      <div class="emoji-line">GTA 6 smash and grabs pay big if you do them right 😳</div>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><br><b>Bring Jason AND Lucia</b> — two guns, two loot bags, faster clears.</div>
+        <div class="step"><span class="n">2</span><br><b>Scout the back door first</b> — know your exit before you break glass.</div>
+        <div class="step"><span class="n">3</span><br><b>Hit the back room first</b> — safe + staff area loot is the real money.</div>
+        <div class="step"><span class="n">4</span><br><b>Use Focus mode</b> — spots loot, cams and witnesses through walls.</div>
+        <div class="step"><span class="n">5</span><br><b>Leave out the back</b> — no street cameras, no witnesses walking by.</div>
+      </div>
+      <div class="warn"><b>⚠ Skip the sticky bombs</b> — they bring the cops faster. Quiet tools &gt; explosions. A silent Snap Gun entry to the staff area can net <b>$6–15k</b> without ever triggering a shootout, and keeps your Professional Criminal Profile clean.</div>
+    </div>
+
+    <div class="mgrid">
+      <div class="mcard">
+        <h3>🏦 Bank Vaults <span class="badge gold">ENDGAME KING</span></h3>
+        <ul>
+          <li>Large vaults: <b>$100,000–$205,000</b> per hit, few minutes each</li>
+          <li>Finish Yasmani's robbery chain + "That's Where The Money Is…"</li>
+          <li>Watch for <b>security vans servicing banks</b> — hit the vault-access window</li>
+          <li>Yasmani sells security-van tips for <b>$10,000</b> — cheap vs a six-figure score</li>
+          <li><b>Instant 4 stars</b> on trigger — prepare a fast motorcycle</li>
+          <li><b>Switch vehicles</b> after breaking the search — GTA6 keeps linking your getaway car to the crime</li>
+          <li>Fence <b>marked bills</b> after — they're not spendable until laundered</li>
+        </ul>
+      </div>
+      <div class="mcard">
+        <h3>💎 Jewelry & Stores <span class="badge">CH 3+</span></h3>
+        <ul>
+          <li>Jewelry: <b>$10–25k</b> per store · Space4Games cleared <b>$37k in one night</b></li>
+          <li>Smash <b>every useful display case</b> before leaving</li>
+          <li>Find the <b>Yasmani safe code</b> inside for the bonus take</li>
+          <li>Back-door stores: quiet rear entry → disable alarms → safe: <b>$6–15k</b></li>
+          <li>Payday Loan shops: bigger than normal stores; part of Yasmani's progression</li>
+          <li>Bigger Fleeca banks unlock after <b>Credit Check</b></li>
+        </ul>
+      </div>
+      <div class="mcard">
+        <h3>🚗 Cars <span class="badge">CH 2+</span></h3>
+        <ul>
+          <li><b>Ch 2 — Moses:</b> untracked cars only (check WAiNK), <b>$1k+</b>, ~2 min cooldown</li>
+          <li><b>Early Ch 3 — Pay 'n' Spray:</b> standard tracker cars <b>~$4k+</b></li>
+          <li><b>Mid Ch 3 — Randy:</b> wishlist supercars <b>$30k+</b>, 18 cars on the list</li>
+          <li>Randy can <b>mark target locations</b> on your map — call him, check Reminders</li>
+          <li>Clone keys (Key Cloner after Clonin' Keys) instead of smashing windows</li>
+          <li>Slow cars (Pegassi Toros) — keep speed up or the tracker triggers</li>
+        </ul>
+      </div>
+      <div class="mcard">
+        <h3>🎒 Open World <span class="badge">ANY TIME</span></h3>
+        <ul>
+          <li><b>Rob criminals mid-crime</b> — fleeing crews, drug deals, hijackings: bags worth <b>$1–15k</b></li>
+          <li>Demolition Derby: <b>$3.8–6.3k</b> per win, repeatable</li>
+          <li><b>Towable ATMs</b> — winch vehicle pulls ATMs off walls</li>
+          <li>Security trucks — marked bills in the back (sticky explosives work but loud)</li>
+          <li>Multistory parking garage top floor: loot parked cars, watch for NPC noticers <span class="badge">r/GTA6</span></li>
+        </ul>
+      </div>
+      <div class="mcard">
+        <h3>🏦 Banking Rules <span class="badge gold">DON'T LOSE IT</span></h3>
+        <ul>
+          <li><b>Pocket cash caps at $20k</b> — and it's what you lose when Wasted/Busted</li>
+          <li>Deposit at ATMs after every big score — BuckMe points you to the nearest</li>
+          <li>Purchases <b>&gt;$1,000</b> go through BuckMe Checking anyway</li>
+          <li><b>Family Savings can NEVER be withdrawn</b> — permanent investment</li>
+          <li>Savings milestones: <b>$5k</b> → checking limit $15k · <b>$10k</b> → $100k + 20% off RydeMe · <b>$100k</b> → $500k + 20% off garages · BuckMe Premium (Ch 4) → $2M limit + 10% off liveries</li>
+          <li>Rule: <b>fence → bank → next crime</b>. Never walk into a second job carrying the first job's cash.</li>
+        </ul>
+      </div>
+      <div class="mcard">
+        <h3>⚖️ Fence Table <span class="badge">RATES</span></h3>
+        <table>
+          <tr><th>Fence</th><th>Narc</th><th>Jewelry</th><th>M.Bills</th><th>Notes</th></tr>
+          <tr><td>Brian</td><td>Very low</td><td>Very low</td><td>Very low</td><td>Ch 1 only</td></tr>
+          <tr><td>Donnie</td><td>Low</td><td>Very low</td><td>Very low</td><td>Early game</td></tr>
+          <tr><td>Dunk</td><td>Low</td><td>Low</td><td>Very low</td><td>Port Gellhorn</td></tr>
+          <tr><td><b>Tyrone</b></td><td><b>High</b></td><td>Medium</td><td>Medium</td><td>Best narcotics</td></tr>
+          <tr><td><b>Yasmani</b></td><td>Medium</td><td><b>High</b></td><td><b>High</b></td><td>Best jewelry + marked bills</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TAB 3: MAP ==================== -->
+<section id="tab-map" style="display:none">
+  <div class="map-wrap">
+    <div class="map-layout">
+      <aside class="map-side">
+        <div class="map-side-head">
+          <input id="pinSearch" class="map-search" type="search" placeholder="Search pins — car, motel, Randy…" autocomplete="off" />
+          <div class="map-chips" id="mapChips"></div>
+        </div>
+        <div class="pin-list" id="pinList"></div>
+      </aside>
+      <div class="map-main">
+        <div id="bigmap"></div>
+        <button class="map-fit" id="mapFit" type="button">⤢ Show all pins</button>
+        <div class="map-hud" id="mapHud">x — · y —</div>
+      </div>
+    </div>
+    <details class="map-tips-wrap">
+      <summary>🚨 Wanted-level &amp; hiding tips</summary>
+      <div class="map-tips">
+        <div class="map-tip"><b>🙈 Best way to hide:</b> duck into places police can't enter — interiors break line of sight and the grey search stars fade. Cars hidden behind walls still get linked to the crime — swap vehicles.</div>
+        <div class="map-tip"><b>⭐ Star colors:</b> White = cops see you now · Grey = searching, no visual · Outlined = crime under investigation, no suspect · Red = escaped but recognizable in the area.</div>
+        <div class="map-tip"><b>🧍 On foot at 3+ stars:</b> narrow side streets patrol cars can't follow, ditch the car, go on foot. Change clothes to reset recognition.</div>
+        <div class="map-tip"><b>🔫 Drop identified weapons</b> — flagged guns make cops spot you again. Hide them after a score.</div>
+        <div class="map-tip"><b>🎯 Off the Radar ability</b> — unlocks by losing a 3-star wanted level 50 times. Worth grinding.</div>
+        <div class="map-tip"><b>📏 Map note:</b> this is the actual Leonida game map — tiles & landmark data from gtadb.org (CC BY 4.0), pins on real in-game coordinates. Guide texts occasionally use old GTA-5 area names (e.g. "Vespucci") — those pins are approximate. In-game, use Randy's calls + WAiNK to mark exact spots.</div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ==================== TAB 4: CHEATS ==================== -->
+<section id="tab-cheats" style="display:none">
+  <div class="money-wrap">
+    <div class="money-hero">🔑 Cheat Codes</div>
+    <div class="money-sub">61 story-mode cheats · unlock after the story credits, then hold <b>L1 + R1</b> on the phone and tap the d-pad sequence. A used cheat disables trophies &amp; saving until the session ends. Data: leonidaverse.com — 40 inputs not community-verified yet.</div>
+    <input type="search" id="cheatSearch" placeholder="Search cheats…" style="background:#1f222d; border:1px solid var(--border); color:var(--text); padding:0.5rem 0.9rem; border-radius:6px; font-size:0.85rem; width:100%; max-width:420px; margin-bottom:1.2rem;" />
+    <div id="cheatList"></div>
+  </div>
+</section>
+
+<!-- ==================== TAB 5: TROPHIES ==================== -->
+<section id="tab-trophies" style="display:none">
+  <div class="money-wrap">
+    <div class="money-hero">🏆 Trophies &amp; Achievements</div>
+    <div class="money-sub">55 trophies · 1,000 Gamerscore · click to mark earned — progress saves automatically. Data: leonidaverse.com</div>
+    <div class="progress-bar"><div class="progress-fill" id="trophFill"></div></div>
+    <div class="progress-text"><span id="trophText">0% complete</span><span id="trophCount"></span></div>
+    <div id="trophyList"></div>
+  </div>
+</section>
+
+<footer>
+  GTA6 Playthrough Tracker — from 12 guide images + Reddit · X · Skycoach · G2A · Insider-Gaming · VICE · Space4Games · RPS. Checklist progress saves automatically. Map: gtadb.org Leonida tiles & landmarks (CC BY 4.0), real in-game coordinates.
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="landmarks.js"></script>
+<script src="codex.js"></script>
+<script>
+// ============================================================================
+// CHECKLIST DATA (same as before — missions + finds/sides)
+// ============================================================================
+const chapters = [
+  {
+    id: 1, name: "Chapter 1 — Just Like Paradise", color: "c1", colorHex: "#00d9ff",
+    missions: ["Prologue","Gone Fishing","Gear Up","Just a Scratch","Lab Fees","Pipework","Unwanted Attention","Hey Arnold!","Island Dreams","Feng Shui","Coming Home","Clean Up After Donnie","Buck Me","Down to Earth","Clear Skies","Building a Life","Day Release","Swamped","Don Gone","Recalibration","Tourist Trap","Home Sweet Home","Discharge Time"],
+    items: [
+      { text: "Tomas's necklace — buy $475 at The Siren's Chest after Feng Shui", tag: "Missable" },
+      { text: "Photo of Tomas — small shelf during Home Sweet Home escape", tag: "Missable", web: true, note: "Skycoach" },
+      { text: "Lucia's yacht sunglasses — Day Release", tag: "Missable" },
+      { text: "Donnie's aviators — inside Donnie's trailer before burning it (Don Gone)", tag: "Missable" },
+      { text: "Andy's Jacket — Home Sweet Home: call Andy, escape with her", tag: "Missable" },
+      { text: "Rusty Anchor shirt and cap — Ring the Bell!, only as Swamped starts", tag: "Clothes" },
+      { text: "Macizo Cigars — box Mandy throws out after Pipework sink fixed", tag: "Item" },
+      { text: "Cash in white-and-red trailer — Gone Fishing, left when Donnie mentions it", tag: "Loot", web: true, note: "Skycoach" },
+      { text: "Maibatsu '97 Penumbra FF — Villa garage, middle of Vespucci Island", tag: "Vehicle", map: [25.78, -80.22] },
+      { text: "Kingfishers W-22 — Fishing Shacks, Wetman Bay dock house", tag: "Weapon", map: [25.74, -80.16] },
+      { text: "Fishing Shacks loot — search camp carefully: ~$2,000 + unique gun", tag: "Loot", map: [25.74, -80.16] },
+      { text: "Duval Signature ES9 — Ultimate Edition: Ammu-Nation locker after Gear Up", tag: "Weapon" },
+      { text: "Donnie's H&L .38 — Don Gone: trunk before destroying the car", tag: "Weapon" },
+      { text: "House eggs — Liberty City memoir / Fabien / Tenebrae Lux", tag: "Collectible" },
+      { text: "Tony the parrot — behind Three Sheets after Shirley's rum errand → hidden cash stash", tag: "Find" },
+      { text: "Search for the Skunk Ape — read flyer, call Kirk (starts Ch 1, ends later)", tag: "Side job" },
+      { text: "Find the Lost Drugs — call after Down to Earth; 4 areas", tag: "Side job", web: true, note: "Turn in ONE BY ONE — all-at-once reportedly pays $0" },
+      { text: "Lucia's balcony meditation — accept after Down to Earth", tag: "Trophy", web: true, note: "Deadeye pts; likely needed for Positive Mental Attitude" },
+      { text: "Get Shirley's Rum, then steal the scooter a day later — before Tourist Trap", tag: "Missable" },
+      { text: "Island Dreams — opens Kenton's treasure dives (pauses at end of Ch 1)", tag: "Side job" },
+      { text: "Hey Arnold! — Kill = Hardened/Aggressive, Spare = Restrained", tag: "Choice" },
+      { text: "Sell loot to Donnie before Clear Skies — pays more than Brian", tag: "Money", web: true, note: "Drop-off gone later in chapter" },
+      { text: "Reach $5,000 Family Savings before chapter ends", tag: "Money", web: true, note: "Pocket/house/checking/BuckMe cash is WIPED at Ch 2; only Family Savings carries" },
+      { text: "Call Joey — free repair + delivery of Jason's car (lost at Tourist Trap)", tag: "Tip" },
+      { text: "Manual save before Recalibration — keep in its own slot", tag: "Save", web: true, note: "Tourist Trap = point of no return, last 3 missions back-to-back" },
+    ],
+  },
+  {
+    id: 2, name: "Chapter 2 — Paradise Lost", color: "c2", colorHex: "#f5a623",
+    missions: ["What's in the Bag?","Overnight Charges","Just Moved In","Got Pills?","Girls' Trip","Moses","Ambulance Chaser","New Look","How Do I Look?","Play Nurse","Behind on Payments","Daily Driver","Slam Dunk","Breakfast Run","Coffee Break","Afternoon Delight","Checking Out"],
+    items: [
+      { text: "Linda's rent — $900 first ($1,080 at your door; rises with more missions)", tag: "Side job" },
+      { text: "Finish Alvan West's Missing Persons strand this chapter", tag: "Side job", web: true, note: "r/Trophies — do it in Ch 2" },
+      { text: "Vapid Firebug Dominator — La Cascara Motel, west Port Gellhorn, east side", tag: "Vehicle", map: [25.79, -80.19] },
+      { text: "'67 Vapid Dominator Buggy — Ultimate Edition, after Thrillbillies (Paradise Garage)", tag: "Vehicle" },
+      { text: "Klose K17 & Morgans — Lucia's engraved K17 (Ammu-Nation locker) / Morgans after Coffee Break", tag: "Weapon" },
+      { text: "UFO — after 2 a.m., dirt road near Starlet Motel; flickering abandoned car", tag: "Find", map: [25.80, -80.20] },
+      { text: "Arthur Morgan's hat — yard sale south Port Gellhorn, above the racetrack", tag: "Clothes", map: [25.77, -80.18] },
+      { text: "Thrillbillies — Check Out Mud Club (optional), then Join Billy on a Job", tag: "Side job" },
+      { text: "Hit Avery Pawn + Hit Kingpin Bowling — open during Coffee Break stretch", tag: "Side job" },
+      { text: "Check Out McKittrick Farm → Collect Chemicals for Kyle → Buddy?", tag: "Side job" },
+      { text: "Veteran Hunted — Meet Bret (Jason only)", tag: "Side job" },
+      { text: "Prepare for Vice City — $15,000 savings goal (not required)", tag: "Money" },
+      { text: "Moses registration — untracked cars only, first one free", tag: "Key tip" },
+      { text: "Daily Driver — Port Gellhorn Station Garage + Vice City Real Estate app", tag: "Key tip" },
+      { text: "Coffee Break — opens Afternoon Delight, Thrillbillies, Hit Avery Pawn, Kingpin Bowling", tag: "Key tip" },
+      { text: "Impound tutorial — after Coffee Break, Lucia's car in Port Gellhorn impound", tag: "Side job" },
+    ],
+  },
+  {
+    id: 3, name: "Chapter 3 — Tits Ass Drug Money", color: "c3", colorHex: "#ff4d94",
+    missions: ["Welcome to Vice City","Dealer's Choice","Dubious Provenance","Mami Knows Best","Here, Kitty Kitty","Encrypted Hard Drive","Boobie Time","Meet the Heders","Yasmani's Jewelry Jobs","Car Service","Top Billing","First Impressions","Crosstown Traffic","Credit Check","Clonin' Keys, Makin' Gs","Ride or Die","Sinfrontera National Bank","Security Expert","Caught Slipping","Company Property","Safe Word","The Missing Link","Cooties","Hidden Charges","Bricked Up","South Leonida Real Estate","The Cartel Heist"],
+    items: [
+      { text: "⚠ RACE AGAINST YAGO — Jason-only, after Bumper to Bumper. DO IT THE MOMENT IT APPEARS", tag: "Missable", web: true, note: "THE #1 missable — timed, gone after chapter, reported soft-lock if started late" },
+      { text: "Vanessa's laptop — solve before chapter ends → free garage + car", tag: "Missable", map: [25.78, -80.17], note: "Clues: hallway photo (Muffins), bedroom notepad (Queen + 15)" },
+      { text: "Vanessa's laptop code 92665 — pink Pfister Growler (registerable free) + Del Rio Blvd Garage (La Perle, near Auntie's Place)", tag: "Code" },
+      { text: "Halifax's Crowex watch — Dubious Provenance: give him the statue as collateral", tag: "Item" },
+      { text: "Cartel Heist prep — Heist Planning, Prepping Explosives, Meet Andrea (not numbered)", tag: "Prep" },
+      { text: "Deliver Cellerica Products — mid-chapter menu job", tag: "Side job" },
+      { text: "Send Money to Lorena (+ Send More Money) — after Mami Knows Best, via BuckMe, no map pin", tag: "Side job" },
+      { text: "Tower egg — nest atop tallest Vice City tower", tag: "Find", map: [25.79, -80.16] },
+      { text: "Dexter's building — Washington Island, near Top Fun Drones shop (exterior only)", tag: "Find", map: [25.77, -80.15] },
+      { text: "Randy's Wish List — opens after Clonin' Keys; big payout if car is decent", tag: "Side job" },
+      { text: "Jewelry Smash 'n' Grabs — open with Yasmani's; after Credit Check bigger Fleeca banks unlock", tag: "Money" },
+      { text: "Credit Check — unlocks bank jobs + dye pack jammer", tag: "Key tip" },
+      { text: "Wanted ring — keep moving on a tracked car or it fills: instant 2-star", tag: "Tip" },
+      { text: "Jet-ski dog — open-water rescue", tag: "Tip" },
+    ],
+  },
+  {
+    id: 4, name: "Chapter 4 — Vice City, Baby", color: "c4", colorHex: "#8b5cf6",
+    missions: ["Ocean Beach","Another Life","Pool Day","Company Cars","Lawyer Up","Heavy Lifting","Party Hard","Photo/Shoot","Making Gainz","Blood Sweat and Gear","Too Much Baggage","Watch It","Amateur Hour","Cash Injections","Dirty Work","Adventures in Babysitting","Fresh Evidence","Child's Play","Power Play","Close Surveillance","Delivery Method","Team Building","Fully Catered","Headliners","VCIA Takedown","Tie Up Loose Ends","Sunset","Starting From Zero"],
+    items: [
+      { text: "It's a Date! — optional job off the Heavy Lifting stretch", tag: "Side job" },
+      { text: "⚠ BAD DRIVER! — find Felipe in Millport after Party Hard; closes when Power Play starts", tag: "Missable", map: [25.76, -80.19] },
+      { text: "Bad Driver! choice — Spare → Collect Felipe's Gift (his vehicle) / Kill → $20,000", tag: "Choice" },
+      { text: "Ch 4 ending choice — flagged on community missable lists", tag: "Choice", web: true, note: "r/grandtheftauto missable list" },
+      { text: "This is a Free Call From… — Pick Up Shayna (Lucia only), TIME-LIMITED hourglass", tag: "Missable" },
+      { text: "That's Where The Money Is… — wait at the Cafe (off Tie Up Loose Ends) → large vault robberies", tag: "Side job" },
+      { text: "Fence marked bills after vault robberies", tag: "Money" },
+      { text: "Photo/Shoot split — Jason-only & Lucia-only branches, merge at Fully Catered", tag: "Story" },
+      { text: "Vault takes — mid tens of thousands → low hundreds of thousands", tag: "Money" },
+    ],
+  },
+  {
+    id: 5, name: "Chapter 5 — Top of the World, Ma", color: "c5", colorHex: "#ff6b35",
+    missions: ["Bird in the Hand","Taking Liberties","VC Baby","Doggie Bag","Operation Savage Glory","Protective Custody","The End of the Road"],
+    items: [
+      { text: "Manual save before The End of the Road", tag: "Save" },
+      { text: "Other story tasks — Honest Abe, Unfinished Business, Pay Abe's Fee (not numbered)", tag: "Story" },
+      { text: "VC Baby and Doggie Bag — both required, do both", tag: "Key tip" },
+      { text: "Hourglass jobs — do them the moment they appear", tag: "Post-game" },
+      { text: "100% & Strangers & Freaks — everything stays available in free roam after story", tag: "Post-game" },
+      { text: "Money in free roam — large vaults, jewelry Smash 'n' Grabs, car sales stay open", tag: "Money" },
+      { text: "100% checklist (forgiving): 50/91 stick-ups, 15/18 card sets, 300/397 stunts, WAiNK scans, binocular animals, Cocaine Flamingos", tag: "100%", web: true, note: "RPS — none of it missable" },
+    ],
+  },
+];
+
+// ============================================================================
+// MAP DATA — categories: guide / super / hide / secret
+// ============================================================================
+const mapPins = [
+  { cat: "super", name: "Truffade Thrax — FASTEST CAR", where: "Andrew Node's mansion, east Starfish Island", note: "Free! No tracker. Scan 10 blue graffiti nodes (WAiNK) → No Flusher quest → garage code 8554013. $70k to register.", gx: 906, gy: 661 },
+  { cat: "super", name: "Pegassi Vitello", where: "Flamingo Pkwy, Waning Sands (Leonard County)", note: "Hop mansion fence, RIGHT garage. One of the fastest — wrecks easily.", gx: 144, gy: 4109 },
+  { cat: "super", name: "Pegassi Tempesta", where: "NE 3rd St, Vice City downtown", note: "Behind a tow truck — owner sometimes arguing with the driver.", gx: 1958, gy: 1591 },
+  { cat: "super", name: "Pegassi Infernus", where: "Police station parking garage, 7th floor", note: "Sneak past the gates. Escape via roof stunt jump.", gx: -7042, gy: 193 },
+  { cat: "super", name: "Pegassi Toros", where: "Pegassi Residences, Bayside Dr, Tequesta Retreat", note: "Purple, parked outside. Clone the key. SLOW — keep speed up or tracker triggers.", gx: 48, gy: -1081 },
+  { cat: "super", name: "Grotti Itali RSX", where: "Vespucci Island", note: "Easiest one. Jump light-brown wooden fence, smash right-side garage door. Very fast, careful.", gx: 1050, gy: 3300 },
+  { cat: "super", name: "Invetero Coquette D10", where: "Waxman Island, near Vice Beach", note: "Enemies on site — bring ammo, heals, armor.", gx: 1408, gy: 1765 },
+  { cat: "super", name: "Bravado Banshee", where: "Southside showroom, left of Peacock Bay", note: "Also needed for 'Capital Offense' achievement.", gx: -1133, gy: -2051 },
+  { cat: "super", name: "Piccia Furia", where: "Peacock Island, south Vice City", note: "Randy marks it if you call him; spawns there regardless.", gx: 1958, gy: 1501 },
+  { cat: "super", name: "Gauntlet Hellfire", where: "M7 compound, Hamlet", note: "MUST call Randy first — car only spawns once area turns purple.", gx: -2982, gy: -3084 },
+  { cat: "super", name: "Pfister Growler", where: "Shore Dr, Ocean Beach beachfront", note: "Parked along restaurant row. Clone key. (Vanessa's laptop code also gives a free pink Growler!)", gx: 2008, gy: 912 },
+  { cat: "super", name: "Buckingham Jubilee", where: "Shore Dr, Ocean Beach beachfront", note: "Same spawn row as Growler.", gx: 2008, gy: 822 },
+  { cat: "super", name: "Maibatsu '97 Penumbra FF", where: "Villa garage, middle of Vespucci Island", note: "Guide: come back after Moses in Ch 2 to keep it.", gx: 1050, gy: 3210 },
+  { cat: "hide", name: "Pay 'n' Spray — respray & swap", where: "Vice City mainland", note: "Unlocks early Ch 3. Respray breaks vehicle ID, also buys standard tracker cars ~$4k+.", gx: 2048, gy: 1501 },
+  { cat: "hide", name: "Interiors = safe zones", where: "Anywhere with a door cops won't follow through", note: "Break line of sight inside buildings — grey search stars fade. Patrol cars can't chase on foot.", gx: 1140, gy: 3210 },
+  { cat: "hide", name: "Narrow alley network", where: "Little Cuba backstreets, Vice City", note: "3+ stars: ditch car, run alleys on foot, change clothes to reset recognition.", gx: -1190, gy: 0 },
+  { cat: "hide", name: "Moses' garage — clean cars fast", where: "Port Gellhorn", note: "Not a hide spot but the Ch 2 money loop: untracked car → $1k+ → repeat every ~2 min.", gx: -6353, gy: 3410 },
+  { cat: "secret", name: "UFO", where: "Dirt road near Starlet Motel", note: "After 2 a.m. — flickering abandoned car nearby.", gx: -5366, gy: 3476 },
+  { cat: "secret", name: "Tower egg", where: "Tallest Vice City tower", note: "Take the egg from the nest at the top.", gx: 1868, gy: 1591 },
+  { cat: "secret", name: "No Flusher nodes (×10)", where: "Scattered around Vice Beach", note: "Blue graffiti on the ground, scan with WAiNK. Completing opens the Thrax garage.", gx: 1408, gy: 1675 },
+  { cat: "secret", name: "Dexter's building", where: "Washington Island, near Top Fun Drones", note: "Exterior only — you cannot go inside.", gx: 1409, gy: 2803 },
+  { cat: "secret", name: "Tony's parrot — cash stash", where: "Behind Three Sheets bar", note: "After Shirley's rum errand — parrot points to a hidden cash stash.", gx: 960, gy: 3300 },
+  { cat: "guide", ch: 1, name: "Kingfishers W-22 + Fishing Shacks loot", where: "Wetman Bay dock house", note: "~$2,000 + unique gun if you search the camp carefully.", gx: -4381, gy: -4770 },
+  { cat: "guide", ch: 1, name: "Maibatsu '97 Penumbra FF", where: "Vespucci Island villa garage", note: "Guide item.", gx: 1050, gy: 3300 },
+  { cat: "guide", ch: 2, name: "Vapid Firebug Dominator", where: "La Cascara Motel, west Port Gellhorn", note: "Parked out front, east side.", gx: -6860, gy: 3970 },
+  { cat: "guide", ch: 2, name: "Arthur Morgan's hat", where: "Yard sale, south Port Gellhorn above racetrack", note: "Sold as the Genuine Cowboy Hat.", gx: -6353, gy: 3320 },
+  { cat: "guide", ch: 3, name: "Vanessa's laptop", where: "Ch 3 apartment", note: "Code 92665 → free Growler + garage.", gx: -473, gy: 1219 },
+  { cat: "guide", ch: 4, name: "Bad Driver! — Felipe", where: "Millport", note: "After Party Hard, closes at Power Play. Spare → car, kill → $20k.", gx: -199, gy: 6840 },
+];
+
+// ============================================================================
+// STATE + CHECKLIST RENDER (same logic as before)
+// ============================================================================
+let allItems = [];
+chapters.forEach(ch => {
+  ch.missions.forEach((m, i) => allItems.push({ id: `c${ch.id}-m${i}`, type: "mission", num: i + 1, text: m, chId: ch.id }));
+  ch.items.forEach((it, i) => allItems.push({ ...it, id: `c${ch.id}-f${i}`, type: "item", chId: ch.id }));
+});
+
+const STORE_KEY = "gta6_todos_v2";
+let state = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+let filter = "all";
+let query = "";
+function save() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+const todoListEl = document.getElementById("todoList");
+function matches(it) {
+  if (filter === "open" && state[it.id]) return false;
+  if (filter === "done" && !state[it.id]) return false;
+  if (filter === "missable") { const isMiss = it.tag === "Missable" || (it.note || "").toLowerCase().includes("missable"); if (!isMiss) return false; }
+  if (filter === "web" && !it.web) return false;
+  if (query) { const hay = (it.text + " " + (it.tag || "") + " " + (it.note || "")).toLowerCase(); if (!hay.includes(query)) return false; }
+  return true;
+}
+function escapeHtml(t) { const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+
+function render() {
+  todoListEl.innerHTML = "";
+  let visibleTotal = 0;
+  chapters.forEach(ch => {
+    const chAll = allItems.filter(i => i.chId === ch.id);
+    const chMissions = chAll.filter(i => i.type === "mission").filter(matches);
+    const chItems = chAll.filter(i => i.type === "item").filter(matches);
+    if (!chMissions.length && !chItems.length) return;
+    visibleTotal += chMissions.length + chItems.length;
+    const chDone = chAll.filter(i => state[i.id]).length;
+    const chPct = Math.round(chDone / chAll.length * 100);
+    const el = document.createElement("div");
+    el.className = "chapter";
+    let html = `<div class="chapter-header">
+      <div class="chapter-title">${ch.name} <span class="chapter-chip ${ch.color}">Ch ${ch.id}</span></div>
+      <div style="text-align:right">
+        <div style="font-size:0.72rem;color:var(--muted)">${chDone} / ${chAll.length} done (${chPct}%)</div>
+        <div class="ch-progress"><div class="ch-progress-fill" style="width:${chPct}%;background:${ch.colorHex}"></div></div>
+      </div></div><div class="chapter-body">`;
+    if (chMissions.length) { html += `<div class="group-label">Missions (${ch.missions.length} required)</div><div class="grid missions">` + chMissions.map(it => cardHtml(it)).join("") + `</div>`; }
+    if (chItems.length) { html += `<div class="group-label">Finds · Sides · Tips</div><div class="grid">` + chItems.map(it => cardHtml(it)).join("") + `</div>`; }
+    html += `</div>`;
+    el.innerHTML = html;
+    todoListEl.appendChild(el);
+  });
+  if (!visibleTotal) todoListEl.innerHTML = `<div class="empty-filter">Nothing matches this filter 🎉</div>`;
+  updateProgress();
+}
+function cardHtml(it) {
+  const done = !!state[it.id];
+  return `<div class="todo ${done ? "done" : ""}" onclick="toggle('${it.id}')">
+    ${it.type === "mission" ? `<span class="todo-num">${it.num}</span>` : `<input type="checkbox" ${done ? "checked" : ""} onclick="event.stopPropagation();toggle('${it.id}')"/>`}
+    <div><div class="todo-text">${escapeHtml(it.text)}</div>
+    ${it.note ? `<div class="todo-note">↳ ${escapeHtml(it.note)}</div>` : ""}
+    ${it.tag ? `<div class="todo-tag ${it.web ? "web" : ""}">${it.web ? "🌐 " : ""}${escapeHtml(it.tag)}</div>` : ""}</div></div>`;
+}
+function toggle(id) { state[id] = !state[id]; if (!state[id]) delete state[id]; save(); render(); }
+function setFilter(f, btn) { filter = f; document.querySelectorAll(".toolbar .chip[data-filter]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); render(); }
+document.getElementById("searchBox").addEventListener("input", e => { query = e.target.value.trim().toLowerCase(); render(); });
+function checkAllMissions() { allItems.filter(i => i.type === "mission").forEach(i => state[i.id] = true); save(); render(); }
+function resetAll() { if (!confirm("Reset all progress?")) return; state = {}; save(); render(); }
+function updateProgress() {
+  const total = allItems.length, done = allItems.filter(i => state[i.id]).length;
+  const pct = Math.round(done / total * 100);
+  progressFill.style.width = pct + "%";
+  progressText.textContent = pct + "% complete" + (pct === 100 ? " — 100%! 🏆" : "");
+  progressCount.textContent = `${done} / ${total} items`;
+  document.title = `GTA6 ${pct}% — Tracker`;
+}
+
+// ============================================================================
+// TABS
+// ============================================================================
+function showTab(name) {
+  ["checklist", "money", "map", "cheats", "trophies"].forEach(t => {
+    document.getElementById("tab-" + t).style.display = t === name ? "" : "none";
+    document.getElementById("tabbtn-" + t).classList.toggle("active", t === name);
+  });
+  if (name === "map") setTimeout(() => { const first = !bigMap._fitOnShow; bigMap.invalidateSize(); if (first) { bigMap._fitOnShow = true; fitVisiblePins(bigMap, layers); } }, 60);
+  if (location.hash.slice(1) !== name) history.replaceState(null, "", "#" + name);
+}
+
+// ============================================================================
+// BIG MAP
+// ============================================================================
+// GTA6 Leonida map — tiles & landmark data © gtadb.org contributors (CC BY 4.0)
+// Game coords: +x east, +y north, world 32768u centered on (0,0). z0=1024px, z6=2px/m.
+const GtaCRS = Object.assign({}, L.CRS.Simple, {
+  transformation: new L.Transformation(1/32, 512, -1/32, 512),
+});
+const GtaTiles = L.TileLayer.extend({
+  getTileUrl(c) { return "tiles/" + c.z + "/" + c.z + "%2C" + c.y + "%2C" + c.x + ".jpg"; }, // %2C: avoids a redirect per tile on Workers assets
+});
+// Tile coverage of the "day" set at z6 (x 34–167, y 34–206): game x -12032…5120, y -10112…12032
+const WORLD_BOUNDS = L.latLngBounds([-10112, -12032], [12032, 5120]);
+function gtaTileLayer() {
+  return new GtaTiles("", {
+    minZoom: 0, maxZoom: 6, minNativeZoom: 0, maxNativeZoom: 6, tileSize: 256,
+    noWrap: true, bounds: WORLD_BOUNDS,
+    attribution: 'Map tiles © <a href="https://gtadb.org" target="_blank">gtadb.org</a> contributors (CC BY 4.0)',
+    errorTileUrl: "tiles/ocean.jpg", // blank-ocean tiles are deduplicated to this one file on deploy
+  });
+}
+
+const CATS = {
+  guide:  { label: "Guide items",  icon: "📍", color: "#00d9ff", on: true },
+  super:  { label: "Supercars",    icon: "💎", color: "#ffd60a", on: true },
+  hide:   { label: "Hide & money", icon: "🙈", color: "#2ecc71", on: true },
+  secret: { label: "Secrets",      icon: "👽", color: "#b388ff", on: true },
+  land:   { label: "Landmarks",    icon: "🏙️", color: "#c3cad8", on: false },
+};
+let bigMap, sideMap, layers = {}, sideLayers = {};
+let pinQuery = "";
+const bigMarkers = []; // { p, cat, marker } for list ↔ map linking
+
+function pinColor(p, cat) { return cat === "guide" ? chapters.find(c => c.id === p.ch).colorHex : CATS[cat].color; }
+function pinIcon(p, cat) {
+  const big = cat === "super";
+  const s = big ? 30 : 26;
+  return L.divIcon({
+    className: "", iconSize: [s, s], iconAnchor: [s / 2, s * 1.2], popupAnchor: [0, -s * 1.1], tooltipAnchor: [s / 2, -s * 0.7],
+    html: `<div class="gpin${big ? " big" : ""}" style="background:${pinColor(p, cat)}"><span>${CATS[cat].icon}</span></div>`,
+  });
+}
+function popupHtml(p, cat) {
+  const label = cat === "guide" ? `Chapter ${p.ch} · guide item` : CATS[cat].label;
+  return `<div class="pp-cat" style="color:${pinColor(p, cat)}">${CATS[cat].icon} ${escapeHtml(label)}</div>`
+    + `<div class="pp-name">${escapeHtml(p.name)}</div>`
+    + (p.where ? `<div class="pp-where">${escapeHtml(p.where)}</div>` : "")
+    + (p.note ? `<div class="pp-note">${escapeHtml(p.note)}</div>` : "")
+    + `<div class="pp-xy">x ${Math.round(p.gx)} · y ${Math.round(p.gy)}</div>`;
+}
+function pinsFor(cat) {
+  return cat === "land"
+    ? GTA_LANDMARKS.map(l => { const parts = l[0].split(", "); return { gx: l[1], gy: l[2], name: parts[0], where: parts.slice(1).join(", ") }; })
+    : mapPins.filter(p => p.cat === cat);
+}
+function addPins(mapObj, store, track) {
+  const landRenderer = L.canvas({ padding: 0.3 }); // one renderer per map — Leaflet renderers can't be shared
+  Object.keys(CATS).forEach(cat => {
+    store[cat] = L.layerGroup();
+    pinsFor(cat).forEach(p => {
+      let m;
+      if (cat === "land") {
+        m = L.circleMarker([p.gy, p.gx], { radius: 4, color: "#0b0c10", weight: 1.5, fillColor: CATS.land.color, fillOpacity: 0.9, renderer: landRenderer });
+      } else {
+        m = L.marker([p.gy, p.gx], { icon: pinIcon(p, cat), riseOnHover: true, zIndexOffset: cat === "super" ? 200 : 0 });
+        m.bindTooltip(escapeHtml(p.name), { direction: "right", className: "gtip" });
+      }
+      m.bindPopup(popupHtml(p, cat), { maxWidth: 280 }).addTo(store[cat]);
+      if (track && cat !== "land") bigMarkers.push({ p, cat, marker: m });
+    });
+    if (CATS[cat].on) store[cat].addTo(mapObj);
+  });
+}
+
+function pinMatches(p) {
+  if (!pinQuery) return true;
+  return (p.name + " " + (p.where || "") + " " + (p.note || "")).toLowerCase().includes(pinQuery);
+}
+function renderPinList() {
+  const el = document.getElementById("pinList");
+  let html = "";
+  ["super", "guide", "hide", "secret"].forEach(cat => {
+    if (!CATS[cat].on) return;
+    const rows = bigMarkers.map((b, i) => [b, i]).filter(([b]) => b.cat === cat && pinMatches(b.p));
+    if (!rows.length) return;
+    html += `<div class="pin-group">${CATS[cat].icon} ${CATS[cat].label}</div>`;
+    html += rows.map(([b, i]) => `<button class="pin-row" data-i="${i}" type="button"><span class="mswatch" style="background:${pinColor(b.p, cat)}"></span><span><div class="pin-name">${escapeHtml(b.p.name)}</div><div class="pin-where">${escapeHtml(b.cat === "guide" ? "Ch " + b.p.ch + " · " + b.p.where : b.p.where)}</div></span></button>`).join("");
+  });
+  el.innerHTML = html || `<div class="pin-empty">No pins match${pinQuery ? ` “${escapeHtml(pinQuery)}”` : ""}.</div>`;
+  updateChipCounts();
+}
+function updateChipCounts() {
+  document.querySelectorAll("#mapChips .mchip").forEach(chip => {
+    const cat = chip.dataset.cat;
+    const n = cat === "land" ? GTA_LANDMARKS.length : bigMarkers.filter(b => b.cat === cat && pinMatches(b.p)).length;
+    chip.querySelector(".n").textContent = n;
+  });
+}
+function focusPin(i) {
+  const b = bigMarkers[i];
+  if (!b) return;
+  document.querySelectorAll(".pin-row.active").forEach(r => r.classList.remove("active"));
+  const row = document.querySelector(`.pin-row[data-i="${i}"]`);
+  if (row) row.classList.add("active");
+  bigMap.flyTo(b.marker.getLatLng(), Math.max(bigMap.getZoom(), 5), { duration: 0.6 });
+  bigMap.once("moveend", () => b.marker.openPopup());
+  if (window.matchMedia("(max-width: 950px)").matches) document.getElementById("bigmap").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+function fitVisiblePins(mapObj, store, animate = false) {
+  const pts = [];
+  ["guide", "super", "hide", "secret"].forEach(cat => { if (CATS[cat].on) store[cat].eachLayer(l => pts.push(l.getLatLng())); });
+  if (pts.length) mapObj.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 5, animate: animate });
+  else mapObj.fitBounds(WORLD_BOUNDS, { animate: animate });
+}
+
+function initBigMap() {
+  bigMap = L.map("bigmap", { crs: GtaCRS, scrollWheelZoom: true, wheelPxPerZoomLevel: 90, minZoom: 1, maxZoom: 6, maxBounds: WORLD_BOUNDS.pad(0.15), maxBoundsViscosity: 0.8 });
+  gtaTileLayer().addTo(bigMap);
+  addPins(bigMap, layers, true);
+  fitVisiblePins(bigMap, layers);
+
+  const chipsEl = document.getElementById("mapChips");
+  Object.keys(CATS).forEach(cat => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "mchip" + (CATS[cat].on ? "" : " off");
+    b.dataset.cat = cat;
+    b.setAttribute("aria-pressed", CATS[cat].on);
+    b.innerHTML = `<span class="mswatch" style="background:${CATS[cat].color}"></span>${CATS[cat].icon} ${CATS[cat].label} <span class="n"></span>`;
+    b.onclick = () => {
+      CATS[cat].on = !CATS[cat].on;
+      b.classList.toggle("off", !CATS[cat].on);
+      b.setAttribute("aria-pressed", CATS[cat].on);
+      [[bigMap, layers], [sideMap, sideLayers]].forEach(([m, st]) => {
+        if (!m) return;
+        if (CATS[cat].on) st[cat].addTo(m); else m.removeLayer(st[cat]);
+      });
+      renderPinList();
+    };
+    chipsEl.appendChild(b);
+  });
+
+  document.getElementById("pinList").addEventListener("click", e => {
+    const row = e.target.closest(".pin-row");
+    if (row) focusPin(+row.dataset.i);
+  });
+  document.getElementById("pinSearch").addEventListener("input", e => {
+    pinQuery = e.target.value.trim().toLowerCase();
+    renderPinList();
+    // dim markers that don't match the search
+    bigMarkers.forEach(b => b.marker.setOpacity(pinMatches(b.p) ? 1 : 0.18));
+  });
+  document.getElementById("mapFit").onclick = () => fitVisiblePins(bigMap, layers, true);
+  const hud = document.getElementById("mapHud");
+  bigMap.on("mousemove", e => { hud.textContent = `x ${Math.round(e.latlng.lng)} · y ${Math.round(e.latlng.lat)}`; });
+  bigMap.on("mouseout", () => { hud.textContent = "x — · y —"; });
+
+  renderPinList();
+  setTimeout(() => { bigMap.invalidateSize(); if (sideMap) sideMap.invalidateSize(); }, 200);
+}
+
+function initSideMap() {
+  sideMap = L.map("sidemap", { crs: GtaCRS, scrollWheelZoom: true, wheelPxPerZoomLevel: 90, minZoom: 1, maxZoom: 6, maxBounds: WORLD_BOUNDS.pad(0.15) });
+  gtaTileLayer().addTo(sideMap);
+  addPins(sideMap, sideLayers, false);
+  fitVisiblePins(sideMap, sideLayers);
+}
+
+// ============================================================================
+// CHEATS TAB
+// ============================================================================
+const DIRS = { up: "↑", down: "↓", left: "←", right: "→" };
+let cheatQuery = "";
+function renderCheats() {
+  const q = cheatQuery.toLowerCase();
+  const cats = [...new Set(CHEATS.map(c => c.c))];
+  let html = "";
+  cats.forEach(cat => {
+    const items = CHEATS.filter(c => c.c === cat && (!q || (c.n + " " + c.u).toLowerCase().includes(q)));
+    if (!items.length) return;
+    html += `<div class="chapter"><div class="chapter-header"><div class="chapter-title">${cat} cheats</div><div class="chapter-chip">${items.length}</div></div><div class="chapter-body"><div class="grid">`;
+    html += items.map(c => {
+      const input = c.in
+        ? c.in.split(" ").map(d => `<span class="dpad">${DIRS[d] || "?"}</span>`).join("")
+        : `<span class="todo-note">⏳ input not verified yet</span>`;
+      return `<div class="cheat"><div class="cheat-name">${escapeHtml(c.n)}</div><div class="cheat-in">${input}</div><div class="todo-note">🔓 ${escapeHtml(c.u)}</div></div>`;
+    }).join("");
+    html += `</div></div></div>`;
+  });
+  document.getElementById("cheatList").innerHTML = html || `<div class="empty-filter">Nothing matches 🎉</div>`;
+}
+document.getElementById("cheatSearch").addEventListener("input", e => { cheatQuery = e.target.value.trim().toLowerCase(); renderCheats(); });
+
+// ============================================================================
+// TROPHIES TAB
+// ============================================================================
+const TROPH_STORE = "gta6_trophies_v1";
+let trophState = JSON.parse(localStorage.getItem(TROPH_STORE) || "{}");
+function saveTroph() { localStorage.setItem(TROPH_STORE, JSON.stringify(trophState)); }
+function renderTrophies() {
+  const html = `<div class="grid">` + TROPHIES.map(t => {
+    const id = "t" + t.num, done = !!trophState[id];
+    return `<div class="todo ${done ? "done" : ""}" onclick="toggleTroph('${id}')">
+      <input type="checkbox" ${done ? "checked" : ""} onclick="event.stopPropagation();toggleTroph('${id}')"/>
+      <div><div class="todo-text"><b>${escapeHtml(t.n)}</b> <span class="trophy-tier ${t.t.toLowerCase()}">${t.t}${t.g ? " · " + t.g + "G" : ""}</span></div>
+      <div class="todo-note">↳ ${escapeHtml(t.d)}</div>
+      ${t.r ? `<div class="todo-tag">${escapeHtml(t.r)}</div>` : ""}</div></div>`;
+  }).join("") + `</div>`;
+  document.getElementById("trophyList").innerHTML = html;
+  const done = TROPHIES.filter(t => trophState["t" + t.num]).length;
+  const pct = Math.round(done / TROPHIES.length * 100);
+  document.getElementById("trophFill").style.width = pct + "%";
+  document.getElementById("trophText").textContent = pct + "% complete" + (pct === 100 ? " — PLATINUM! 🏆" : "");
+  document.getElementById("trophCount").textContent = `${done} / ${TROPHIES.length} trophies`;
+}
+function toggleTroph(id) { trophState[id] = !trophState[id]; if (!trophState[id]) delete trophState[id]; saveTroph(); renderTrophies(); }
+
+render();
+renderCheats();
+renderTrophies();
+initBigMap();
+initSideMap();
+{ const h = location.hash.slice(1); if (["checklist", "money", "map", "cheats", "trophies"].includes(h)) showTab(h); }
+</script>
+</body>
+</html>

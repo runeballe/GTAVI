@@ -1,0 +1,8 @@
+# Third-party guide screenshots (source material, not ours to redistribute)
+/*.jpg
+# Build output / tooling
+deploy/public/
+deploy/.wrangler/
+node_modules/
+.env
+.dev.vars

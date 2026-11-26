@@ -1,0 +1,3 @@
+[submodule "gtadb"]
+	path = gtadb
+	url = https://github.com/rolux/gtadb.org
