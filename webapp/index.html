@@ -231,6 +231,25 @@
 
 
 
+
+  /* ============ EASTER EGGS ============ */
+  .egg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 1rem; }
+  @media (max-width: 500px) { .egg-grid { grid-template-columns: 1fr; } }
+  .egg { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.45rem; }
+  .egg.got { border-color: rgba(46, 204, 113, 0.55); background: linear-gradient(160deg, var(--done-bg), var(--card) 55%); }
+  .egg-top { display: flex; gap: 0.7rem; align-items: flex-start; }
+  .egg-ic { font-size: 1.6rem; line-height: 1; width: 44px; height: 44px; border-radius: 12px; background: #253045; display: grid; place-items: center; flex: none; }
+  .egg-n { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1.05rem; line-height: 1.2; }
+  .egg-where { font-size: 0.76rem; color: var(--accent); margin-top: 0.15rem; }
+  .egg-when { font-size: 0.72rem; color: var(--gold); }
+  .egg-what { font-size: 0.83rem; line-height: 1.5; color: #d5dae3; }
+  .egg-ref { font-size: 0.72rem; color: var(--muted); }
+  .egg-act { margin-top: auto; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; padding-top: 0.3rem; }
+  .egg-act button { font: inherit; font-size: 0.75rem; padding: 0.3rem 0.7rem; border-radius: 8px; border: 1px solid var(--border); background: #253045; color: var(--text); cursor: pointer; }
+  .egg-act button:hover { border-color: var(--accent); color: var(--accent); }
+  .egg-act label { font-size: 0.76rem; color: var(--muted); display: inline-flex; gap: 0.35rem; align-items: center; cursor: pointer; }
+  .egg-act input { accent-color: var(--done); width: 15px; height: 15px; }
+
   /* ============ 100% ============ */
   .hun-hero { margin: 0 0 0.4rem; line-height: 0; }
   .hun-hero img { width: 160px; height: 160px; display: block; filter: drop-shadow(0 6px 18px rgba(255, 196, 0, 0.25)); }
@@ -542,6 +561,7 @@
     <button class="tab" id="tabbtn-map" role="tab" aria-controls="tab-map" aria-selected="false" onclick="showTab('map')">🗺️ Live Map</button>
     <button class="tab" id="tabbtn-vehicles" role="tab" aria-controls="tab-vehicles" aria-selected="false" onclick="showTab('vehicles')">🚗 Vehicles</button>
     <button class="tab" id="tabbtn-weapons" role="tab" aria-controls="tab-weapons" aria-selected="false" onclick="showTab('weapons')">🔫 Weapons</button>
+    <button class="tab" id="tabbtn-eggs" role="tab" aria-controls="tab-eggs" aria-selected="false" onclick="showTab('eggs')">🥚 Easter Eggs</button>
     <button class="tab" id="tabbtn-cheats" role="tab" aria-controls="tab-cheats" aria-selected="false" onclick="showTab('cheats')">🔑 Codes</button>
     <button class="tab" id="tabbtn-trophies" role="tab" aria-controls="tab-trophies" aria-selected="false" onclick="showTab('trophies')">🏆 Trophies</button>
   </nav>
@@ -983,6 +1003,18 @@
   </div>
 </section>
 
+<!-- ==================== TAB: EASTER EGGS ==================== -->
+<section id="tab-eggs" role="tabpanel" aria-labelledby="tabbtn-eggs" style="display:none">
+  <div class="money-wrap gal-wrap">
+    <div class="money-hero">🥚 Easter Eggs</div>
+    <div class="money-sub">References, cameos and mysteries hidden around Leonida. Tick them off as you find them — eggs with a place are also pins in the Live Map's 👽 Secrets layer.</div>
+    <div class="progress-bar"><div class="progress-fill" id="eggFill"></div></div>
+    <div class="progress-text"><span id="eggText">0 found</span><span id="eggCount"></span></div>
+    <div class="egg-grid" id="eggList"></div>
+    <p class="leo-credit">Easter eggs &amp; secrets: <a href="https://leonidaverse.com/en/codex/gta-6-easter-eggs" target="_blank" rel="noopener">leonidaverse.com</a> (Nov 2026), condensed. Pins from gtadb.org landmarks — "area"/"approx." mark the district, not the exact spot.</p>
+  </div>
+</section>
+
 <!-- ==================== TAB 4: CHEATS ==================== -->
 <section id="tab-cheats" role="tabpanel" aria-labelledby="tabbtn-cheats" style="display:none">
   <div class="money-wrap">
@@ -1047,6 +1079,7 @@
 <script src="fastest.js"></script>
 <script src="cars.js"></script>
 <script src="hundred.js"></script>
+<script src="eggs.js"></script>
 <script src="guides.js"></script>
 <script>
 // ============================================================================
@@ -1238,10 +1271,7 @@ const mapPins = [
   { cat: "hide", name: "Interiors = safe zones", where: "Anywhere with a door cops won't follow through", note: "Break line of sight inside buildings — grey search stars fade. Patrol cars can't chase on foot.", gx: 1140, gy: 3210 },
   { cat: "hide", name: "Narrow alley network", where: "Little Cuba backstreets, Vice City", note: "3+ stars: ditch car, run alleys on foot, change clothes to reset recognition.", gx: -1190, gy: 0 },
   { cat: "hide", name: "Moses' garage — clean cars fast", where: "Port Gellhorn", note: "Not a hide spot but the Ch 2 money loop: untracked car → $1k+ → repeat every ~2 min.", gx: -6353, gy: 3410 },
-  { cat: "secret", name: "UFO", where: "Dirt road near Starlet Motel", note: "After 2 a.m. — flickering abandoned car nearby.", gx: -5366, gy: 3476 },
-  { cat: "secret", name: "Tower egg", where: "Tallest Vice City tower", note: "Take the egg from the nest at the top.", gx: 1868, gy: 1591 },
   { cat: "secret", name: "No Flusher nodes (×10)", where: "Scattered around Vice Beach", note: "Blue graffiti on the ground, scan with WAiNK. Completing opens the Thrax garage.", gx: 1408, gy: 1675 },
-  { cat: "secret", name: "Dexter's building", where: "Washington Island, near Top Fun Drones", note: "Exterior only — you cannot go inside.", gx: 1409, gy: 2803 },
   { cat: "secret", name: "Tony's parrot — cash stash", where: "Behind Three Sheets bar", note: "After Shirley's rum errand — parrot points to a hidden cash stash.", gx: 960, gy: 3300 },
   { cat: "guide", ch: 1, name: "Kingfishers W-22 + Fishing Shacks loot", where: "Wetman Bay dock house", note: "~$2,000 + unique gun if you search the camp carefully.", gx: -4381, gy: -4770 },
   { cat: "guide", ch: 1, name: "Maibatsu '97 Penumbra FF", where: "Vespucci Island villa garage", note: "Guide item.", gx: 1050, gy: 3300 },
@@ -1252,6 +1282,8 @@ const mapPins = [
 ];
 
 // Fastest-cars layer (data: fastest.js)
+// Easter eggs into the Secrets layer (data: eggs.js)
+EGGS.filter(e => e.map).forEach(e => mapPins.push({ cat: "secret", name: `${e.e} ${e.n}`, where: e.where + (e.prec === "area" ? " (area pin)" : e.prec === "approx" ? " (approx. pin)" : ""), note: [e.when, e.what].filter(Boolean).join(" · "), gx: e.map[0], gy: e.map[1] }));
 // Legendary-weapons layer (data: guides.js)
 {
   const seen = {};
@@ -1359,7 +1391,7 @@ function updateProgress() {
 // TABS
 // ============================================================================
 function showTab(name) {
-  ["checklist", "money", "map", "vehicles", "weapons", "cheats", "trophies"].forEach(t => {
+  ["checklist", "money", "map", "vehicles", "weapons", "eggs", "cheats", "trophies"].forEach(t => {
     document.getElementById("tab-" + t).style.display = t === name ? "" : "none";
     document.getElementById("tabbtn-" + t).classList.toggle("active", t === name);
     document.getElementById("tabbtn-" + t).setAttribute("aria-selected", t === name);
@@ -1395,7 +1427,7 @@ const CATS = {
   guide:  { label: "Guide items",  icon: "📍", color: "#00d9ff", on: true },
   super:  { label: "Cars — where to find", icon: "🚗", color: "#ffd60a", on: true },
   hide:   { label: "Hide & money", icon: "🙈", color: "#2ecc71", on: true },
-  secret: { label: "Secrets",      icon: "👽", color: "#b388ff", on: true },
+  secret: { label: "Secrets & eggs",      icon: "👽", color: "#b388ff", on: true },
   legend: { label: "Legendary weapons", icon: "⭐", color: "#ff4fd8", on: true },
   land:   { label: "Landmarks",    icon: "🏙️", color: "#c3cad8", on: false },
 };
@@ -1852,6 +1884,31 @@ function updateHero() {
 }
 
 // ============================================================================
+// EASTER EGGS (data: eggs.js)
+// ============================================================================
+const EGG_STORE = "gta6_eggs_v1";
+let eggGot = {};
+try { eggGot = JSON.parse(localStorage.getItem(EGG_STORE) || "{}"); } catch (e) {}
+function renderEggs() {
+  document.getElementById("eggList").innerHTML = EGGS.map((e, i) => `<article class="egg${eggGot[e.n] ? " got" : ""}">
+    <div class="egg-top"><div class="egg-ic" aria-hidden="true">${e.e}</div><div><div class="egg-n">${escapeHtml(e.n)}</div><div class="egg-where">📍 ${escapeHtml(e.where)}</div>${e.when ? `<div class="egg-when">⏰ ${escapeHtml(e.when)}</div>` : ""}</div></div>
+    <div class="egg-what">${escapeHtml(e.what)}</div>
+    ${e.ref ? `<div class="egg-ref">↳ Nod to: ${escapeHtml(e.ref)}</div>` : ""}
+    <div class="egg-act">${e.map ? `<button type="button" data-fly="${e.map[0]},${e.map[1]},${e.prec === "spot" ? 5 : 4}" data-label="${e.e} ${escapeHtml(e.n)}">📍 Show on map${e.prec === "approx" ? " (approx.)" : e.prec === "area" ? " (area)" : ""}</button>` : ""}
+      <label><input type="checkbox" data-egg="${escapeHtml(e.n)}" ${eggGot[e.n] ? "checked" : ""}> Found it</label></div></article>`).join("");
+  const n = EGGS.filter(e => eggGot[e.n]).length;
+  document.getElementById("eggFill").style.width = Math.round(n / EGGS.length * 100) + "%";
+  document.getElementById("eggText").textContent = `${n} found` + (n === EGGS.length ? " — egg hunter 🥚" : "");
+  document.getElementById("eggCount").textContent = `${n} / ${EGGS.length} easter eggs`;
+}
+function initEggs() {
+  const el = document.getElementById("eggList");
+  el.addEventListener("click", e => { const b = e.target.closest("[data-fly]"); if (b) { const [x, y, z] = b.dataset.fly.split(",").map(Number); flyToGame(x, y, z, b.dataset.label); } });
+  el.addEventListener("change", e => { const k = e.target.dataset.egg; if (k === undefined) return; if (e.target.checked) eggGot[k] = true; else delete eggGot[k]; try { localStorage.setItem(EGG_STORE, JSON.stringify(eggGot)); } catch (err) {} renderEggs(); });
+  renderEggs();
+}
+
+// ============================================================================
 // 100% COMPLETION (data: hundred.js)
 // ============================================================================
 const HUN_STORE = "gta6_hundred_v1";
@@ -2060,9 +2117,10 @@ initFastest();
 initGuides();
 initHundred();
 initDoors();
+initEggs();
 updateHero();
 initGallery("weapons");
-{ const h = location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "cheats", "trophies"].includes(h)) showTab(h); }
+{ const h = location.hash.slice(1); if (SUB_PARENT[h]) { showTab(SUB_PARENT[h]); showSub(h); } else if (["checklist", "money", "map", "vehicles", "weapons", "eggs", "cheats", "trophies"].includes(h)) showTab(h); }
 </script>
 </body>
 </html>

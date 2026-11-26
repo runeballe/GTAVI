@@ -1,4 +1,5 @@
 // 100% Completion requirements — gta.wiki "100% Completion in GTA VI" (rev 2321384, checked 2026-11-26).
+// Tips merged from leonidaverse.com's collectibles guide (2026-11-26).
 // n requirement · t target · of total that exist · auto: filled from other tracker data · tab: related tab/sub-tab · x: cross-check note
 const HUNDRED = [
   { g: "Story & tasks", items: [
@@ -16,23 +17,23 @@ const HUNDRED = [
     { k: "fbills", n: "Fence marked bills worth ($k)", t: 250, unit: "k$" },
   ]},
   { g: "Exploration & activities", items: [
-    { k: "kenton", n: "Kenton sets", t: 5, of: 7 },
-    { k: "meditate", n: "Meditation Spots", t: 15, of: 18 },
-    { k: "underwater", n: "Underwater Discoveries", t: 33, of: 33 },
-    { k: "cards", n: "Collectible Card Sets", t: 15, of: 18, x: "Matches the Ch 5 note (15/18)" },
-    { k: "wainkscan", n: "WAiNK scans", t: 100 },
-    { k: "mags", n: "Magazines, Books & Comics (incl. 7 Book Swaps)", t: 30, of: 34 },
-    { k: "flamingos", n: "Cocaine Flamingos destroyed", t: 100, of: 125 },
-    { k: "playlists", n: "Unique Playlists", t: 2, of: 2 },
-    { k: "styles", n: "Styles discovered", t: 70, of: 79 },
+    { k: "kenton", n: "Kenton sets", t: 5, of: 7, x: "Shipwreck treasure — metal detector + scuba; sites show as purple chests. Kenton Rees buys them (good early money)" },
+    { k: "meditate", n: "Meditation Spots", t: 15, of: 18, x: "Meditating also permanently builds Focus; all 18 = trophy, 50 meditations unlock the Fast Forward filter" },
+    { k: "underwater", n: "Underwater Discoveries", t: 33, of: 33, x: "All 33 required" },
+    { k: "cards", n: "Collectible Card Sets", t: 15, of: 18, x: "18 sets, 480 cards. Indoors on surfaces/walls or outdoors in yellow boxes. Sold cards still count — sell at pawn shops. Matches the Ch 5 note (15/18)" },
+    { k: "wainkscan", n: "WAiNK scans", t: 100, x: "5 scan types incl. 31 Landmarks, 35 Curiosities, 23 Sculptures and No Flusher tags. Also a trophy (You WAiNKer!)" },
+    { k: "mags", n: "Magazines, Books & Comics (incl. 7 Book Swaps)", t: 30, of: 34, x: "27 magazines, books & comics + 7 book swaps = 34" },
+    { k: "flamingos", n: "Cocaine Flamingos destroyed", t: 100, of: 125, x: "Only the ones with a black-and-white beak hold cocaine (decorative ones have yellow-and-black). Shoot them. 50 unlocks the Inflatable Flamingo cheat" },
+    { k: "playlists", n: "Unique Playlists", t: 2, of: 2, x: "Unlock by scanning certain posters with WAiNK" },
+    { k: "styles", n: "Styles discovered", t: 70, of: 79, x: "13 magazine styles for Jason, 15 for Lucia, 17 magazine tattoos (scan with WAiNK) + 34 luxury watches (golden icon, usually at gang operations)" },
     { k: "races", n: "Unique Races won", t: 30, of: 40 },
-    { k: "racegold", n: "Race Challenges — gold", t: 10, of: 13 },
+    { k: "racegold", n: "Race Challenges — gold", t: 10, of: 13, x: "Listed on gta.wiki; leonidaverse's 100% list doesn't include it" },
     { k: "range", n: "Shooting Range challenges — gold", t: 42, of: 42 },
     { k: "videogames", n: "Video games played", t: 4, of: 4 },
     { k: "pool", n: "Pool opponents defeated", t: 5, of: 7 },
     { k: "minigolf", n: "Mini golf locations played", t: 2, of: 3 },
     { k: "hoops", n: "Basketball hoops scored", t: 90, of: 100, x: "Same hoops as the Basketball Pro challenge (all 100)" },
-    { k: "drones", n: "Top Fun drone time trials", t: 42, of: 42 },
+    { k: "drones", n: "Top Fun drone time trials", t: 42, of: 42, x: "A Top Fun drone race win at every location is also a trophy" },
     { k: "stunts", n: "Stunts (jumps, under-bridges, knife flights, base jumps)", t: 300, of: 397, x: "Matches the Ch 5 note (300/397): 130 jumps · 202 bridges · 40 knife flights · 25 base jumps" },
     { k: "challenges", n: "Challenges", t: 70, of: 80, auto: "challenges", tab: "challenges", x: "Counted automatically from the Challenges tab" },
     { k: "bret", n: "Bret's Target Decks", t: 15, of: 15 },
